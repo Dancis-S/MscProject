@@ -1,8 +1,10 @@
-# Code the Represents the Calico board
+"""This file contain code related to setting up the board"""
+
 
 # Class to define the tile object that will be used to represent the nodes in the board
 class NormalTile:
-    def __init__(self, tile_id, pattern, colour, west, north_west, north_east, east, south_east, south_west):
+    def __init__(self, tile_id, pattern, colour,
+                 west, north_west, north_east, east, south_east, south_west):
         self.tile_id = tile_id
         self.pattern = pattern
         self.colour = colour
