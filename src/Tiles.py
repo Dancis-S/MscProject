@@ -6,7 +6,7 @@ class NormalTile:
     def __init__(self, tile_id):
         self.tile_id = tile_id
         self.pattern = None
-        self.colour = None
+        self.colour = "Green"
 
         # directions
         self.west = None
@@ -15,6 +15,13 @@ class NormalTile:
         self.north_east = None
         self.south_east = None
         self.south_west = None
+
+    # Function to get the id of the tile
+    def get_id(self):
+        return self.tile_id
+
+    def get_colour(self):
+        return self.colour
 
 
 # Class that will define the pattern tile that
