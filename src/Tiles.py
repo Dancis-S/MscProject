@@ -26,10 +26,11 @@ class NormalTile:
 
 # Class that will define the pattern tile that
 class DesignGoalTile:
-    def __int__(self, tile_id, requirement):
+    def __init__(self, tile_id, requirement):
         self.requirement = requirement
         self.colour_complete = False
         self.pattern_complete = False
+        self.id = tile_id
 
         # directions
         self.west = None

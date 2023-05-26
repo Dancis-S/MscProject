@@ -15,7 +15,7 @@ class Board:
         nahala = self.board
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
-
+            
     def test_board(self):
         mhm = self.mode
         stuff = self.board
