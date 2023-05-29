@@ -23,4 +23,3 @@ class Board:
     # Function that will set the border colours
     def colour_borders(self):
         pass
-

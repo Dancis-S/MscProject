@@ -13,6 +13,11 @@ class TestTiles(unittest.TestCase):
         msg = "The length is: " + str(length) + "!!"
         self.assertTrue(length == 49, msg)
 
+    def test_get_id(self):
+        board = Board.Board(1)
+        tile_id = board.board[0].tile_id
+        self.assertEqual(tile_id, 0)
+
 
 if __name__ == '__main__':
     unittest.main()
