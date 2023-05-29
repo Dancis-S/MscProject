@@ -1,4 +1,8 @@
 """This is a random file that is used for testing"""
+import src.Board as Board
 
-for i in range(10):
-    print(i)
+vaino = Board.Board(1)
+print(vaino.board[5].tile_id)
+print(vaino.board[5].east.tile_id)
+
+

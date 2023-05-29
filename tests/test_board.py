@@ -16,7 +16,29 @@ class TestTiles(unittest.TestCase):
     def test_get_id(self):
         board = Board.Board(1)
         tile_id = board.board[0].tile_id
-        self.assertEqual(tile_id, 0)
+        self.assertEqual(tile_id, 0, "The ID produced is:" + str(tile_id))
+
+    # Tests that the east is initialised properly
+    def test_navigate_along_east(self):
+        board = Board.Board(1)
+        node = board.board[0]
+        hold_id = node.tile_id
+        # Go move east through the tiles
+        while node.east is not None:
+            node = node.east
+            hold_id = node.tile_id
+        self.assertEqual(hold_id, 6, "The ID produced is: " + str(hold_id))
+
+    # Test that the west connection are correct and can be traversed
+    def test_navigate_along_west(self):
+        board = Board.Board(1)
+        node = board.board[48]
+        hold_id = node.tile_id
+        # Move west until we can no more
+        while node.west is not None:
+            node = node.west
+            hold_id = node.tile_id
+        self.assertEqual(hold_id, 42, "The ID produced is: " + str(hold_id))
 
 
 if __name__ == '__main__':
