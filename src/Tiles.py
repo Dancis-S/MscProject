@@ -8,7 +8,7 @@ class NormalTile:
         self.pattern = None
         self.colour = "Green"
 
-        # directions
+        # Neighbors
         self.west = None
         self.east = None
         self.north_west = None
@@ -32,7 +32,7 @@ class DesignGoalTile:
         self.pattern_complete = False
         self.id = tile_id
 
-        # directions
+        # Neighbors
         self.west = None
         self.east = None
         self.north_west = None

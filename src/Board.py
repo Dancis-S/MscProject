@@ -1,27 +1,25 @@
 """This file contain code related to setting up the board"""
 
-import Tiles
+import src.Tiles as Tiles
 
 
 # Initialises the board creating the 7 * 7 grid and stores them in array for quick access
 class Board:
-    def __init__(self, mode):
-        self.mode = mode
+    def __init__(self, player):
+        self.player = player  # Determines which board player gets
         self.board = []
         self.initialise_tiles()
 
-    # Function that creates all the nodes (tiles) in the board
-    def initialise_tiles(self):
-        nahala = self.board
+    # Function to populate the board with tiles
+    def populate_board(self):
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
-            
-    def test_board(self):
-        mhm = self.mode
-        stuff = self.board
-        for n in stuff:
-            print(n.get_id())
 
+    # Function that connects the tiles into graph
+    def initialise_tiles(self):
+        pass
 
-test = Board("easy")
-test.test_board()
+    # Function that will set the border colours
+    def colour_borders(self):
+        pass
+
