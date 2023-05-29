@@ -9,8 +9,9 @@ class TestTiles(unittest.TestCase):
 
     def test_creating_board(self):
         board = Board.Board(1)
-        first_tile_id = board.board[0].id
-        self.assertEqual(first_tile_id, 0)
+        length = len(board.board)
+        msg = "The length is: " + str(length) + "!!"
+        self.assertTrue(length == 49, msg)
 
 
 if __name__ == '__main__':

@@ -8,6 +8,7 @@ class Board:
     def __init__(self, player):
         self.player = player  # Determines which board player gets
         self.board = []
+        self.populate_board()
         self.initialise_tiles()
 
     # Function to populate the board with tiles
