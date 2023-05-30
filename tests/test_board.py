@@ -1,6 +1,6 @@
 """Tests for the Board module"""
 import unittest
-import src.Board as Board
+from src import Board
 
 
 class TestTiles(unittest.TestCase):
