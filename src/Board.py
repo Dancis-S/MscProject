@@ -23,6 +23,12 @@ class Board:
     def initialise_tiles(self):
         for i in range(49):
             tile = self.board[i]
+            # Check which part of the board we are in and determines offset
+            if i % 14 >= 7:  # left most is full hexagon
+                offset = 0
+            else:  # left most is half hexagon
+                offset = -1
+
             # set up the west connection
             if i % 7 == 0:
                 tile.west = None
@@ -35,25 +41,67 @@ class Board:
             else:
                 tile.east = self.board[i + 1]
 
-            # Check which part of the board we are in and determines offset
-            if i % 14 >= 7:  # left most is full hexagon
-                offset = 0
-            else:  # left most is half hexagon
-                offset = -1
-
             # North-west set up
-            if i - 7 + offset < 0:
+            if i - 7 + offset < 0 or (offset == -1 and i % 7 == 0):
                 tile.north_west = None
             else:
                 tile.north_west = self.board[i - 7 + offset]
 
             # North-east set up
-            if i - 6 + offset < 0:
+            if i - 6 + offset < 0 or (offset == 0 and i % 7 == 6):
                 tile.north_east = None
             else:
                 tile.north_east = self.board[i - 6 + offset]
-            # issue with border etc
+
+            # South West set up
+            if i + 7 + offset > 48 or (offset == -1 and i % 7 == 0):
+                tile.south_west = None
+            else:
+                tile.south_west = self.board[i + 7 + offset]
+
+            # South East set up
+            if i + 8 + offset > 48 or (offset == 0 and i % 7 == 6):
+                tile.south_east = None
+            else:
+                tile.south_east = self.board[i + 8 + offset]
 
     # Function that will set the border colours
     def colour_borders(self, player_num):
         pass
+
+    # Given a tile print its info
+    def get_tile_info(self, tile_id):
+        info = "============================\n Tile ID: " + str(tile_id) + "\n"
+        tile = self.board[tile_id]
+        if tile.west is None:
+            info += "West: None\n"
+        else:
+            info += "West: " + str(tile.west.tile_id) + "\n"
+
+        if tile.east is None:
+            info += "East: None\n"
+        else:
+            info += "East: " + str(tile.east.tile_id) + "\n"
+        if tile.north_west is None:
+            info += "North West: None\n"
+        else:
+            info += "North West: " + str(tile.north_west.tile_id) + "\n"
+
+        if tile.north_east is None:
+            info += "North East: None\n"
+        else:
+            info += "North East: " + str(tile.north_east.tile_id) + "\n"
+
+        if tile.south_west is None:
+            info += "South West: None\n"
+        else:
+            info += "South West: " + str(tile.south_west.tile_id) + "\n"
+
+        if tile.south_east is None:
+            info += "South East: None\n"
+        else:
+            info += "South East: " + str(tile.south_east.tile_id) + "\n"
+
+        info += "============================\n"
+        return info
+

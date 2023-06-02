@@ -2,7 +2,8 @@
 import src.Board as Board
 
 vaino = Board.Board(1)
-print(vaino.board[5].tile_id)
-print(vaino.board[5].east.tile_id)
+tile = vaino.board[7]
+print(vaino.get_tile_info(35))
+print(vaino.get_tile_info(42))
 
 
