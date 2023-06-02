@@ -18,6 +18,10 @@ class Board:
     def populate_board(self):
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
+        # Insert the Design Pattern tiles in 17,25,30 (we start from 0 not 1)
+        self.board[17] = Tiles.DesignGoalTile(17, None)
+        self.board[25] = Tiles.DesignGoalTile(25, None)
+        self.board[30] = Tiles.DesignGoalTile(30, None)
 
     # Function that connects the tiles into graph
     def initialise_tiles(self):
@@ -69,7 +73,7 @@ class Board:
     def colour_borders(self, player_num):
         pass
 
-    # Given a tile print its info
+    # Given a tile return its info (useful for debugging)
     def get_tile_info(self, tile_id):
         info = "============================\n Tile ID: " + str(tile_id) + "\n"
         tile = self.board[tile_id]
@@ -104,4 +108,3 @@ class Board:
 
         info += "============================\n"
         return info
-
