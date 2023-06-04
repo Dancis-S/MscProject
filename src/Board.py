@@ -69,9 +69,37 @@ class Board:
             else:
                 tile.south_east = self.board[i + 8 + offset]
 
-    # Function that will set the border colours
+    # Function that will set the border colours depending on the player
     def colour_borders(self, player_num):
-        pass
+        # To reduce the amount of code required
+        # Yellow-0, red-1, purple-2, blue-3, green-4, navy-5
+        # stripes-0, leaf-1, dots-2, plants-3, four-4, plants-5
+        colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        borders = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
+                   45, 46, 47, 48, 41, 34, 27, 20, 13]
+        purple_board = [(0, 4), (1, 2), (2, 4), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5,0),
+                        (4, 1), (1, 3), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 4), (0, 3),
+                        (2, 2), (5, 4), (4, 0), (1, 1), (3, 4), (5, 5)]
+        blue_board = [()]
+        green_board = [()]
+        yellow_board = [()]
+        chosen_board = None
+
+        if player_num == 1:
+            chosen_board = purple_board
+        elif player_num == 2:
+            chosen_board = blue_board
+        elif player_num == 3:
+            chosen_board = green_board
+        elif player_num == 4:
+            chosen_board = yellow_board
+        else:  # Default to purple board
+            chosen_board = purple_board
+
+        for n in borders:  # Applies the chosen colours and patterns
+            self.board[n].colour = colours[chosen_board[n][0]]
+            self.board[n].pattern = patterns[chosen_board[n][1]]
 
     # Given a tile return its info (useful for debugging)
     def get_tile_info(self, tile_id):

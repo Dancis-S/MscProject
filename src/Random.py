@@ -1,9 +1,8 @@
 """This is a random file that is used for testing"""
-import src.Board as Board
 
-vaino = Board.Board(1)
-tile = vaino.board[7]
-print(vaino.get_tile_info(35))
-print(vaino.get_tile_info(42))
+test = [(1, 2), (3, 4)]
+out = test[0]
+print(test[0][0])
+
 
 

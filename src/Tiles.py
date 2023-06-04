@@ -6,7 +6,7 @@ class NormalTile:
     def __init__(self, tile_id):
         self.tile_id = tile_id
         self.pattern = None
-        self.colour = "Green"
+        self.colour = None
 
         # Neighbors
         self.west = None
