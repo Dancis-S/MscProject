@@ -40,6 +40,26 @@ class TestTiles(unittest.TestCase):
             hold_id = node.tile_id
         self.assertEqual(hold_id, 42, "The ID produced is: " + str(hold_id))
 
+    def test_purple_borders(self):
+        """
+        Tests the border for the purple board is drawn correct by iterating over the nodes,
+        gathering the colour and pattern and then comparing to make sure it is correctly drawn
+
+        :return: Whether the purple border is drawn correct
+        """
+        board = Board.Board(1)  # Purple board is 1
+        border = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
+                  45, 46, 47, 48, 41, 34, 27, 20, 13]
+        test = ""
+        for n in border:
+            test += str(board.board[n].colour)
+            test += str(board.board[n].pattern)
+
+        correct = "YellowFourRedDotsPurpleFourYellowLeafBlueStripesRedFourGreenDotsBlueFourNavyStripes" \
+                  "GreenLeafRedPlantsBlueDotsPurpleLeafYellowFourPurpleStripesNavyLeafGreenFourYellowPlants" \
+                  "PurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
+        self.assertEqual(test, board, "Test outputs: " + test)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -12,7 +12,7 @@ class Board:
         self.board = []
         self.populate_board()
         self.initialise_tiles()
-        self.colour_borders(player_num)
+        self.colour_borders(9)
 
     # Function to populate the board with tiles
     def populate_board(self):
@@ -78,6 +78,7 @@ class Board:
         patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
         borders = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
                    45, 46, 47, 48, 41, 34, 27, 20, 13]
+        # (colour, pattern)
         purple_board = [(0, 4), (1, 2), (2, 4), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5,0),
                         (4, 1), (1, 3), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 4), (0, 3),
                         (2, 2), (5, 4), (4, 0), (1, 1), (3, 4), (5, 5)]
@@ -97,9 +98,9 @@ class Board:
         else:  # Default to purple board
             chosen_board = purple_board
 
-        for n in borders:  # Applies the chosen colours and patterns
-            self.board[n].colour = colours[chosen_board[n][0]]
-            self.board[n].pattern = patterns[chosen_board[n][1]]
+        for n in range(len(borders)):  # Applies the chosen colours and patterns
+            self.board[borders[n]].colour = colours[chosen_board[n][0]]
+            self.board[borders[n]].pattern = patterns[chosen_board[n][1]]
 
     # Given a tile return its info (useful for debugging)
     def get_tile_info(self, tile_id):
