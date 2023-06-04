@@ -58,7 +58,7 @@ class TestTiles(unittest.TestCase):
         correct = "YellowFourRedDotsPurpleFourYellowLeafBlueStripesRedFourGreenDotsBlueFourNavyStripes" \
                   "GreenLeafRedPlantsBlueDotsPurpleLeafYellowFourPurpleStripesNavyLeafGreenFourYellowPlants" \
                   "PurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
-        self.assertEqual(test, board, "Test outputs: " + test)
+        self.assertEqual(test, correct, "Test outputs: " + test)
 
 
 if __name__ == '__main__':
