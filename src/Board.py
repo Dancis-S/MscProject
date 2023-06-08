@@ -13,6 +13,8 @@ class Board:
         self.populate_board()
         self.initialise_tiles()
         self.colour_borders(9)
+        self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
+                               33, 36, 37, 38, 39, 40]
 
     # Function to populate the board with tiles
     def populate_board(self):
@@ -79,7 +81,7 @@ class Board:
         borders = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
                    45, 46, 47, 48, 41, 34, 27, 20, 13]
         # (colour, pattern)
-        purple_board = [(0, 4), (1, 2), (2, 4), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5,0),
+        purple_board = [(0, 4), (1, 2), (2, 4), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5, 0),
                         (4, 1), (1, 3), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 4), (0, 3),
                         (2, 2), (5, 4), (4, 0), (1, 1), (3, 4), (5, 5)]
         blue_board = [()]
@@ -101,6 +103,17 @@ class Board:
         for n in range(len(borders)):  # Applies the chosen colours and patterns
             self.board[borders[n]].colour = colours[chosen_board[n][0]]
             self.board[borders[n]].pattern = patterns[chosen_board[n][1]]
+
+    def add_tile(self, tile_id, colour, pattern):
+        """
+        This function takes as an input the board position, tile colour, tile pattern
+        and then places the given tile into
+        :return:
+        """
+        tile = self.board[tile_id]
+        tile.colour = colour
+        tile.pattern = pattern
+        # Remove tile from open positions
 
     # Given a tile return its info (useful for debugging)
     def get_tile_info(self, tile_id):

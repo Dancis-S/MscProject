@@ -7,6 +7,7 @@ class NormalTile:
         self.tile_id = tile_id
         self.pattern = None
         self.colour = None
+        self.part_of_pattern = False
 
         # Neighbors
         self.west = None
@@ -42,9 +43,45 @@ class DesignGoalTile:
 
     # We will need different check patterns depending on the requirements
 
+    def check_tile_complete(self):
+        """
+        Checks that the design tile is completed (all 6 sides are connected to another
+        tile. This is called before running code that checks the given requirements are met
+        for scoring
+        :return: Returns True if design tile is fully connected otherwise False
+        """
+        neighbors = self.get_neighbors()
+        completed = True
+        for n in neighbors:
+            if n.colour is None or n.pattern is None:
+                completed = False
+                break
+
+        return completed
+
     # Function takes the requirement and then check whether patterns match it
     def check_pattern(self, requirement):
         pass
+
+    def design_all_different(self):
+        """
+        Checks that all the neighbors are different for the tile which requires all colours
+        and patterns to be different.
+        :return:
+        """
+        colour_complete = False
+        pattern_complete = False
+        neighbors = self.get_neighbors()
+        for n in neighbors:
+            pass  # We need to check that no other tile is equal
+
+    def get_neighbors(self):
+        """
+        Function that gets all the neighboring nodes and returns them in an array. The
+        order is W, NW, NE, E, SE, SW
+        :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
+        """
+        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
 
     # Function that will take requirement and check whether the colour requirement is met
     def check_colour(self):

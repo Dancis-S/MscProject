@@ -7,6 +7,21 @@ class TestTiles(unittest.TestCase):
     def test_nothing(self):
         self.assertEqual(1, 1)
 
+    #def test_open_positions(self):
+    #    board = Board.Board(1)
+    #    open_position = board.open_positions
+    #    is_all_open = True
+
+    def test_tile_8_is_empty(self):
+        board = Board.Board(1)
+        self.assertEqual(board.board[8].colour, None)
+
+    def test_add_to_tile_8(self):
+        board = Board.Board(1)
+        board.add_tile(8, "Red", "Dots")
+        info = board.board[8].colour + board.board[8].pattern
+        self.assertEqual(info, "RedDots")
+
     def test_creating_board(self):
         board = Board.Board(1)
         length = len(board.board)
