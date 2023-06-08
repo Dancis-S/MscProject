@@ -16,8 +16,11 @@ class Board:
         self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                                33, 36, 37, 38, 39, 40]
 
-    # Function to populate the board with tiles
     def populate_board(self):
+        """
+        Adds the tiles (nodes) that will be used to represent the board
+        :return:
+        """
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
         # Insert the Design Pattern tiles in 17,25,30 (we start from 0 not 1)
@@ -25,8 +28,11 @@ class Board:
         self.board[25] = Tiles.DesignGoalTile(25, None)
         self.board[30] = Tiles.DesignGoalTile(30, None)
 
-    # Function that connects the tiles into graph
     def initialise_tiles(self):
+        """
+        Creates the connections (edges) between the tiles (nodes)
+        :return:
+        """
         for i in range(49):
             tile = self.board[i]
             # Check which part of the board we are in and determines offset
@@ -71,8 +77,13 @@ class Board:
             else:
                 tile.south_east = self.board[i + 8 + offset]
 
-    # Function that will set the border colours depending on the player
     def colour_borders(self, player_num):
+        """
+        Depending on the players number (i.e. which board the player gets) the
+        boarders are initialised with their respective colour and pattern
+        :param player_num:
+        :return:
+        """
         # To reduce the amount of code required
         # Yellow-0, red-1, purple-2, blue-3, green-4, navy-5
         # stripes-0, leaf-1, dots-2, plants-3, four-4, plants-5
@@ -115,8 +126,13 @@ class Board:
         tile.pattern = pattern
         # Remove tile from open positions
 
-    # Given a tile return its info (useful for debugging)
     def get_tile_info(self, tile_id):
+        """
+        Given a tile id, return the neighbors of the given node.
+        Function used for debugging only
+        :param tile_id:
+        :return:
+        """
         info = "============================\n Tile ID: " + str(tile_id) + "\n"
         tile = self.board[tile_id]
         if tile.west is None:

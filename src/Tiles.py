@@ -17,15 +17,14 @@ class NormalTile:
         self.south_east = None
         self.south_west = None
 
-    # Function to get the id of the tile
     def get_id(self):
+        """
+        Gets the current tiles ID
+        :return:
+        """
         return self.tile_id
 
-    def get_colour(self):
-        return self.colour
 
-
-# Class that will define the pattern tile that
 class DesignGoalTile:
     def __init__(self, tile_id, requirement):
         self.requirement = requirement
@@ -59,8 +58,12 @@ class DesignGoalTile:
 
         return completed
 
-    # Function takes the requirement and then check whether patterns match it
     def check_pattern(self, requirement):
+        """
+        Given the tiles required pattern check that it has been fulfilled
+        :param requirement:
+        :return:
+        """
         pass
 
     def design_all_different(self):
@@ -83,6 +86,9 @@ class DesignGoalTile:
         """
         return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
 
-    # Function that will take requirement and check whether the colour requirement is met
     def check_colour(self):
+        """
+        Given the tiles rules, check that
+        :return:
+        """
         pass
