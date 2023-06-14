@@ -70,9 +70,9 @@ class TestTiles(unittest.TestCase):
             test += str(board.board[n].colour)
             test += str(board.board[n].pattern)
 
-        correct = "YellowFourRedDotsPurpleFourYellowLeafBlueStripesRedFourGreenDotsBlueFourNavyStripes" \
-                  "GreenLeafRedPlantsBlueDotsPurpleLeafYellowFourPurpleStripesNavyLeafGreenFourYellowPlants" \
-                  "PurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
+        correct = "YellowFourRedDotsPurpleFourYellowLeafBlueStripesRedFourGreenDotsBlueFourNavy" \
+                  "StripesGreenLeafRedPlantsBlueDotsPurpleLeafYellowFourPurpleStripesNavyLeafGreen" \
+                  "FourYellowPlantsPurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
         self.assertEqual(test, correct, "Test outputs: " + test)
 
 

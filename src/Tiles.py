@@ -45,7 +45,7 @@ class DesignGoalTile:
     def check_tile_complete(self):
         """
         Checks that the design tile is completed (all 6 sides are connected to another
-        tile. This is called before running code that checks the given requirements are met
+        tile). This is called before running code that checks the given requirements are met
         for scoring
         :return: Returns True if design tile is fully connected otherwise False
         """
@@ -58,15 +58,16 @@ class DesignGoalTile:
 
         return completed
 
-    def check_pattern(self, requirement):
+    def check_design_goal_reached(self, requirement):
         """
-        Given the tiles required pattern check that it has been fulfilled
+        Given the tiles requirements, check that is has been completed with patterns, or
+        with colours
         :param requirement:
         :return:
         """
         pass
 
-    def design_all_different(self):
+    def not_equal_goal(self):
         """
         Checks that all the neighbors are different for the tile which requires all colours
         and patterns to be different.
@@ -78,6 +79,41 @@ class DesignGoalTile:
         for n in neighbors:
             pass  # We need to check that no other tile is equal
 
+    def aaa_bbb_goal(self):
+        """
+        
+        :return:
+        """
+        pass
+
+    def aa_bb_cc_goal(self):
+        """
+
+        :return:
+        """
+        pass
+
+    def aaaa_bb_goal(self):
+        """
+
+        :return:
+        """
+        pass
+
+    def aaa_bb_c_goal(self):
+        """
+
+        :return:
+        """
+        pass
+
+    def aa_bb_c_d_goal(self):
+        """
+
+        :return:
+        """
+        pass
+
     def get_neighbors(self):
         """
         Function that gets all the neighboring nodes and returns them in an array. The
@@ -85,10 +121,3 @@ class DesignGoalTile:
         :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
         """
         return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
-
-    def check_colour(self):
-        """
-        Given the tiles rules, check that
-        :return:
-        """
-        pass
