@@ -1,4 +1,4 @@
-"""This file contain code for playing Calico """
+"""This file contain code that will run the actual game"""
 from src import Board
 
 
@@ -9,6 +9,7 @@ from src import Board
 # Then initialise the game (Giving out the tiles etc.)
 class Calico:
     def __init__(self, num_of_players):
+        self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
         self.shop = []  # Shop that holds available tiles
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
@@ -22,7 +23,16 @@ class Calico:
         :param num_of_players:
         :return:
         """
-        # For now makes all the boards purple
+        # There is 3 of each pattern for each colour set put this into the bag
+        colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        for c in colours:
+            for p in patterns:
+                for i in range(3):
+                    # Add tuple (colour, pattern)
+                    self.tiles_bag.append((c, p))
+
+        # Sets up the boards, but for now makes all the boards purple
         for i in range(num_of_players):
             self.players_board.append(Board.Board(1))  # !!! Change to i later
 
@@ -34,7 +44,6 @@ class Calico:
         for i in range(25):
             for n in range(num_of_players):
                 print("It's player " + str(n) + "'s move, your stack of tiles is")
-
                 board = self.players_board[n]  # gets the board for the respective players
 
     def calculate_scores(self):
