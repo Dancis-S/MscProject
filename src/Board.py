@@ -124,7 +124,7 @@ class Board:
         tile = self.board[tile_id]
         tile.colour = colour
         tile.pattern = pattern
-        # Remove tile from open positions
+        self.open_positions.remove(tile_id)
 
     def get_tile_info(self, tile_id):
         """

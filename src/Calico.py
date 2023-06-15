@@ -3,11 +3,6 @@ import random
 from src import Board
 
 
-# Will have a main board initialised
-
-# Then initialise the number of players
-
-# Then initialise the game (Giving out the tiles etc.)
 class Calico:
     def __init__(self, num_of_players):
         self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
