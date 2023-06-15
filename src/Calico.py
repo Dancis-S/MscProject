@@ -1,4 +1,5 @@
 """This file contain code that will run the actual game"""
+import random
 from src import Board
 
 
@@ -32,8 +33,16 @@ class Calico:
                     # Add tuple (colour, pattern)
                     self.tiles_bag.append((c, p))
 
-        # Sets up the boards, but for now makes all the boards purple
+        random.shuffle(self.tiles_bag)  # Shuffles the bag containing tiles
+
+        for i in range(3):  # Fill the shop up with 3 tiles
+            self.shop.append(self.tiles_bag.pop())
+
+        # Sets up the boards and the players stacks
+        # !!!!!! All purple atm, fix this later !!!!
         for i in range(num_of_players):
+            # Initialises each players stack with random tiles from bag
+            self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(), self.tiles_bag.pop()])
             self.players_board.append(Board.Board(1))  # !!! Change to i later
 
     def start_game(self, num_of_players):

@@ -7,13 +7,13 @@ class TestCalico(unittest.TestCase):
 
     def test_tile_bag_filled(self):
         """
-        Test to see that the bag contains 108 playable tiles that the players
-        can get
+        Test to see that the bag contains 102 playable tiles that the player
+        can get. (initial(108) - shop(3) - 1player(3) = 102)
         :return:
         """
         game = Calico.Calico(1)
         bag_amount = len(game.tiles_bag)
-        self.assertEqual(bag_amount, 108, "Bag contains: " + str(bag_amount))
+        self.assertEqual(bag_amount, 102, "Bag contains: " + str(bag_amount))
 
     def test_setup_shop(self):
         """
