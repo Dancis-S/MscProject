@@ -15,6 +15,7 @@ class Board:
         self.colour_borders(9)
         self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                                33, 36, 37, 38, 39, 40]
+        self.buttons = {"Red" : 0, "Yellow" : 0, "Purple" : 0, "Blue" : 0, "Green" : 0, "Navy" : 0}
 
     def populate_board(self):
         """
@@ -125,6 +126,51 @@ class Board:
         tile.colour = colour
         tile.pattern = pattern
         self.open_positions.remove(tile_id)
+        self.check_for_buttons(tile_id)  # Calls the function to check whether we have gained a button
+
+    def check_for_buttons(self, tile_id):
+        """
+        Each time a new tile is added, search to see if there is a connection of nodes with
+        the same colour. (if there is more than 3 then we call method that adds button to the board)
+        :param tile_id:
+        :return:
+        """
+        tile = self.board[tile_id]
+        count = 1
+        colour = tile.colour
+        visited_tiles = [tile_id]  # Keeps track of visited nodes
+        cache_neighbors = []
+
+        # Loop through all the matching neighbors
+        while True:
+            neighbors = tile.get_neighbors()
+            neighbors = list(filter(lambda item: item is not None, neighbors))  # Remove any None
+            # Loop through all neighbors, add where colour matches and tile isn't visited
+            for n in neighbors:
+                # Checks if it is a Design tile, then we just skip this neighbor
+                if isinstance(n, Tiles.DesignGoalTile):
+                    continue
+
+                # If it touches an already complete pattern it becomes part of the pattern
+                # In-order to be scored, it as to be a separate group!
+                if n.colour == colour and n.part_of_button:
+                    tile.part_of_button = True
+
+                # If it is a free matching tile, then add it to cache
+                if n.colour == colour and n.tile_id not in visited_tiles and not n.part_of_button:
+                    cache_neighbors.append(n.tile_id)  # Add id of tile with matching colour
+
+            if not cache_neighbors:  # If there is no more nodes to visit then break
+                break
+
+            # Move to the next node, increment count, add its id to visited
+            tile = self.board[cache_neighbors.pop()]
+            count += 1
+            visited_tiles.append(tile.tile_id)
+
+        if count >= 3:  # if there is more than 3 then we group them together.
+            for n in visited_tiles:
+                self.board[n].part_of_button = True
 
     def get_tile_info(self, tile_id):
         """
@@ -166,3 +212,15 @@ class Board:
 
         info += "============================\n"
         return info
+
+    def add_button(self, tile_id, colour):
+        """
+        Traverses over tiles with the given colour, and if they have the colour that needs
+        the button, then group them (set their buttons value to true so cant be used for
+        another group)
+        :param tile_id:
+        :param colour:
+        :return:
+        """
+        pass
+

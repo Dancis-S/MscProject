@@ -8,6 +8,7 @@ class NormalTile:
         self.pattern = None
         self.colour = None
         self.part_of_pattern = False
+        self.part_of_button = False  # Used for buttons
 
         # Neighbors
         self.west = None
@@ -23,6 +24,14 @@ class NormalTile:
         :return:
         """
         return self.tile_id
+
+    def get_neighbors(self):
+        """
+        Function that gets all the neighboring nodes and returns them in an array. The
+        order is W, NW, NE, E, SE, SW
+        :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
+        """
+        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
 
 
 class DesignGoalTile:

@@ -106,6 +106,14 @@ class TestTiles(unittest.TestCase):
                   "FourYellowPlantsPurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
         self.assertEqual(test, correct, "Test outputs: " + test)
 
+    def test_adding_button(self):
+        """
+        Tests to see that a connection of 3 or more tiles with the same colour, results
+        in a button being added to the button dictionary
+        :return:
+        """
+
+
 
 if __name__ == '__main__':
     unittest.main()
