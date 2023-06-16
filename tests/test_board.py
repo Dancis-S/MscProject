@@ -112,7 +112,81 @@ class TestTiles(unittest.TestCase):
         in a button being added to the button dictionary
         :return:
         """
+        board = Board.Board(1)
+        board.add_tile(23, "Blue", "Dots")
+        board.add_tile(24, "Blue", "Plants")
+        board.add_tile(31, "Blue", "Four")
+        blue_button_count = board.buttons.get("Blue")
+        self.assertEqual(blue_button_count, 1)
 
+    def test_adding_button_2(self):
+        """
+        Tests to see that a connection of 3 or more tiles with the same colour, results
+        in a button being added to the button dictionary.
+        This time only checking that each button has their "button" instance variable changed
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(40, "Blue", "Dots")
+        board.add_tile(26, "Blue", "Plants")
+        board.add_tile(33, "Blue", "Four")
+        blue_button_count = board.buttons.get("Blue")
+        statement = board.board[40].part_of_button and board.board[33].part_of_button \
+                    and board.board[26].part_of_button and blue_button_count == 1
+
+        self.assertTrue(statement)
+
+    def test_adding_to_existing_pattern(self):
+        """
+        given that there is already a group (a button), when we add another matching tile, it should
+        just become part of the group and should not add a new button
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(23, "Blue", "Dots")
+        board.add_tile(24, "Blue", "Plants")
+        board.add_tile(31, "Blue", "Four")
+        board.add_tile(37, "Blue", "Four")
+        blue_button_count = board.buttons.get("Blue")
+        self.assertEqual(blue_button_count, 1)
+
+    def test_adding_to_existing_pattern_2(self):
+        """
+        Check that when we have already 1 group (1 button) consisting of 3 tiles, and we
+        have 2 tiles that are disconnected to the group, but we then place 1 tile that connects
+        the 2 disconnected tiles. The functions should make sure it does not count the 2 disconnected
+        and 1 new as a new group, as they are technically touching another group therefore they
+        should be put together with the other group, and the count for buttons should not change!
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(23, "Blue", "Dots")
+        board.add_tile(24, "Blue", "Plants")
+        board.add_tile(31, "Blue", "Four")
+        board.add_tile(12, "Blue", "Four")
+        board.add_tile(11, "Blue", "Four")
+        board.add_tile(18, "Blue", "Four")
+        blue_button_count = board.buttons.get("Blue")
+        # should still only be 1
+        self.assertEqual(blue_button_count, 1)
+
+    def test_adding_to_existing_pattern_3(self):
+        """
+        Once again checks what happens when adding 1 tile connects multiple different groups
+        together. (should only results in 1 button)
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(23, "Blue", "Dots")
+        board.add_tile(22, "Blue", "Plants")
+        board.add_tile(32, "Blue", "Four")
+        board.add_tile(39, "Blue", "Four")
+        board.add_tile(11, "Blue", "Four")
+        board.add_tile(18, "Blue", "Four")
+        board.add_tile(24, "Blue", "Four")
+        blue_button_count = board.buttons.get("Blue")
+        # should still only be 1
+        self.assertEqual(blue_button_count, 1)
 
 
 if __name__ == '__main__':
