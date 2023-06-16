@@ -161,14 +161,15 @@ class TestTiles(unittest.TestCase):
         """
         board = Board.Board(1)
         board.add_tile(23, "Blue", "Dots")
-        board.add_tile(24, "Blue", "Plants")
-        board.add_tile(31, "Blue", "Four")
-        board.add_tile(12, "Blue", "Four")
-        board.add_tile(11, "Blue", "Four")
-        board.add_tile(18, "Blue", "Four")
+        board.add_tile(22, "Blue", "Plants")
+        board.add_tile(16, "Blue", "Four")
+        board.add_tile(32, "Blue", "Four")
+        board.add_tile(33, "Blue", "Four")
+        board.add_tile(24, "Blue", "Four")
         blue_button_count = board.buttons.get("Blue")
-        # should still only be 1
-        self.assertEqual(blue_button_count, 1)
+        # Check that the button count is 1 AND the furthest button added to same group
+        statement = blue_button_count == 1 and board.board[33].part_of_button
+        self.assertTrue(statement)
 
     def test_adding_to_existing_pattern_3(self):
         """

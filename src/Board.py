@@ -157,6 +157,7 @@ class Board:
 
                 # If it is a free matching tile, then add it to cache
                 if n.colour == colour and n.tile_id not in visited_tiles and not n.part_of_button:
+                    print("Added tile" + str(n.tile_id))
                     cache_neighbors.append(n.tile_id)  # Add id of tile with matching colour
 
             if not cache_neighbors:  # If there is no more nodes to visit then break
