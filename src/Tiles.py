@@ -82,22 +82,72 @@ class DesignGoalTile:
         and patterns to be different.
         :return:
         """
-        colour_complete = False
-        pattern_complete = False
+        colour_complete = True
+        pattern_complete = True
+        colours = []
+        patterns = []
         neighbors = self.get_neighbors()
         for n in neighbors:
-            pass  # We need to check that no other tile is equal
+            # Check that the colour hasn't already been seen
+            if n.colour in colours:
+                colour_complete = False
+            else:
+                colours.append(n.colour)
+
+            if n.pattern in patterns:
+                pattern_complete = False
+            else:
+                patterns.append(n.pattern)
+
+        # Depending on how much is completed, return the score
+        if colour_complete and pattern_complete:
+            return 10
+        elif colour_complete or pattern_complete:
+            return 6
+        else:
+            return 0
 
     def aaa_bbb_goal(self):
         """
-        
+        Checks that there are only 2 groups with each of size 3, for colour and pattern.
         :return:
         """
-        pass
+        neighbors = self.get_neighbors()
+        colour_complete = False
+        pattern_complete = False
+        colours_dict = {}
+        patterns_dict = {}
+
+        for n in neighbors:  # Loops and add them to dictionary
+            if n.colour in colours_dict:
+                colours_dict[n.colour] += 1
+            else:
+                colours_dict[n.colour] = 1
+            if n.pattern in patterns_dict:
+                patterns_dict[n.pattern] += 1
+            else:
+                patterns_dict[n.pattern] = 1
+
+        # Check that the dictionaries meet the conditions
+        colour_keys = list(colours_dict.keys())
+        pattern_keys = list(patterns_dict.keys())
+        if len(colours_dict) == 2 and len(colour_keys[0]) == 3 and len(colour_keys[1] == 3):
+            colour_complete = True
+        if len(patterns_dict) == 2 and len(pattern_keys[0]) == 3 and len(pattern_keys[1]) == 3:
+            pattern_complete = True
+
+        # Return the score depending on the requirements met
+        if pattern_complete and colour_complete:
+            return 10
+        elif pattern_complete or colour_complete:
+            return 6
+        else:
+            return 0
 
     def aa_bb_cc_goal(self):
         """
-
+        Checks that the design tile has 3 different groups (colour or pattern), with each
+        of length 2. i.e. 2 red, 2 green, 2 blue tiles surrounding it
         :return:
         """
         pass

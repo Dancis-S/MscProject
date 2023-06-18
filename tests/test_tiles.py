@@ -3,6 +3,7 @@ import unittest
 from src import Tiles
 from src import Board
 
+
 class TestTiles(unittest.TestCase):
     # Tests that we are able to create a normal tile
     def test_get_normal_tile_id(self):

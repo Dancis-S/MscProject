@@ -3,7 +3,7 @@ import unittest
 from src import Board
 
 
-class TestTiles(unittest.TestCase):
+class TestBoard(unittest.TestCase):
 
     def test_open_positions(self):
         """
