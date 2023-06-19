@@ -99,7 +99,7 @@ class DesignGoalTile:
             else:
                 patterns.append(n.pattern)
 
-        # Depending on how much is completed, return the score
+        # Returns scoring based on conditions met
         if colour_complete and pattern_complete:
             return 10
         elif colour_complete or pattern_complete:
@@ -107,14 +107,15 @@ class DesignGoalTile:
         else:
             return 0
 
-    def aaa_bbb_goal(self):
+    def add_colours_and_patterns_to_dictionary(self):
         """
-        Checks that there are only 2 groups with each of size 3, for colour and pattern.
+        Function that will get the colour and pattern of all the surrounding tiles, add them
+        to their respective dictionaries, and then return the colour and pattern dictionary.
+        Used when needing to check the design tiles conditions are met
         :return:
+        Returns first colours then pattern dictionaries
         """
         neighbors = self.get_neighbors()
-        colour_complete = False
-        pattern_complete = False
         colours_dict = {}
         patterns_dict = {}
 
@@ -127,6 +128,16 @@ class DesignGoalTile:
                 patterns_dict[n.pattern] += 1
             else:
                 patterns_dict[n.pattern] = 1
+
+        return colours_dict, patterns_dict
+
+    def aaa_bbb_goal(self):
+        """
+        Checks that there are only 2 groups with each of size 3, for colour and pattern.
+        :return:
+        """
+        colour_complete, pattern_complete = False
+        colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that the dictionaries meet the conditions
         colour_keys = list(colours_dict.keys())
@@ -150,28 +161,103 @@ class DesignGoalTile:
         of length 2. i.e. 2 red, 2 green, 2 blue tiles surrounding it
         :return:
         """
-        pass
+        colour_complete, pattern_complete = False
+        colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
+
+        # Check that the dictionaries meet the conditions
+        colour_keys = list(colours_dict.keys())
+        pattern_keys = list(patterns_dict.keys())
+        if len(colours_dict) == 3 and len(colour_keys[0]) == 2 and len(colour_keys[1] == 2) \
+                and len(colour_keys[2] == 2):
+            colour_complete = True
+        if len(patterns_dict) == 3 and len(pattern_keys[0]) == 2 and len(pattern_keys[1]) == 2 \
+                and len(pattern_keys[2]) == 2:
+            pattern_complete = True
+
+        # Return the score depending on the requirements met
+        if pattern_complete and colour_complete:
+            return 10
+        elif pattern_complete or colour_complete:
+            return 6
+        else:
+            return 0
 
     def aaaa_bb_goal(self):
         """
-
+        Design requirement where there are 2 groups (pattern or colour group), one with size 4 and
+        other with the size 2
         :return:
         """
-        pass
+        colour_complete, pattern_complete = False
+        colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
+
+        # Check that they meet the conditions
+        colour_values = list(colours_dict.values())
+        pattern_values = list(patterns_dict.values())
+
+        if len(colour_values) == 2 and 4 in colours_dict and 2 in colours_dict:
+            colour_complete = True
+        if len(pattern_values) == 2 and 4 in patterns_dict and 2 in patterns_dict:
+            pattern_complete = True
+
+        # Returns scores based on the conditions met
+        if pattern_complete and colour_complete:
+            return 10
+        elif pattern_complete or colour_complete:
+            return 6
+        else:
+            return 0
 
     def aaa_bb_c_goal(self):
         """
 
         :return:
         """
-        pass
+        colour_complete, pattern_complete = False
+        colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
+
+        # Check that they meet the conditions
+        colour_values = list(colours_dict.values())
+        pattern_values = list(patterns_dict.values())
+
+        if len(colour_values) == 3 and 3 in colour_values and 2 in colour_values and 1 in colour_values:
+            colour_complete = True
+        if len(pattern_values) == 3 and 3 in pattern_values and 2 in pattern_values and 1 in pattern_values:
+            pattern_complete = True
+
+        # Returns scores based on the conditions met
+        if pattern_complete and colour_complete:
+            return 10
+        elif pattern_complete or colour_complete:
+            return 6
+        else:
+            return 0
 
     def aa_bb_c_d_goal(self):
         """
 
         :return:
         """
-        pass
+        colour_complete, pattern_complete = False
+        colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
+
+        # Check that they meet the conditions
+        colour_values = list(colours_dict.values())
+        pattern_values = list(patterns_dict.values())
+
+        # Check that the outlined conditions are met
+        if len(colour_values) == 4 and colour_values.count(2) == 2 and colour_values.count(1) == 2:
+            colour_complete = True
+        if len(pattern_values) == 4 and pattern_values.count(2) == 2 and pattern_values.count(1) == 1:
+            pattern_complete = True
+
+        # Returns scores based on the conditions met
+        if pattern_complete and colour_complete:
+            return 10
+        elif pattern_complete or colour_complete:
+            return 6
+        else:
+            return 0
 
     def get_neighbors(self):
         """

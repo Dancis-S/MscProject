@@ -173,6 +173,14 @@ class Board:
             for n in visited_tiles:
                 self.board[n].part_of_button = True
 
+    def get_score(self):
+        """
+        At the end of the game this function is called, it calculates the players score
+        based on the design tiles completed, the buttons scored, and the cats scored.
+        :return:
+        """
+        pass
+
     def get_tile_info(self, tile_id):
         """
         Given a tile id, return the neighbors of the given node.
