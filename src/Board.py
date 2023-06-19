@@ -85,7 +85,7 @@ class Board:
         """
         # To reduce the amount of code required
         # Yellow-0, red-1, purple-2, blue-3, green-4, navy-5
-        # stripes-0, leaf-1, dots-2, plants-3, four-4, plants-5
+        # stripes-0, leaf-1, dots-2, plants-3, four-4, flowers-5
         colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
         patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
         borders = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
@@ -157,7 +157,6 @@ class Board:
 
                 # If it is a free matching tile, then add it to cache
                 if n.colour == colour and n.tile_id not in visited_tiles and not n.part_of_button:
-                    print("Added tile" + str(n.tile_id))
                     cache_neighbors.append(n.tile_id)  # Add id of tile with matching colour
 
             if not cache_neighbors:  # If there is no more nodes to visit then break

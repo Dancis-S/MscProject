@@ -70,8 +70,8 @@ class TestTiles(unittest.TestCase):
         tile = Tiles.NormalTile(25)
         tile.pattern = "Stripes"
         tile.colour = "Purple"
-        self.assertEqual(tile.pattern, "Stripes") and \
-        self.assertEqual(tile.colour, "Purple")
+        combined = tile.colour + tile.pattern
+        self.assertEqual(combined, "PurpleStripes")
 
     def test_not_equal_goal_1(self):
         """
@@ -80,28 +80,123 @@ class TestTiles(unittest.TestCase):
         :return:
         """
         board = Board.Board(1)
-        self.assertEqual(1, 1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Blue", "Leaf")
+        board.add_tile(18, "Navy", "Stripes")
+        board.add_tile(24, "Yellow", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Purple", "Flowers")
+        score = board.board[17].not_equal_goal()
+        self.assertEqual(score, 15)
 
     def test_not_equal_goal_2(self):
         """
         Tests in scenario where only colour is completed not pattern
         :return:
         """
-        self.assertEqual(1, 1)
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Blue", "Leaf")
+        board.add_tile(18, "Navy", "Stripes")
+        board.add_tile(24, "Yellow", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Purple", "Leaf")
+        score = board.board[17].not_equal_goal()
+        self.assertEqual(score, 10)
 
     def test_not_equal_goal_3(self):
         """
         Tests for scenario where only pattern is completed
         :return:
         """
-        self.assertEqual(1, 1)
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Blue", "Leaf")
+        board.add_tile(18, "Navy", "Stripes")
+        board.add_tile(24, "Yellow", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Flowers")
+        score = board.board[17].not_equal_goal()
+        self.assertEqual(score, 10)
 
     def test_not_equal_goal_4(self):
         """
         Tests where none of them are properly completed
         :return:
         """
-        self.assertEqual(1, 1)
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Blue", "Leaf")
+        board.add_tile(18, "Navy", "Stripes")
+        board.add_tile(24, "Yellow", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Dots")
+        score = board.board[17].not_equal_goal()
+        self.assertEqual(score, 0)
+
+    def test_aaa_bbb_1(self):
+        """
+        Tests for scenario where design tile is completed both in colour and in pattern.
+        It is required that there are only 2 groups with the length of 3, i.e. aaa-bbb
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Leaf")
+        board.add_tile(18, "Red", "Stripes")
+        board.add_tile(24, "Green", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Flowers")
+        score = board.board[17].aaa_bbb_goal()
+        self.assertEqual(score, 13)
+
+    def test_aaa_bbb_2(self):
+        """
+        Tests for scenario where design tile is only colour completed. It is required
+        that there are only 2 groups with the length of 3, i.e. aaa-bbb
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Leaf")
+        board.add_tile(18, "Red", "Stripes")
+        board.add_tile(24, "Green", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Flowers")
+        score = board.board[17].aaa_bbb_goal()
+        self.assertEqual(score, 7)
+
+    def test_aaa_bbb_3(self):
+        """
+        Tests for scenario where design tile is only pattern completed. It is required
+        that there are only 2 groups with the length of 3, i.e. aaa-bbb
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Leaf")
+        board.add_tile(18, "Red", "Stripes")
+        board.add_tile(24, "Green", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Flowers")
+        score = board.board[17].aaa_bbb_goal()
+        self.assertEqual(score, 7)
+
+    def test_aaa_bbb_4(self):
+        """
+        Tests for scenario where neither the colour nor pattern condition is met. It is required
+        that there are only 2 groups with the length of 3, i.e. aaa-bbb
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Leaf")
+        board.add_tile(18, "Red", "Stripes")
+        board.add_tile(24, "Green", "Plants")
+        board.add_tile(23, "Green", "Four")
+        board.add_tile(16, "Green", "Flowers")
+        score = board.board[17].aaa_bbb_goal()
+        self.assertEqual(score, 0)
 
 
 if __name__ == '__main__':

@@ -101,9 +101,9 @@ class DesignGoalTile:
 
         # Returns scoring based on conditions met
         if colour_complete and pattern_complete:
-            return 10
+            return 15
         elif colour_complete or pattern_complete:
-            return 6
+            return 10
         else:
             return 0
 
@@ -149,9 +149,9 @@ class DesignGoalTile:
 
         # Return the score depending on the requirements met
         if pattern_complete and colour_complete:
-            return 10
+            return 13
         elif pattern_complete or colour_complete:
-            return 6
+            return 7
         else:
             return 0
 
@@ -176,9 +176,9 @@ class DesignGoalTile:
 
         # Return the score depending on the requirements met
         if pattern_complete and colour_complete:
-            return 10
+            return 11
         elif pattern_complete or colour_complete:
-            return 6
+            return 7
         else:
             return 0
 
@@ -202,9 +202,9 @@ class DesignGoalTile:
 
         # Returns scores based on the conditions met
         if pattern_complete and colour_complete:
-            return 10
+            return 14
         elif pattern_complete or colour_complete:
-            return 6
+            return 7
         else:
             return 0
 
@@ -227,9 +227,9 @@ class DesignGoalTile:
 
         # Returns scores based on the conditions met
         if pattern_complete and colour_complete:
-            return 10
+            return 11
         elif pattern_complete or colour_complete:
-            return 6
+            return 7
         else:
             return 0
 
@@ -253,9 +253,9 @@ class DesignGoalTile:
 
         # Returns scores based on the conditions met
         if pattern_complete and colour_complete:
-            return 10
+            return 7
         elif pattern_complete or colour_complete:
-            return 6
+            return 5
         else:
             return 0
 
