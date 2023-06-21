@@ -82,8 +82,7 @@ class DesignGoalTile:
         and patterns to be different.
         :return:
         """
-        colour_complete = True
-        pattern_complete = True
+        colour_complete = pattern_complete = True
         colours = []
         patterns = []
         neighbors = self.get_neighbors()
@@ -136,15 +135,15 @@ class DesignGoalTile:
         Checks that there are only 2 groups with each of size 3, for colour and pattern.
         :return:
         """
-        colour_complete, pattern_complete = False
+        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that the dictionaries meet the conditions
-        colour_keys = list(colours_dict.keys())
-        pattern_keys = list(patterns_dict.keys())
-        if len(colours_dict) == 2 and len(colour_keys[0]) == 3 and len(colour_keys[1] == 3):
+        colour_values = list(colours_dict.values())
+        pattern_values = list(patterns_dict.values())
+        if len(colour_values) == 2 and colour_values.count(3) == 2:
             colour_complete = True
-        if len(patterns_dict) == 2 and len(pattern_keys[0]) == 3 and len(pattern_keys[1]) == 3:
+        if len(pattern_values) == 2 and pattern_values.count(3) == 2:
             pattern_complete = True
 
         # Return the score depending on the requirements met
@@ -161,17 +160,15 @@ class DesignGoalTile:
         of length 2. i.e. 2 red, 2 green, 2 blue tiles surrounding it
         :return:
         """
-        colour_complete, pattern_complete = False
+        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that the dictionaries meet the conditions
-        colour_keys = list(colours_dict.keys())
-        pattern_keys = list(patterns_dict.keys())
-        if len(colours_dict) == 3 and len(colour_keys[0]) == 2 and len(colour_keys[1] == 2) \
-                and len(colour_keys[2] == 2):
+        colour_values = list(colours_dict.values())
+        pattern_values = list(patterns_dict.values())
+        if len(colour_values) == 3 and colour_values.count(2) == 3:
             colour_complete = True
-        if len(patterns_dict) == 3 and len(pattern_keys[0]) == 2 and len(pattern_keys[1]) == 2 \
-                and len(pattern_keys[2]) == 2:
+        if len(pattern_values) == 3 and pattern_values.count(2) == 3:
             pattern_complete = True
 
         # Return the score depending on the requirements met
@@ -188,16 +185,16 @@ class DesignGoalTile:
         other with the size 2
         :return:
         """
-        colour_complete, pattern_complete = False
+        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that they meet the conditions
         colour_values = list(colours_dict.values())
         pattern_values = list(patterns_dict.values())
 
-        if len(colour_values) == 2 and 4 in colours_dict and 2 in colours_dict:
+        if len(colour_values) == 2 and 4 in colour_values and 2 in colour_values:
             colour_complete = True
-        if len(pattern_values) == 2 and 4 in patterns_dict and 2 in patterns_dict:
+        if len(pattern_values) == 2 and 4 in pattern_values and 2 in pattern_values:
             pattern_complete = True
 
         # Returns scores based on the conditions met
@@ -210,10 +207,11 @@ class DesignGoalTile:
 
     def aaa_bb_c_goal(self):
         """
-
+        Design requirement where there needs to be 3 groups, 1 of length 3, another of length 2,
+        and a final of length 1. (can be either in terms of colour or pattern)
         :return:
         """
-        colour_complete, pattern_complete = False
+        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that they meet the conditions
@@ -235,10 +233,11 @@ class DesignGoalTile:
 
     def aa_bb_c_d_goal(self):
         """
-
+        Design requirement where there are 4 groups, 2 of which are of length 2 and other groups
+        of length 1. (can be either in terms of colour or patterns)
         :return:
         """
-        colour_complete, pattern_complete = False
+        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that they meet the conditions
@@ -248,7 +247,7 @@ class DesignGoalTile:
         # Check that the outlined conditions are met
         if len(colour_values) == 4 and colour_values.count(2) == 2 and colour_values.count(1) == 2:
             colour_complete = True
-        if len(pattern_values) == 4 and pattern_values.count(2) == 2 and pattern_values.count(1) == 1:
+        if len(pattern_values) == 4 and pattern_values.count(2) == 2 and pattern_values.count(1) == 2:
             pattern_complete = True
 
         # Returns scores based on the conditions met

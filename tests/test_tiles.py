@@ -142,11 +142,11 @@ class TestTiles(unittest.TestCase):
         """
         board = Board.Board(1)
         board.add_tile(9, "Red", "Dots")
-        board.add_tile(10, "Red", "Leaf")
-        board.add_tile(18, "Red", "Stripes")
-        board.add_tile(24, "Green", "Plants")
-        board.add_tile(23, "Green", "Four")
-        board.add_tile(16, "Green", "Flowers")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Plants")
+        board.add_tile(24, "Green", "Dots")
+        board.add_tile(23, "Green", "Plants")
+        board.add_tile(16, "Green", "Plants")
         score = board.board[17].aaa_bbb_goal()
         self.assertEqual(score, 13)
 
@@ -173,12 +173,12 @@ class TestTiles(unittest.TestCase):
         :return:
         """
         board = Board.Board(1)
-        board.add_tile(9, "Red", "Dots")
+        board.add_tile(9, "Red", "Leaf")
         board.add_tile(10, "Red", "Leaf")
-        board.add_tile(18, "Red", "Stripes")
-        board.add_tile(24, "Green", "Plants")
+        board.add_tile(18, "Yellow", "Leaf")
+        board.add_tile(24, "Green", "Four")
         board.add_tile(23, "Green", "Four")
-        board.add_tile(16, "Green", "Flowers")
+        board.add_tile(16, "Green", "Four")
         score = board.board[17].aaa_bbb_goal()
         self.assertEqual(score, 7)
 
@@ -191,11 +191,283 @@ class TestTiles(unittest.TestCase):
         board = Board.Board(1)
         board.add_tile(9, "Red", "Dots")
         board.add_tile(10, "Red", "Leaf")
-        board.add_tile(18, "Red", "Stripes")
+        board.add_tile(18, "Yellow", "Stripes")
         board.add_tile(24, "Green", "Plants")
         board.add_tile(23, "Green", "Four")
         board.add_tile(16, "Green", "Flowers")
         score = board.board[17].aaa_bbb_goal()
+        self.assertEqual(score, 0)
+
+    def test_aa_bb_cc_goal_1(self):
+        """
+        Tests for scenario where design tile is completed both with colour and pattern.
+        The requirement is that there are 3 groups, all of which are of length 2.
+        i.e. aa-bb-cc
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Plants")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Yellow", "Dots")
+        board.add_tile(16, "Yellow", "Stripes")
+        score = board.board[17].aa_bb_cc_goal()
+        self.assertEqual(score, 11)
+
+    def test_aa_bb_cc_goal_2(self):
+        """
+        Tests for scenario where design tile is completed only with colour.
+        The requirement is that there are 3 groups, all of which are of length 2.
+        i.e. aa-bb-cc
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Plants")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Plants")
+        board.add_tile(23, "Yellow", "Dots")
+        board.add_tile(16, "Yellow", "Stripes")
+        score = board.board[17].aa_bb_cc_goal()
+        self.assertEqual(score, 7)
+
+    def test_aa_bb_cc_goal_3(self):
+        """
+        Tests for scenario where design tile is completed only with pattern.
+        The requirement is that there are 3 groups, all of which are of length 2.
+        i.e. aa-bb-cc
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Plants")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Navy", "Stripes")
+        board.add_tile(23, "Yellow", "Dots")
+        board.add_tile(16, "Yellow", "Stripes")
+        score = board.board[17].aa_bb_cc_goal()
+        self.assertEqual(score, 7)
+
+    def test_aa_bb_cc_goal_4(self):
+        """
+        Tests for scenario where design tile is neither completed with colour nor pattern.
+        The requirement is that there are 3 groups, all of which are of length 2.
+        i.e. aa-bb-cc
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Plants")
+        board.add_tile(18, "Green", "Dots")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Green", "Dots")
+        board.add_tile(16, "Yellow", "Stripes")
+        score = board.board[17].aa_bb_cc_goal()
+        self.assertEqual(score, 0)
+
+    def test_aaaa_bb_goal_1(self):
+        """
+        Tests for scenario where design tile is colour AND pattern complete.
+        The requirement is that there are 2 groups, one of size 4 and the other of size
+        2.
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Dots")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Green", "Dots")
+        board.add_tile(16, "Red", "Stripes")
+        score = board.board[17].aaaa_bb_goal()
+        self.assertEqual(score, 14)
+
+    def test_aaaa_bb_goal_2(self):
+        """
+        Tests for scenario where design tile is only colour complete.
+        The requirement is that there are 2 groups, one of size 4 and the other of size
+        2.
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Dots")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Green", "Stripes")
+        board.add_tile(16, "Red", "Stripes")
+        score = board.board[17].aaaa_bb_goal()
+        self.assertEqual(score,7)
+
+    def test_aaaa_bb_goal_3(self):
+        """
+        Tests for scenario where design tile is only pattern complete.
+        The requirement is that there are 2 groups, one of size 4 and the other of size
+        2.
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Dots")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Green", "Dots")
+        board.add_tile(16, "Green", "Stripes")
+        score = board.board[17].aaaa_bb_goal()
+        self.assertEqual(score, 7)
+
+    def test_aaaa_bb_goal_4(self):
+        """
+        Tests for scenario where design tile is neither colour nor pattern complete.
+        The requirement is that there are 2 groups, one of size 4 and the other of size
+        2.
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Green", "Dots")
+        board.add_tile(24, "Green", "Stripes")
+        board.add_tile(23, "Green", "Stripes")
+        board.add_tile(16, "Red", "Stripes")
+        score = board.board[17].aaaa_bb_goal()
+        self.assertEqual(score, 0)
+
+    def test_aaa_bb_c_goal_1(self):
+        """
+        Tests for scenario where design tile is completed both with colour and pattern.
+        The requirement is that there are 3 groups, one of size 3, another of size 2,
+        and the last of size 1. i.e. aaa-bb-c
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Green", "Plants")
+        board.add_tile(16, "Yellow", "Dots")
+        score = board.board[17].aaa_bb_c_goal()
+        self.assertEqual(score, 11)
+
+    def test_aaa_bb_c_goal_2(self):
+        """
+        Tests for scenario where design tile is completed only with colour.
+        The requirement is that there are 3 groups, one of size 3, another of size 2,
+        and the last of size 1. i.e. aaa-bb-c
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Green", "Dots")
+        board.add_tile(16, "Yellow", "Dots")
+        score = board.board[17].aaa_bb_c_goal()
+        self.assertEqual(score, 7)
+
+    def test_aaa_bb_c_goal_3(self):
+        """
+        Tests for scenario where design tile is completed only with pattern.
+        The requirement is that there are 3 groups, one of size 3, another of size 2,
+        and the last of size 1. i.e. aaa-bb-c
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Navy", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Green", "Plants")
+        board.add_tile(16, "Yellow", "Dots")
+        score = board.board[17].aaa_bb_c_goal()
+        self.assertEqual(score, 7)
+
+    def test_aaa_bb_c_goal_4(self):
+        """
+        Tests for scenario where design tile is not completed in colour nor pattern.
+        The requirement is that there are 3 groups, one of size 3, another of size 2,
+        and the last of size 1. i.e. aaa-bb-c
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Red", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Green", "Stripes")
+        board.add_tile(16, "Green", "Dots")
+        score = board.board[17].aaa_bb_c_goal()
+        self.assertEqual(score, 0)
+
+    def test_aa_bb_c_d_goal_1(self):
+        """
+        Tests for scenario where design tile is both colour AND pattern complete.
+        The requirements are that there are 4 groups, 2 of length 2 and 2 of length 1,
+        i.e. AA-BB-C-D
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Yellow", "Plants")
+        board.add_tile(16, "Navy", "Stripes")
+        score = board.board[17].aa_bb_c_d_goal()
+        self.assertEqual(score, 7)
+
+    def test_aa_bb_c_d_goal_2(self):
+        """
+        Tests for scenario where design tile is only colour complete.
+        The requirements are that there are 4 groups, 2 of length 2 and 2 of length 1,
+        i.e. AA-BB-C-D
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Yellow", "Plants")
+        board.add_tile(16, "Navy", "Dots")
+        score = board.board[17].aa_bb_c_d_goal()
+        self.assertEqual(score, 5)
+
+    def test_aa_bb_c_d_goal_3(self):
+        """
+        Tests for scenario where design tile is only pattern complete.
+        The requirements are that there are 4 groups, 2 of length 2 and 2 of length 1,
+        i.e. AA-BB-C-D
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Navy", "Plants")
+        board.add_tile(16, "Navy", "Stripes")
+        score = board.board[17].aa_bb_c_d_goal()
+        self.assertEqual(score, 5)
+
+    def test_aa_bb_c_d_goal_4(self):
+        """
+        Tests for scenario where design tile is neither colour nor pattern complete.
+        The requirements are that there are 4 groups, 2 of length 2 and 2 of length 1,
+        i.e. AA-BB-C-D
+        :return:
+        """
+        board = Board.Board(1)
+        board.add_tile(9, "Red", "Dots")
+        board.add_tile(10, "Red", "Dots")
+        board.add_tile(18, "Green", "Plants")
+        board.add_tile(24, "Green", "Flowers")
+        board.add_tile(23, "Red", "Plants")
+        board.add_tile(16, "Navy", "Plants")
+        score = board.board[17].aa_bb_c_d_goal()
         self.assertEqual(score, 0)
 
 
