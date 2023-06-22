@@ -1,19 +1,23 @@
 """This file contain code related to setting up the board"""
+import random
 
 import src.Tiles as Tiles
+from src import Cats
 
 
 # Initialises the board creating the 7 * 7 grid and stores them in array for quick access
 class Board:
     def __init__(self, player_num):
-        self.player_num = player_num  # Determines which board player gets
-        self.board = []
-        self.populate_board()
-        self.initialise_tiles()
-        self.colour_borders(9)
         self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                                33, 36, 37, 38, 39, 40]
         self.buttons = {"Red": 0, "Yellow": 0, "Purple": 0, "Blue": 0, "Green": 0, "Navy": 0}
+        self.cats = []  # List that will hold array of the 2 cats
+        self.player_num = player_num  # Determines which board player gets
+        self.board = []  # Holds all the tile space that are on the board
+        self.populate_board()
+        self.initialise_tiles()
+        self.colour_borders(9)  # We need to put player number here after
+        self.initialise_cats()
 
     def populate_board(self):
         """
@@ -26,6 +30,30 @@ class Board:
         self.board[17] = Tiles.DesignGoalTile(17, None)
         self.board[25] = Tiles.DesignGoalTile(25, None)
         self.board[30] = Tiles.DesignGoalTile(30, None)
+
+    def initialise_cats(self):
+        """
+        Initialises the cats for the board game by randomly picking 3 cats out of the 5,
+        and the randomly assigning them 2 patterns.
+        :return:
+        """
+        millie = Cats.Cat("Millie", 3, 3)
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        coconut = Cats.Cat("Coconut", 7, 5)
+        cira = Cats.Cat("Cira", 9, 6)
+        gwen = Cats.Cat("Gwen", 11, 7)
+        bag_of_cats = [millie, tibbit, coconut, cira, gwen]
+        random.shuffle(bag_of_cats)  # Shuffle the cats to randomly assign them
+
+        for i in range(3):
+            self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
+
+        # Now assign each cat 2 random pattern
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        random.shuffle(patterns)
+        for n in self.cats:
+            n.pattern_1 = patterns.pop()
+            n.pattern_2 = patterns.pop()
 
     def initialise_tiles(self):
         """

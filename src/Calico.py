@@ -56,3 +56,17 @@ class Calico:
         :return:
         """
         pass
+
+    def print_shop(self):
+        """
+        Function that will print the current tile in the shop that are available for players to take
+        :return:
+        """
+        pass
+
+    def print_player_stack(self):
+        """
+        Prints the tiles that are in the players stack and available for play
+        :return:
+        """
+        pass

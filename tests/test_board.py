@@ -13,7 +13,6 @@ class TestBoard(unittest.TestCase):
         :return:
         """
         board = Board.Board(1)
-        board = Board.Board(1)
         board.add_tile(8, "Red", "Dots")
         self.assertFalse(8 in board.open_positions)
 

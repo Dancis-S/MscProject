@@ -73,6 +73,8 @@ class TestTiles(unittest.TestCase):
         combined = tile.colour + tile.pattern
         self.assertEqual(combined, "PurpleStripes")
 
+
+class TestDesignTiles(unittest.TestCase):
     def test_not_equal_goal_1(self):
         """
         Checks that the design goal tile works correctly in the case where they are all
@@ -298,7 +300,7 @@ class TestTiles(unittest.TestCase):
         board.add_tile(23, "Green", "Stripes")
         board.add_tile(16, "Red", "Stripes")
         score = board.board[17].aaaa_bb_goal()
-        self.assertEqual(score,7)
+        self.assertEqual(score, 7)
 
     def test_aaaa_bb_goal_3(self):
         """
