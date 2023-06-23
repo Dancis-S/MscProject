@@ -16,8 +16,8 @@ class Board:
         self.board = []  # Holds all the tile space that are on the board
         self.populate_board()
         self.initialise_tiles()
-        self.colour_borders(9)  # We need to put player number here after
         self.initialise_cats()
+        self.colour_borders(9)  # We need to put player number here after
 
     def populate_board(self):
         """
@@ -153,6 +153,7 @@ class Board:
         tile.pattern = pattern
         self.open_positions.remove(tile_id)
         self.check_and_add_buttons(tile_id)  # Calls the function to check whether we have gained a button
+        self.check_and_add_cat(tile_id)  # Calls function to check whether cat is scored
 
     def check_and_add_buttons(self, tile_id):
         """
@@ -244,13 +245,13 @@ class Board:
 
         # Get the amount required for the given cat, if it is met then we set all the visited
         # To be part of the pattern
-        cat = None
+        cat = self.cats[0]
         for kitten in self.cats:  # Find the cat with the matching pattern
             if pattern in kitten.get_patterns():
                 cat = kitten
 
         if count >= cat.num_of_tiles:  # if the num of tiles required is reached increment num_of_cats
-            cat.sum_of_cats += 1
+            cat.num_of_cats += 1
             for n in visited_tiles:
                 self.board[n].part_of_button = True
 

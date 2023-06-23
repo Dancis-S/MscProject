@@ -219,6 +219,90 @@ class TestBoard(unittest.TestCase):
                 hold_cats.append(cat.pattern_1)
                 hold_cats.append(cat.pattern_2)
 
+    def test_adding_random_cat(self):
+        """
+        Tests that we can correctly add a random cat
+        :return:
+        """
+        # Given that the highest cat is a group of 7 we will just use that
+        board = Board.Board(1)
+        # Now we get the pattern we need
+        cat = board.cats[2]
+        pattern = cat.pattern_2  # Get the second pattern from the second cat
+        board.add_tile(23, "Blue", pattern)
+        board.add_tile(22, "Red", pattern)
+        board.add_tile(32, "Blue", pattern)
+        board.add_tile(39, "Red", pattern)
+        board.add_tile(11, "Blue", pattern)
+        board.add_tile(18, "Red", pattern)
+        board.add_tile(24, "Blue", pattern)
+        num_of_cats = cat.num_of_cats
+        # should still only be 1
+        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern)
+
+    def test_adding_random_cat_redundant_1(self):
+        """
+        Tests that we can correctly add a random cat
+        :return:
+        """
+        # Given that the highest cat is a group of 7 we will just use that
+        board = Board.Board(1)
+        # Now we get the pattern we need
+        cat = board.cats[2]
+        pattern = cat.pattern_2  # Get the second pattern from the second cat
+        board.add_tile(23, "Blue", pattern)
+        board.add_tile(22, "Red", pattern)
+        board.add_tile(32, "Blue", pattern)
+        board.add_tile(39, "Red", pattern)
+        board.add_tile(11, "Blue", pattern)
+        board.add_tile(18, "Red", pattern)
+        board.add_tile(24, "Blue", pattern)
+        num_of_cats = cat.num_of_cats
+        # should still only be 1
+        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern)
+
+    def test_adding_random_cat_redundant_2(self):
+        """
+        Tests that we can correctly add a random cat
+        :return:
+        """
+        # Given that the highest cat is a group of 7 we will just use that
+        board = Board.Board(1)
+        # Now we get the pattern we need
+        cat = board.cats[2]
+        pattern = cat.pattern_2  # Get the second pattern from the second cat
+        board.add_tile(23, "Blue", pattern)
+        board.add_tile(22, "Red", pattern)
+        board.add_tile(32, "Blue", pattern)
+        board.add_tile(39, "Red", pattern)
+        board.add_tile(11, "Blue", pattern)
+        board.add_tile(18, "Red", pattern)
+        board.add_tile(24, "Blue", pattern)
+        num_of_cats = cat.num_of_cats
+        # should still only be 1
+        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern)
+
+    def test_adding_random_cat_redundant_3(self):
+        """
+        Tests that we can correctly add a random cat
+        :return:
+        """
+        # Given that the highest cat is a group of 7 we will just use that
+        board = Board.Board(1)
+        # Now we get the pattern we need
+        cat = board.cats[2]
+        pattern = cat.pattern_2  # Get the second pattern from the second cat
+        board.add_tile(23, "Blue", pattern)
+        board.add_tile(22, "Red", pattern)
+        board.add_tile(32, "Green", pattern)
+        board.add_tile(39, "Red", pattern)
+        board.add_tile(11, "Blue", pattern)
+        board.add_tile(18, "Navy", pattern)
+        board.add_tile(24, "Blue", pattern)
+        num_of_cats = cat.num_of_cats
+        # should still only be 1
+        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern)
+
 
 if __name__ == '__main__':
     unittest.main()
