@@ -188,6 +188,37 @@ class TestBoard(unittest.TestCase):
         # should still only be 1
         self.assertEqual(blue_button_count, 1)
 
+    def test_cats_are_initialised(self):
+        """
+        Tests that the 3 cats are correctly initialised where they all contain a
+        pattern.
+        :return:
+        """
+        board = Board.Board(1)
+        set_up_correct = True
+        for cat in board.cats:
+            arr = cat.get_patterns()
+            if len(arr) != 2:
+                set_up_correct = False
+
+        self.assertTrue(set_up_correct)
+
+    def test_cats_contain_different_patterns(self):
+        """
+        Tests that there are no duplicated patterns for each cat
+        :return:
+        """
+        board = Board.Board(1)
+        set_up_correct = True
+        hold_cats = []
+        for cat in board.cats:
+            if cat.pattern_1 in hold_cats or cat.pattern_2 in hold_cats \
+                    or cat.pattern_1 == cat.pattern_2:
+                set_up_correct = False
+            else:
+                hold_cats.append(cat.pattern_1)
+                hold_cats.append(cat.pattern_2)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -8,6 +8,7 @@ class Cat:
         self.num_of_tiles = num_of_tiles
         self.pattern_1 = None
         self.pattern_2 = None
+        self.num_of_cats = 0
 
     def get_patterns(self):
         """

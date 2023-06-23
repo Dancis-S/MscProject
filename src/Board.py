@@ -200,6 +200,60 @@ class Board:
             for n in visited_tiles:
                 self.board[n].part_of_button = True
 
+    def check_and_add_cat(self, tile_id):
+        """
+        Each time a new tile is added, we get its pattern and the properties from the
+        respective cat. We then see if it fulfills the required number of tiles needed
+        inorder to score a cat. If scored we increment the num_of_cats variable in the
+        respective cat object.
+        :return:
+        """
+        tile = self.board[tile_id]
+        count = 1
+        pattern = tile.pattern
+        visited_tiles = [tile_id]  # Keeps track of visited nodes
+        cache_neighbors = []
+
+        # Loop through all the matching neighbors
+        while True:
+            neighbors = tile.get_neighbors()
+            neighbors = list(filter(lambda item: item is not None, neighbors))  # Remove any None
+            # Loop through all neighbors, add where pattern matches and tile hasn't been visited
+            for n in neighbors:
+                # Checks if it is a Design tile, then we just skip this neighbor
+                if isinstance(n, Tiles.DesignGoalTile):
+                    continue
+
+                # If it touches an already complete pattern it becomes part of the pattern
+                # In-order to be scored, it as to be a separate group!
+                if n.pattern == pattern and n.part_of_pattern:
+                    count = 0
+                    tile.part_of_pattern = True  # merge the current tile to join the already done tile
+
+                # If it is a free matching tile, then add it to cache
+                if n.pattern == pattern and n.tile_id not in visited_tiles and not n.part_of_pattern:
+                    cache_neighbors.append(n.tile_id)  # Add id of tile with matching pattern
+
+            if not cache_neighbors:  # If there is no more nodes to visit then break
+                break
+
+            # Move to the next node, increment count, add its id to visited
+            tile = self.board[cache_neighbors.pop()]
+            count += 1
+            visited_tiles.append(tile.tile_id)
+
+        # Get the amount required for the given cat, if it is met then we set all the visited
+        # To be part of the pattern
+        cat = None
+        for kitten in self.cats:  # Find the cat with the matching pattern
+            if pattern in kitten.get_patterns():
+                cat = kitten
+
+        if count >= cat.num_of_tiles:  # if the num of tiles required is reached increment num_of_cats
+            cat.sum_of_cats += 1
+            for n in visited_tiles:
+                self.board[n].part_of_button = True
+
     def get_score(self):
         """
         At the end of the game this function is called, it calculates the players score

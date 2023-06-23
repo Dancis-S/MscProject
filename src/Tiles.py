@@ -7,7 +7,7 @@ class NormalTile:
         self.tile_id = tile_id
         self.pattern = None
         self.colour = None
-        self.part_of_pattern = False
+        self.part_of_pattern = False  # Used for cats
         self.part_of_button = False  # Used for buttons
 
         # Neighbors
