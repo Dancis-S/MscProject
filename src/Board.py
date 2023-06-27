@@ -11,7 +11,7 @@ class Board:
         self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                                33, 36, 37, 38, 39, 40]
         self.buttons = {"Red": 0, "Yellow": 0, "Purple": 0, "Blue": 0, "Green": 0, "Navy": 0}
-        self.cats = []  # List that will hold array of the 2 cats
+        self.cats = []  # List that will hold array of the 3 cats
         self.player_num = player_num  # Determines which board player gets
         self.board = []  # Holds all the tile space that are on the board
         self.populate_board()
@@ -261,7 +261,21 @@ class Board:
         based on the design tiles completed, the buttons scored, and the cats scored.
         :return:
         """
-        pass
+        score = 0
+
+        # Design tile scores obtained
+        score += self.board[17].check_design_goal_reached()  # Tile 17
+        score += self.board[25].check_design_goal_reached()  # Tile 25
+        score += self.board[30].check_design_goal_reached()  # Tile 30
+
+        # Adds the scores from the button (don't forget to check for rainbows)
+
+        # Cats scored
+        score += self.cats[0].num_of_cats * self.cats[0].score  # Cat 1
+        score += self.cats[1].num_of_cats * self.cats[1].score  # Cat 2
+        score += self.cats[2].num_of_cats * self.cats[2].score  # Cat 3
+
+        return score
 
     def get_tile_info(self, tile_id):
         """

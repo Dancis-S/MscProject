@@ -18,13 +18,6 @@ class NormalTile:
         self.south_east = None
         self.south_west = None
 
-    def get_id(self):
-        """
-        Gets the current tiles ID
-        :return:
-        """
-        return self.tile_id
-
     def get_neighbors(self):
         """
         Function that gets all the neighboring nodes and returns them in an array. The
@@ -67,14 +60,58 @@ class DesignGoalTile:
 
         return completed
 
-    def check_design_goal_reached(self, requirement):
+    def check_design_goal_reached(self):
         """
-        Given the tiles requirements, check that is has been completed with patterns, or
-        with colours
-        :param requirement:
+        At the end of the game this function is called. Depending on what requirement
+        was set, return the score that has been earned for that given tile
         :return:
         """
-        pass
+        requirement = self.requirement
+        match requirement:
+            case "NotEqual":
+                return self.not_equal_goal()
+            case "aaa-bbb":
+                return self.aaa_bbb_goal()
+            case "aa-bb-cc":
+                return self.aa_bb_cc_goal()
+            case "aaaa-bb":
+                return self.aaaa_bb_goal()
+            case "aaa-bb-c":
+                return self.aaa_bb_c_goal()
+            case "aa-bb-c-d":
+                return self.aa_bb_c_d_goal()
+
+    def get_neighbors(self):
+        """
+        Function that gets all the neighboring nodes and returns them in an array. The
+        order is W, NW, NE, E, SE, SW
+        :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
+        """
+        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
+
+    def add_colours_and_patterns_to_dictionary(self):
+        """
+        Function that will get the colour and pattern of all the surrounding tiles, add them
+        to their respective dictionaries, and then return the colour and pattern dictionary.
+        Used when needing to check the design tiles conditions are met
+        :return:
+        Returns first colours then pattern dictionaries
+        """
+        neighbors = self.get_neighbors()
+        colours_dict = {}
+        patterns_dict = {}
+
+        for n in neighbors:  # Loops and add them to dictionary
+            if n.colour in colours_dict:
+                colours_dict[n.colour] += 1
+            else:
+                colours_dict[n.colour] = 1
+            if n.pattern in patterns_dict:
+                patterns_dict[n.pattern] += 1
+            else:
+                patterns_dict[n.pattern] = 1
+
+        return colours_dict, patterns_dict
 
     def not_equal_goal(self):
         """
@@ -105,30 +142,6 @@ class DesignGoalTile:
             return 10
         else:
             return 0
-
-    def add_colours_and_patterns_to_dictionary(self):
-        """
-        Function that will get the colour and pattern of all the surrounding tiles, add them
-        to their respective dictionaries, and then return the colour and pattern dictionary.
-        Used when needing to check the design tiles conditions are met
-        :return:
-        Returns first colours then pattern dictionaries
-        """
-        neighbors = self.get_neighbors()
-        colours_dict = {}
-        patterns_dict = {}
-
-        for n in neighbors:  # Loops and add them to dictionary
-            if n.colour in colours_dict:
-                colours_dict[n.colour] += 1
-            else:
-                colours_dict[n.colour] = 1
-            if n.pattern in patterns_dict:
-                patterns_dict[n.pattern] += 1
-            else:
-                patterns_dict[n.pattern] = 1
-
-        return colours_dict, patterns_dict
 
     def aaa_bbb_goal(self):
         """
@@ -257,11 +270,3 @@ class DesignGoalTile:
             return 5
         else:
             return 0
-
-    def get_neighbors(self):
-        """
-        Function that gets all the neighboring nodes and returns them in an array. The
-        order is W, NW, NE, E, SE, SW
-        :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
-        """
-        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]

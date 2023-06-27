@@ -5,16 +5,6 @@ from src import Board
 
 
 class TestTiles(unittest.TestCase):
-    # Tests that we are able to create a normal tile
-    def test_get_normal_tile_id(self):
-        """
-        Tests the get id function for normal tiles
-        :return:
-        """
-        tile = Tiles.NormalTile(25)
-        result = tile.get_id()
-        self.assertEqual(result, 25)
-
     def test_tile_complete_test(self):
         """
         Tests that the function that checks that design tile is complete works

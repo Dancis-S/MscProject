@@ -52,7 +52,7 @@ class Calico:
 
     def calculate_scores(self):
         """
-        Calculates the scores at the end of the game for each player, and determines the winner also
+        Gets the scores of all the players, determines the winner and returns all the score
         :return:
         """
         pass
