@@ -255,6 +255,14 @@ class Board:
             for n in visited_tiles:
                 self.board[n].part_of_button = True
 
+    def _count_rainbows(self):
+        """
+        Function that will calculate how many rainbows the player has scored in their
+        board and then return it.
+        :return:
+        """
+        pass
+
     def get_score(self):
         """
         At the end of the game this function is called, it calculates the players score
@@ -269,6 +277,7 @@ class Board:
         score += self.board[30].check_design_goal_reached()  # Tile 30
 
         # Adds the scores from the button (don't forget to check for rainbows)
+        score += self._count_rainbows()  # Adds the score of the rainbow
 
         # Cats scored
         score += self.cats[0].num_of_cats * self.cats[0].score  # Cat 1

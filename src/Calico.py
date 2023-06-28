@@ -5,11 +5,13 @@ from src import Board
 
 class Calico:
     def __init__(self, num_of_players):
+        self.num_of_players = num_of_players
         self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
         self.shop = []  # Shop that holds available tiles
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
         self.setup_game(num_of_players)
+        self.start_game(num_of_players)
 
     def setup_game(self, num_of_players):
         """
@@ -47,26 +49,80 @@ class Calico:
         """
         for i in range(25):
             for n in range(num_of_players):
-                print("It's player " + str(n) + "'s move, your stack of tiles is")
                 board = self.players_board[n]  # gets the board for the respective players
+                current_stack = self.players_stack[n]
+                print("It's player " + str(n) + "'s move, your stack of tiles is")
+                print("Open positions: ", board.open_positions)
+                print("Your tiles: " + self.return_player_stack_as_string(n))
+                chosen_tile, chosen_location = self.get_user_inputs(board)
+                self.players_stack.pop(chosen_tile)
+                colour = current_stack[chosen_tile][0]
+                pattern = current_stack[chosen_tile][1]
+                board.add_tile(chosen_location, colour, pattern)
+
+                # The user now needs to select a new tile from the shop
+                print("The shop has: " + self.return_shop_as_string())
+                select = int(input("Select a tile from the shop(1-3): "))
+                current_stack.append(self.shop.pop(select - 1))  # Pop from shop and add to stack
+                self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
+
+        scores = self.calculate_scores()
+        print(scores)
+
+    def get_user_inputs(self, board):
+        """
+        Collects the tile and the location that the user wants to play. Then checks that they
+        are valid, if invalid they are prompted again, else return the chosen tile and the move
+        :return:
+        """
+        while True:
+            chosen_tile = int(input("Enter your chosen tile(1-3): "))
+            if chosen_tile > 3 or chosen_tile < 1:
+                print("Invalid option you only have 3 card (1-3)")
+            else:
+                break
+
+        while True:
+            chosen_location = int(input("Enter a tile location: "))
+            if chosen_location not in board.open_positions:
+                print("Invalid move please pick a valid position")
+            else:
+                break
+        return (chosen_tile - 1), chosen_location
 
     def calculate_scores(self):
         """
         Gets the scores of all the players, determines the winner and returns all the score
         :return:
         """
-        pass
+        scores = []
+        for board in self.players_board:
+            # (name , score)
+            scores.append((board.player_num, board.get_score()))  # Add it in
 
-    def print_shop(self):
+        scores.sort(key=lambda a: a[1])  # Sort them in order of who wins
+
+        # Craft the string that will be returned
+        position_names = ["\nFourth Place: ", "\nThird Place: ", "\nSecond Place: ", "\nFirst Place: "]
+        final_log = "=====!! End Of Game !!====="
+        for player in scores:
+            final_log += position_names.pop() + "Player " + player[0] + "!  Score: " + player[1]
+
+        return final_log
+
+    def return_shop_as_string(self):
         """
         Function that will print the current tile in the shop that are available for players to take
         :return:
         """
-        pass
+        # for tile in self.shop:
+        #    print(tile)
+        return str(self.shop)
 
-    def print_player_stack(self):
+    def return_player_stack_as_string(self, current_player):
         """
         Prints the tiles that are in the players stack and available for play
         :return:
         """
-        pass
+        return str(self.players_stack[current_player])
+
