@@ -55,7 +55,7 @@ class Calico:
                 print("Open positions: ", board.open_positions)
                 print("Your tiles: " + self.return_player_stack_as_string(n))
                 chosen_tile, chosen_location = self.get_user_inputs(board)
-                self.players_stack.pop(chosen_tile)
+                current_stack.pop(chosen_tile)
                 colour = current_stack[chosen_tile][0]
                 pattern = current_stack[chosen_tile][1]
                 board.add_tile(chosen_location, colour, pattern)
@@ -76,14 +76,14 @@ class Calico:
         :return:
         """
         while True:
-            chosen_tile = int(input("Enter your chosen tile(1-3): "))
+            chosen_tile = int(input("Enter your chosen tile(1-3):"))
             if chosen_tile > 3 or chosen_tile < 1:
                 print("Invalid option you only have 3 card (1-3)")
             else:
                 break
 
         while True:
-            chosen_location = int(input("Enter a tile location: "))
+            chosen_location = int(input("Enter a tile location:"))
             if chosen_location not in board.open_positions:
                 print("Invalid move please pick a valid position")
             else:
