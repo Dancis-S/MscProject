@@ -115,8 +115,6 @@ class Calico:
         Function that will print the current tile in the shop that are available for players to take
         :return:
         """
-        # for tile in self.shop:
-        #    print(tile)
         return str(self.shop)
 
     def return_player_stack_as_string(self, current_player):
