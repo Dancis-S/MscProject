@@ -17,7 +17,7 @@ class Board:
         self.populate_board()
         self.initialise_tiles()
         self.initialise_cats()
-        self.colour_borders(9)  # We need to put player number here after
+        self.colour_borders(player_num)  # We need to put player number here after
 
     def populate_board(self):
         """

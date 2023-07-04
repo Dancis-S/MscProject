@@ -106,6 +106,66 @@ class TestBoard(unittest.TestCase):
                   "NavyReeds"
         self.assertEqual(test, correct, "Test outputs: " + test)
 
+    def test_blue_borders(self):
+        """
+        Tests the border for the blue board is drawn correct by iterating over the nodes,
+        gathering the colour and pattern and then comparing to make sure it is correctly drawn
+
+        :return: Whether the blue border is drawn correct
+        """
+        board = Board.Board(2)  # Blue board is 2
+        border = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
+                  45, 46, 47, 48, 41, 34, 27, 20, 13]
+        test = ""
+        for n in border:
+            test += str(board.board[n].colour)
+            test += str(board.board[n].pattern)
+
+        correct = "RedReedsYellowStripesBlueReedsReLeafPurpleFourYellowPlantsGreenStripesGreenPlants" \
+                  "NavyFourBlueLeafPurpleStripesYellowDotsPurplePlantsBlueFourRedPlantsNavyLeafGreenReeds" \
+                  "RedDotsBlueStripesNavyPlantsGreenFourYellowLeafPurpleReedsNavyDots"
+        self.assertEqual(test, correct, "Test outputs: " + test)
+
+    def test_green_borders(self):
+        """
+        Tests the border for the purple board is drawn correct by iterating over the nodes,
+        gathering the colour and pattern and then comparing to make sure it is correctly drawn
+
+        :return: Whether the purple border is drawn correct
+        """
+        board = Board.Board(3)  # Green board is 3
+        border = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
+                  45, 46, 47, 48, 41, 34, 27, 20, 13]
+        test = ""
+        for n in border:
+            test += str(board.board[n].colour)
+            test += str(board.board[n].pattern)
+
+        correct = "NavyLeafYellowReedsGreenLeafNavyStripesPurpleFourYellowDotsBlueReedsPurpleDots" \
+                  "RedFourBlueStripesYellowPlantsPurpleReedsGreenStripesNavyDotsGreenFourRedStripes" \
+                  "BlueLeafNavyPlantsGreenReedsRedDotsBlueFourYellowStripesPurpleLeafRedPlants"
+        self.assertEqual(test, correct, "Test outputs: " + test)
+
+    def test_yellow_borders(self):
+        """
+        Tests the border for the purple board is drawn correct by iterating over the nodes,
+        gathering the colour and pattern and then comparing to make sure it is correctly drawn
+
+        :return: Whether the purple border is drawn correct
+        """
+        board = Board.Board(4)  # Yellow board is 4
+        border = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
+                  45, 46, 47, 48, 41, 34, 27, 20, 13]
+        test = ""
+        for n in border:
+            test += str(board.board[n].colour)
+            test += str(board.board[n].pattern)
+
+        correct = "GreenFourNavyPlantsYellowStripesPurpleDotsNavyReedsGreenLeafRedFourRedLeaf" \
+                  "PurpleReedsYellowDotsGreenPlantsNavyFourBlueReedsPurpleLeafYellowReedsBlueDots" \
+                  "RedStripesPurplePlantsYellowFourBlueLeafRedReedsGreenDotsNavyStripesBluePlants"
+        self.assertEqual(test, correct, "Test outputs: " + test)
+
     def test_adding_button(self):
         """
         Tests to see that a connection of 3 or more tiles with the same colour, results
