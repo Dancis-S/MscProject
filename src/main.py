@@ -12,6 +12,7 @@ def main():
 
     print("Beginning game for " + str(num_of_players) + " players!")
     game = Calico.Calico(num_of_players)
+    game.start_game(num_of_players)  # Calls the method to start the game
 
 
 main()

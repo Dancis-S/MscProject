@@ -11,7 +11,6 @@ class Calico:
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
         self.setup_game(num_of_players)
-        self.start_game(num_of_players)
 
     def setup_game(self, num_of_players):
         """

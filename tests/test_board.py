@@ -100,9 +100,10 @@ class TestBoard(unittest.TestCase):
             test += str(board.board[n].colour)
             test += str(board.board[n].pattern)
 
-        correct = "YellowFourRedDotsPurpleFourYellowLeafBlueStripesRedFourGreenDotsBlueFourNavy" \
-                  "StripesGreenLeafRedPlantsBlueDotsPurpleLeafYellowFourPurpleStripesNavyLeafGreen" \
-                  "FourYellowPlantsPurpleDotsNavyFourGreenStripesRedLeafBlueFourNavyPlants"
+        correct = "YellowPlantsRedDotsPurplePlantsYellowLeafBlueStripesRedFourGreenDots" \
+                  "BlueFourNavyStripesGreenLeafRedReedsBlueDotsPurpleLeafYellowFourPurpleStripes" \
+                  "NavyLeafGreenPlantsYellowReedsPurpleDotsNavyFourGreenStripesRedLeafBluePlants" \
+                  "NavyReeds"
         self.assertEqual(test, correct, "Test outputs: " + test)
 
     def test_adding_button(self):
@@ -240,7 +241,8 @@ class TestBoard(unittest.TestCase):
         board.add_tile(24, "Blue", pattern)
         num_of_cats = cat.num_of_cats
         # should still only be 1
-        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
+        self.assertEqual(num_of_cats, 1,
+                         "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
 
     def test_adding_random_cat_redundant_1(self):
         """
@@ -261,7 +263,8 @@ class TestBoard(unittest.TestCase):
         board.add_tile(24, "Blue", pattern)
         num_of_cats = cat.num_of_cats
         # should still only be 1
-        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
+        self.assertEqual(num_of_cats, 1,
+                         "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
 
     def test_adding_random_cat_redundant_2(self):
         """
@@ -282,7 +285,8 @@ class TestBoard(unittest.TestCase):
         board.add_tile(24, "Blue", pattern)
         num_of_cats = cat.num_of_cats
         # should still only be 1
-        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
+        self.assertEqual(num_of_cats, 1,
+                         "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
 
     def test_adding_random_cat_redundant_3(self):
         """
@@ -303,7 +307,10 @@ class TestBoard(unittest.TestCase):
         board.add_tile(24, "Blue", pattern)
         num_of_cats = cat.num_of_cats
         # should still only be 1
-        self.assertEqual(num_of_cats, 1, "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
+        self.assertEqual(num_of_cats, 1,
+                         "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
+
+        # We need to test: get_score()
 
 
 if __name__ == '__main__':

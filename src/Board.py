@@ -113,15 +113,15 @@ class Board:
         """
         # To reduce the amount of code required
         # Yellow-0, red-1, purple-2, blue-3, green-4, navy-5
-        # stripes-0, leaf-1, dots-2, plants-3, four-4, flowers-5
+        # stripes-0, leaf-1, dots-2, plants-3, four-4, Reeds-5
         colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
-        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
         borders = [0, 1, 2, 3, 4, 5, 6, 7, 14, 21, 28, 35, 42, 43, 44,
                    45, 46, 47, 48, 41, 34, 27, 20, 13]
         # (colour, pattern)
-        purple_board = [(0, 4), (1, 2), (2, 4), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5, 0),
-                        (4, 1), (1, 3), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 4), (0, 3),
-                        (2, 2), (5, 4), (4, 0), (1, 1), (3, 4), (5, 5)]
+        purple_board = [(0, 3), (1, 2), (2, 3), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5, 0),
+                        (4, 1), (1, 5), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 3), (0, 5),
+                        (2, 2), (5, 4), (4, 0), (1, 1), (3, 3), (5, 5)]
         blue_board = [()]
         green_board = [()]
         yellow_board = [()]
