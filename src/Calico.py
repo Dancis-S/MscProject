@@ -35,11 +35,10 @@ class Calico:
             self.shop.append(self.tiles_bag.pop())
 
         # Sets up the boards and the players stacks
-        # !!!!!! All purple atm, fix this later !!!!
         for i in range(num_of_players):
             # Initialises each players stack with random tiles from bag
             self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(), self.tiles_bag.pop()])
-            self.players_board.append(Board.Board(1))  # !!! Change to i later
+            self.players_board.append(Board.Board(i + 1))
 
     def start_game(self, num_of_players):
         """
