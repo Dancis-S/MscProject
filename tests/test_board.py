@@ -121,7 +121,7 @@ class TestBoard(unittest.TestCase):
             test += str(board.board[n].colour)
             test += str(board.board[n].pattern)
 
-        correct = "RedReedsYellowStripesBlueReedsReLeafPurpleFourYellowPlantsGreenStripesGreenPlants" \
+        correct = "RedReedsYellowStripesBlueReedsRedLeafPurpleFourYellowPlantsGreenStripesGreenPlants" \
                   "NavyFourBlueLeafPurpleStripesYellowDotsPurplePlantsBlueFourRedPlantsNavyLeafGreenReeds" \
                   "RedDotsBlueStripesNavyPlantsGreenFourYellowLeafPurpleReedsNavyDots"
         self.assertEqual(test, correct, "Test outputs: " + test)
