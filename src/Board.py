@@ -26,10 +26,13 @@ class Board:
         """
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
+
         # Insert the Design Pattern tiles in 17,25,30 (we start from 0 not 1)
-        self.board[17] = Tiles.DesignGoalTile(17, None)
-        self.board[25] = Tiles.DesignGoalTile(25, None)
-        self.board[30] = Tiles.DesignGoalTile(30, None)
+        requirements = ["NotEqual", "aaa-bbb", "aa-bb-cc", "aaaa-bb", "aaa-bb-c", "aa-bb-c-d"]
+        random.shuffle(requirements)  # Randomize the requirements
+        self.board[17] = Tiles.DesignGoalTile(17, requirements.pop())
+        self.board[25] = Tiles.DesignGoalTile(25, requirements.pop())
+        self.board[30] = Tiles.DesignGoalTile(30, requirements.pop())
 
     def initialise_cats(self):
         """

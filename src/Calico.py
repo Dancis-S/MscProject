@@ -45,27 +45,33 @@ class Calico:
         Begins the game and loops through all the players giving them a turn to make a play
         :return:
         """
-        for i in range(25):
-            for n in range(num_of_players):
-                board = self.players_board[n]  # gets the board for the respective players
-                current_stack = self.players_stack[n]
-                print("It's player " + str(n) + "'s move, your stack of tiles is")
-                print("Open positions: ", board.open_positions)
-                print("Your tiles: " + self.return_player_stack_as_string(n))
-                chosen_tile, chosen_location = self.get_user_inputs(board)
-                current_stack.pop(chosen_tile)
-                colour = current_stack[chosen_tile][0]
-                pattern = current_stack[chosen_tile][1]
-                board.add_tile(chosen_location, colour, pattern)
-
-                # The user now needs to select a new tile from the shop
-                print("The shop has: " + self.return_shop_as_string())
-                select = int(input("Select a tile from the shop(1-3): "))
-                current_stack.append(self.shop.pop(select - 1))  # Pop from shop and add to stack
-                self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
+        open_moves = True
+        while open_moves:
+            for player in range(num_of_players):
+                self.human_players(player)
+                if not self.players_board[player].open_positions:
+                    open_moves = False
 
         scores = self.calculate_scores()
         print(scores)
+
+    def human_players(self, player):
+        board = self.players_board[player]  # gets the board for the respective players
+        current_stack = self.players_stack[player]
+        print("It's player " + str(player) + "'s move, your stack of tiles is")
+        print("Open positions: ", board.open_positions)
+        print("Your tiles: " + self.return_player_stack_as_string(player))
+        chosen_tile, chosen_location = self.get_user_inputs(board)
+        current_stack.pop(chosen_tile)
+        colour = current_stack[chosen_tile][0]
+        pattern = current_stack[chosen_tile][1]
+        board.add_tile(chosen_location, colour, pattern)
+
+        # The user now needs to select a new tile from the shop
+        print("The shop has: " + self.return_shop_as_string())
+        select = int(input("Select a tile from the shop(1-3): "))
+        current_stack.append(self.shop.pop(select - 1))  # Pop from shop and add to stack
+        self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
 
     def get_user_inputs(self, board):
         """
@@ -98,13 +104,13 @@ class Calico:
             # (name , score)
             scores.append((board.player_num, board.get_score()))  # Add it in
 
-        scores.sort(key=lambda a: a[1])  # Sort them in order of who wins
+        scores.sort(key=lambda a: a[1], reverse = True)  # Sort them in order of who wins
 
         # Craft the string that will be returned
         position_names = ["\nFourth Place: ", "\nThird Place: ", "\nSecond Place: ", "\nFirst Place: "]
         final_log = "=====!! End Of Game !!====="
         for player in scores:
-            final_log += position_names.pop() + "Player " + player[0] + "!  Score: " + player[1]
+            final_log += position_names.pop() + "Player " + str(player[0]) + "!  Score: " + str(player[1])
 
         return final_log
 
