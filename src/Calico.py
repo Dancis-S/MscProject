@@ -1,10 +1,11 @@
 """This file contain code that will run the actual game"""
 import random
 from src import Board
+from src import PlayerApi
 
 
 class Calico:
-    def __init__(self, num_of_players):
+    def __init__(self, num_of_players, agents):
         self.num_of_players = num_of_players
         self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
         self.shop = []  # Shop that holds available tiles
@@ -40,18 +41,43 @@ class Calico:
             self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(), self.tiles_bag.pop()])
             self.players_board.append(Board.Board(i + 1))
 
-    def start_game(self, num_of_players):
+    def start_game(self, num_of_players, agents):
         """
         Begins the game and loops through all the players giving them a turn to make a play
         :return:
         """
-        open_moves = True
-        while open_moves:
-            for player in range(num_of_players):
-                self.human_players(player)
-                if not self.players_board[player].open_positions:
-                    open_moves = False
+        # If not agents are provided it will be a human player
+        if not agents:
+            open_moves = True
+            while open_moves:
+                for player in range(num_of_players):
+                    self.human_players(player)
+                    if not self.players_board[player].open_positions:
+                        open_moves = False
+        else:  # We make our agents play the game
+            num_of_players = len(agents)  # to prevent any bugs
+            open_moves = True
+            while open_moves:
+                for player in range(num_of_players):
+                    # Code here for the choice the agent makes
+                    bot = agents[player]
+                    board = self.players_board[player]
+                    open_positions = board.open_positions
+                    current_stack = self.players_stack[player]
+                    state = PlayerApi.GameState(board, open_positions, current_stack, self.shop)
 
+                    chosen_tile, chosen_location, shop_tile = bot.getAction(state)  # Returns indexes
+
+                    colour = current_stack[chosen_tile][0]
+                    pattern = current_stack[chosen_tile][1]
+                    location = open_positions[chosen_location]
+                    board.add_tile(location, colour, pattern)
+                    current_stack.pop(chosen_tile)
+                    # Now update the shop
+                    current_stack.append(self.shop.pop(shop_tile))  # Pop from shop and add to stack
+                    self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
+                    if not self.players_board[player].open_positions:
+                        open_moves = False
         scores = self.calculate_scores()
         print(scores)
 
@@ -62,10 +88,11 @@ class Calico:
         print("Open positions: ", board.open_positions)
         print("Your tiles: " + self.return_player_stack_as_string(player))
         chosen_tile, chosen_location = self.get_user_inputs(board)
-        current_stack.pop(chosen_tile)
+
         colour = current_stack[chosen_tile][0]
         pattern = current_stack[chosen_tile][1]
         board.add_tile(chosen_location, colour, pattern)
+        current_stack.pop(chosen_tile)
 
         # The user now needs to select a new tile from the shop
         print("The shop has: " + self.return_shop_as_string())
