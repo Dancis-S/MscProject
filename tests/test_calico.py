@@ -11,7 +11,7 @@ class TestCalico(unittest.TestCase):
         can get. (initial(108) - shop(3) - 1player(3) = 102)
         :return:
         """
-        game = Calico.Calico(1)
+        game = Calico.Calico(1, [])
         bag_amount = len(game.tiles_bag)
         self.assertEqual(bag_amount, 102, "Bag contains: " + str(bag_amount))
 
@@ -21,7 +21,7 @@ class TestCalico(unittest.TestCase):
         the game
         :return:
         """
-        game = Calico.Calico(2)
+        game = Calico.Calico(2, [])
         shop_count = len(game.shop)
         self.assertEqual(shop_count, 3, "Shop contains: " + str(shop_count))
 
@@ -30,7 +30,7 @@ class TestCalico(unittest.TestCase):
         Tests that 3 boards are initialised for the 3 players
         :return:
         """
-        game = Calico.Calico(3)
+        game = Calico.Calico(3, [])
         num_of_boards = len(game.players_board)
         self.assertEqual(num_of_boards, 3, "Num of boards: " + str(num_of_boards))
 
@@ -41,7 +41,7 @@ class TestCalico(unittest.TestCase):
         test for randomness, just that they get 3 tiles each)
         :return:
         """
-        game = Calico.Calico(2)
+        game = Calico.Calico(2, [])
         player1 = len(game.players_stack[0])
         player2 = len(game.players_stack[1])
         player_count = len(game.players_stack)

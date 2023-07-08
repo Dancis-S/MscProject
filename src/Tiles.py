@@ -207,8 +207,15 @@ class DesignGoalTile:
 
         if len(colour_values) == 2 and 4 in colour_values and 2 in colour_values:
             colour_complete = True
+            self.colour_complete = True
+        else:
+            colour_complete = False
+
         if len(pattern_values) == 2 and 4 in pattern_values and 2 in pattern_values:
             pattern_complete = True
+            self.pattern_complete = True
+        else:
+            pattern_complete = False
 
         # Returns scores based on the conditions met
         if pattern_complete and colour_complete:

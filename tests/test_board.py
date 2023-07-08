@@ -1,6 +1,7 @@
 """Tests for the Board module"""
 import unittest
 from src import Board
+from src import Cats
 
 
 class TestBoard(unittest.TestCase):
@@ -370,7 +371,77 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(num_of_cats, 1,
                          "Pattern was: " + pattern + " and required length was: " + str(cat.num_of_tiles))
 
-        # We need to test: get_score()
+    def test_get_score_for_complete_board(self):
+        """
+        Tests that the correct score is returned for a specific board
+        Score should be 27
+        3 buttons (1 blue, 1 navy, 1 purple)
+        2 cats (gwen plants , coconut four)
+        :return:
+        """
+        board = Board.Board(1)
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        tibbit.pattern_1 = "Stripes"
+        tibbit.pattern_2 = "Reeds"
+        coconut = Cats.Cat("Coconut", 7, 5)
+        coconut.pattern_1 = "Four"
+        coconut.pattern_2 = "Dots"
+        gwen = Cats.Cat("Gwen", 11, 7)
+        gwen.pattern_1 = "Leaf"
+        gwen.pattern_2 = "Plants"
+        board.cats.clear()  # Empty cats to set custom cats
+        board.cats.append(tibbit)
+        board.cats.append(gwen)
+        board.cats.append(coconut)
+        # Add the 2 tiles
+        board.add_tile(8, 'Purple', 'Plants')
+        board.add_tile(9, 'Red', 'Plants')
+        board.add_tile(10, 'Navy', 'Plants')
+        board.add_tile(11, 'Yellow', 'Plants')
+        board.add_tile(12, 'Blue', 'Dots')
+        board.add_tile(15, 'Blue', 'Four')
+        board.add_tile(16, 'Yellow', 'Plants')
+        board.add_tile(18, 'Blue', 'Leaf')
+        board.add_tile(19, 'Blue', 'Plants')
+        board.add_tile(22, 'Red', 'Plants')
+        board.add_tile(23, 'Green', 'Plants')
+        board.add_tile(24, 'Blue', 'Plants')
+        board.add_tile(26, 'Yellow', 'Plants')
+        board.add_tile(29, 'Green', 'Plants')
+        board.add_tile(31, 'Purple', 'Dots')
+        board.add_tile(32, 'Purple', 'Four')
+        board.add_tile(33, 'Navy', 'Plants')
+        board.add_tile(36, 'Purple', 'Plants')
+        board.add_tile(37, 'Purple', 'Leaf')
+        board.add_tile(38, 'Navy', 'Four')
+        board.add_tile(39, 'Purple', 'Four')
+        board.add_tile(40, 'Navy', 'Four')
+
+        open_positions = board.open_positions
+        score = board.get_score()
+        buttons = board.buttons
+        pos17_score = board.board[17].check_design_goal_reached()
+        pos25_score = board.board[25].check_design_goal_reached()
+        pos30_score = board.board[30].check_design_goal_reached()
+        pos30_colour = board.board[30].colour_complete
+        pos30_pattern = board.board[30].pattern_complete
+        pos30_neighbors = []
+        for n in board.board[30].get_neighbors():
+            pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
+        rainbows = board._count_rainbows()
+        cat1 = board.cats[0].num_of_cats
+        cats2 = board.cats[1].num_of_cats
+        cats3 = board.cats[2].num_of_cats
+
+        board_info = "==== Board Info ===="
+        board_info += "\nScore = " + str(score) + "\nOpen positions: " + str(open_positions)
+        board_info += "\nButtons = " + str(buttons) + "\nRainbows = " + str(rainbows) + \
+                      "\nPos 17 = " + str(pos17_score)
+        board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score) + \
+                      "\nPos 30 Colour = " + str(pos30_colour) + "\nPos 30 Pattern = " + str(pos30_pattern) +\
+                      "\nPos 30 Neighbors = " + str(pos30_neighbors)
+        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 = (gwen)" + str(cats2) + "\nCat 3 (coconut)= " + str(cats3)
+        self.assertEqual(score, 27, board_info)
 
 
 if __name__ == '__main__':

@@ -12,6 +12,7 @@ class Calico:
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
         self.setup_game(num_of_players)
+        self.final_score = None
 
     def setup_game(self, num_of_players):
         """
@@ -78,8 +79,9 @@ class Calico:
                     self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
                     if not self.players_board[player].open_positions:
                         open_moves = False
-        scores = self.calculate_scores()
-        print(scores)
+        #scores = self.calculate_scores()
+        #print(scores)
+        return self.return_score()
 
     def human_players(self, player):
         board = self.players_board[player]  # gets the board for the respective players
@@ -120,6 +122,17 @@ class Calico:
             else:
                 break
         return (chosen_tile - 1), chosen_location
+
+    def return_score(self):
+        """
+        return just the scores nothing else
+        :return:
+        """
+        scores = []
+        for board in self.players_board:
+            # (name , score)
+            scores.append((board.player_num, board.get_score()))  # Add it in
+        return scores
 
     def calculate_scores(self):
         """

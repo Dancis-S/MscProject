@@ -18,6 +18,7 @@ class Board:
         self.initialise_tiles()
         self.initialise_cats()
         self.colour_borders(player_num)  # We need to put player number here after
+        self.board_colour = "Test"
 
     def populate_board(self):
         """
@@ -52,7 +53,7 @@ class Board:
             self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
 
         # Now assign each cat 2 random pattern
-        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
         random.shuffle(patterns)
         for n in self.cats:
             n.pattern_1 = patterns.pop()
@@ -140,13 +141,23 @@ class Board:
 
         if player_num == 1:
             chosen_board = purple_board
+            #print("Im in Purple")
+            self.board_colour = "Purple"
         elif player_num == 2:
             chosen_board = blue_board
+            self.board_colour = "Blue"
+            #print("Im in Blue")
         elif player_num == 3:
             chosen_board = green_board
+            self.board_colour = "Green"
+            #print("Im in Green")
         elif player_num == 4:
             chosen_board = yellow_board
+            self.board_colour = "Yellow"
+            #print("Im in Yellow")
         else:  # Default to purple board
+            self.board_colour = "Random"
+            print("Im in Random")
             chosen_board = purple_board
 
         for n in range(len(borders)):  # Applies the chosen colours and patterns
