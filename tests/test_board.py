@@ -380,6 +380,10 @@ class TestBoard(unittest.TestCase):
         :return:
         """
         board = Board.Board(1)
+        board.board[17].requirement = "aa-bb-cc"
+        board.board[25].requirement = "aa-bb-c-d"
+        board.board[30].requirement = "aaaa-bb"
+
         tibbit = Cats.Cat("Tibbit", 5, 4)
         tibbit.pattern_1 = "Stripes"
         tibbit.pattern_2 = "Reeds"
@@ -437,10 +441,8 @@ class TestBoard(unittest.TestCase):
         board_info += "\nScore = " + str(score) + "\nOpen positions: " + str(open_positions)
         board_info += "\nButtons = " + str(buttons) + "\nRainbows = " + str(rainbows) + \
                       "\nPos 17 = " + str(pos17_score)
-        board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score) + \
-                      "\nPos 30 Colour = " + str(pos30_colour) + "\nPos 30 Pattern = " + str(pos30_pattern) +\
-                      "\nPos 30 Neighbors = " + str(pos30_neighbors)
-        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 = (gwen)" + str(cats2) + "\nCat 3 (coconut)= " + str(cats3)
+        board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score)
+        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (gwen) =" + str(cats2) + "\nCat 3 (coconut) = " + str(cats3)
         self.assertEqual(score, 27, board_info)
 
 

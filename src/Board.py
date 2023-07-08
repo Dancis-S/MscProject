@@ -275,7 +275,7 @@ class Board:
         if count >= cat.num_of_tiles:  # if the num of tiles required is reached increment num_of_cats
             cat.num_of_cats += 1
             for n in visited_tiles:
-                self.board[n].part_of_button = True
+                self.board[n].part_of_pattern = True
 
     def _count_rainbows(self):
         """
