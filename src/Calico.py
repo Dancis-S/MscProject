@@ -24,7 +24,7 @@ class Calico:
         """
         # There is 3 of each pattern for each colour set put this into the bag
         colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
-        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
         for c in colours:
             for p in patterns:
                 for i in range(3):

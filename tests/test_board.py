@@ -445,6 +445,132 @@ class TestBoard(unittest.TestCase):
         board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (gwen) =" + str(cats2) + "\nCat 3 (coconut) = " + str(cats3)
         self.assertEqual(score, 27, board_info)
 
+    def test_get_score_for_complete_board_2(self):
+        """
+        Tests that the correct score is returned for a specific board
+        Score should be 53
+        3 buttons (1 blue, 1 blue, 1 red)
+        2 cats (gwen four , tibbit leaf)
+        17 aa-bb-cc only patttern complete
+        25 aaaa-bb colour and pattern complete
+        30 aaa-bb-c only pattern complete
+        :return:
+        """
+        board = Board.Board(1)
+        board.board[17].requirement = "aa-bb-cc"
+        board.board[25].requirement = "aaaa-bb"
+        board.board[30].requirement = "aaa-bb-c"
+
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        tibbit.pattern_1 = "Plants"
+        tibbit.pattern_2 = "Leaf"
+        cira = Cats.Cat("Cira", 9, 6)
+        cira.pattern_1 = "Reeds"
+        cira.pattern_2 = "Dots"
+        gwen = Cats.Cat("Gwen", 11, 7)
+        gwen.pattern_1 = "Four"
+        gwen.pattern_2 = "Stripes"
+        board.cats.clear()  # Empty cats to set custom cats
+        board.cats.append(tibbit)
+        board.cats.append(gwen)
+        board.cats.append(cira)
+        # Add the 25 tiles
+        tiles = [(8, 'Red', 'Reeds'), (9, 'Navy', 'Leaf'), (10, 'Red', 'Four'), (11, 'Red', 'Dots'),
+                 (12, 'Green', 'Four'), (15, 'Purple', 'Leaf'), (16, 'Green', 'Leaf'), (18, 'Blue', 'Four'),
+                 (19, 'Navy', 'Four'),(22, 'Blue', 'Dots'), (23, 'Navy', 'Reeds'), (24, 'Blue', 'Reeds'),
+                 (26, 'Navy', 'Four'),(29, 'Yellow', 'Dots'), (31, 'Purple', 'Stripes'), (32, 'Blue', 'Reeds'),
+                 (33, 'Blue', 'Four'),(36, 'Navy', 'Reeds'), (37, 'Red', 'Reeds'), (38, 'Yellow', 'Reeds'),
+                 (39, 'Yellow', 'Dots'), (40, 'Purple', 'Plants')]
+        for n in tiles:
+            board.add_tile(n[0], n[1], n[2])
+
+        open_positions = board.open_positions
+        score = board.get_score()
+        buttons = board.buttons
+        pos17_score = board.board[17].check_design_goal_reached()
+        pos25_score = board.board[25].check_design_goal_reached()
+        pos30_score = board.board[30].check_design_goal_reached()
+        pos30_colour = board.board[30].colour_complete
+        pos30_pattern = board.board[30].pattern_complete
+        pos30_neighbors = []
+        for n in board.board[30].get_neighbors():
+            pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
+        rainbows = board._count_rainbows()
+        cat1 = board.cats[0].num_of_cats
+        cats2 = board.cats[1].num_of_cats
+        cats3 = board.cats[2].num_of_cats
+
+        board_info = "==== Board Info ===="
+        board_info += "\nScore = " + str(score) + "\nOpen positions: " + str(open_positions)
+        board_info += "\nButtons = " + str(buttons) + "\nRainbows = " + str(rainbows) + \
+                      "\nPos 17 = " + str(pos17_score)
+        board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score)
+        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (gwen) =" + str(
+            cats2) + "\nCat 3 (cira) = " + str(cats3)
+        self.assertEqual(score, 62, board_info)
+
+    def test_get_score_for_complete_board_3(self):
+        """
+        Tests that the correct score is returned for a specific board
+        This is a losing board so itt should score 0
+        17 'aaa-bbb' None
+        25 'aaaa-bb' None
+        30 'aa-bb-c-d' None
+        :return:
+        """
+        board = Board.Board(1)
+        board.board[17].requirement = 'aaa-bbb'
+        board.board[25].requirement = "aaaa-bb"
+        board.board[30].requirement = 'aa-bb-c-d'
+
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        tibbit.pattern_1 = "Four"
+        tibbit.pattern_2 = "Stripes"
+        cira = Cats.Cat("Cira", 9, 6)
+        cira.pattern_1 = "Reeds"
+        cira.pattern_2 = "Plants"
+        coconut = Cats.Cat("Coconut", 7, 5)
+        coconut.pattern_1 = "Dots"
+        coconut.pattern_2 = "Leaf"
+        board.cats.clear()  # Empty cats to set custom cats
+        board.cats.append(tibbit)
+        board.cats.append(coconut)
+        board.cats.append(cira)
+        # Add the 25 tiles
+        tiles = [(8, 'Purple', 'Reeds'), (9, 'Green', 'Stripes'), (10, 'Yellow', 'Reeds'), (11, 'Blue', 'Stripes'),
+                 (12, 'Red', 'Four'),(15, 'Green', 'Leaf'), (16, 'Red', 'Reeds'), (18, 'Purple', 'Plants'),
+                 (19, 'Yellow', 'Reeds'),(22, 'Blue', 'Four'), (23, 'Green', 'Four'), (24, 'Purple', 'Stripes'),
+                 (26, 'Green', 'Leaf'), (29, 'Red', 'Leaf'), (31, 'Yellow', 'Leaf'), (32, 'Blue', 'Dots'),
+                 (33, 'Purple', 'Stripes'),(36, 'Navy', 'Leaf'), (37, 'Blue', 'Four'), (38, 'Yellow', 'Stripes'),
+                 (39, 'Green', 'Four'), (40, 'Yellow', 'Reeds')]
+        for n in tiles:
+            board.add_tile(n[0], n[1], n[2])
+
+        open_positions = board.open_positions
+        score = board.get_score()
+        buttons = board.buttons
+        pos17_score = board.board[17].check_design_goal_reached()
+        pos25_score = board.board[25].check_design_goal_reached()
+        pos30_score = board.board[30].check_design_goal_reached()
+        pos30_colour = board.board[30].colour_complete
+        pos30_pattern = board.board[30].pattern_complete
+        pos30_neighbors = []
+        for n in board.board[30].get_neighbors():
+            pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
+        rainbows = board._count_rainbows()
+        cat1 = board.cats[0].num_of_cats
+        cats2 = board.cats[1].num_of_cats
+        cats3 = board.cats[2].num_of_cats
+
+        board_info = "==== Board Info ===="
+        board_info += "\nScore = " + str(score) + "\nOpen positions: " + str(open_positions)
+        board_info += "\nButtons = " + str(buttons) + "\nRainbows = " + str(rainbows) + \
+                      "\nPos 17 = " + str(pos17_score)
+        board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score)
+        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (coconut) =" + str(
+            cats2) + "\nCat 3 (cira) = " + str(cats3)
+        self.assertEqual(score, 0, board_info)
+
 
 if __name__ == '__main__':
     unittest.main()

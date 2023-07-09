@@ -2,6 +2,7 @@
 from src import Calico
 from src import Agents
 from src import Tiles
+import csv
 
 
 def main():
@@ -21,8 +22,9 @@ def main():
         score = game.start_game(1, agents)[0][1]
         if score > highest:
             highest = score
+        if score < lowest:
+            lowest = score
             best_board = game.players_board[0]
-        if score < lowest: lowest = score
         average = calculate_running_average(average, score, i)
 
     print("\n==== Final Average ====")
@@ -53,8 +55,8 @@ def main():
     print(cats)
 
 
-    """
-     while True:
+def human_play():
+    while True:
         num_of_players = int(input("Enter the number of players: "))
         if num_of_players > 4 or num_of_players < 1:
             print("Invalid Number pick ")
@@ -62,10 +64,8 @@ def main():
             break
 
     print("Beginning game for " + str(num_of_players) + " players!")
-    game = Calico.Calico(num_of_players)
-    game.start_game(num_of_players)  # Calls the method to start the game
-    """
-
+    game = Calico.Calico(num_of_players, [])
+    game.start_game(num_of_players, [])  # Calls the method to start the game
 
 
 def calculate_running_average(previous_avg, new_num, n):
