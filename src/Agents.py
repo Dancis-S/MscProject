@@ -1,5 +1,6 @@
 """ File that contains the different AI agents"""
 import random
+import ast
 
 
 class RandomAgent:
@@ -15,12 +16,3 @@ class RandomAgent:
 
         # Chosen tile index, chosen position index, tile shop index
         return chosen_tile, chosen_location, chosen_shop
-
-    def final(self):
-        """
-        No clue wtf goes on here
-        :return:
-        """
-        print("Hello!")
-
-

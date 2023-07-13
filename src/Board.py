@@ -173,6 +173,8 @@ class Board:
         tile = self.board[tile_id]
         tile.colour = colour
         tile.pattern = pattern
+        print(self.open_positions)
+        print("Tile id: " + str(tile_id))
         self.open_positions.remove(tile_id)
         self.check_and_add_buttons(tile_id)  # Calls the function to check whether we have gained a button
         self.check_and_add_cat(tile_id)  # Calls function to check whether cat is scored
