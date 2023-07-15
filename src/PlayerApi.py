@@ -1,8 +1,7 @@
 """ api that will be used by the AI agents to get info about the game and interact
     with the game"""
 import numpy
-
-from src import Tiles
+import Tiles
 
 
 class GameState:
@@ -99,29 +98,20 @@ class GameState:
         return state
 
     def get_action_state(self):
-        """
-        og_open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
-                             33, 36, 37, 38, 39, 40]
-        mover = 1
-        actions = []
-        for pos in og_open_positions:
-            if pos in self.open_positions:
+        og_open = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
+         33, 36, 37, 38, 39, 40]
+        open_pos = self.open_positions
+        moves = []
+        counter = 1
+        for tile in og_open:
+            if tile not in open_pos:
                 for i in range(9):
-                    actions.append(mover)
-                    mover += 1
+                    counter += 1
             else:
                 for i in range(9):
-                    mover += 1
-
-        """
-        moves = []
-        for tile_board in self.open_positions:
-            for tile_stack in range(3):
-                for tile_shop in range(3):
-                    moves.append((tile_board, tile_stack, tile_shop))
-
+                    moves.append(counter)
+                    counter += 1
         return moves
-
 
     def getBoard(self):
         """ We might change this later!"""

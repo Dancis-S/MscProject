@@ -2,17 +2,58 @@
 from src import Calico
 from src import Agents
 from src import Tiles
-from src import PlayerApi
-import random
-import ast
+import mcts
+
 
 def main():
-    game = Calico.Calico(1, [])
-    board = game.players_board[0]
-    open_pos = board.open_positions
-    api = PlayerApi.GameState(board, open_pos, game.players_stack[0], game.shop)
-    actions = api.get_action_state()
-    print(api.getState())
+    mcts_agent_play()
+
+
+def mcts_agent_play():
+    average = 0
+    highest = 0
+    best_board = None
+    lowest = 999999999
+    for i in range(1, 101):
+        print("Starting Game: " + str(i))
+        agent = mcts.MCTS(100)
+        game = Calico.Calico(1, [agent])
+        score = game.start_game(1, [agent])[0][1]
+        if score > highest:
+            highest = score
+            best_board = game.players_board[0]
+        if score < lowest:
+            lowest = score
+        average = calculate_running_average(average, score, i)
+
+    print("\n==== Final Average ====")
+    print("     " + str(average))
+    print("\n==== Highest Score ====")
+    print("     " + str(highest))
+    print("\n==== Lowest score ====")
+    print("     " + str(lowest))
+    # Save the position of the current board
+    layout = []  # (id, colour, pattern)
+    requirements = []  # (id, requirement)
+    cats = []  # (name, pattern1, pattern2)
+
+    for pus in best_board.cats:
+        cats.append((pus.name, pus.pattern_1, pus.pattern_2))
+
+    for tile in best_board.board:
+        # tile is the tile object
+        if tile.normal_tile:
+            layout.append((tile.tile_id, tile.colour, tile.pattern))
+        else:
+            requirements.append((tile.id, tile.requirement))
+
+    print("\n==== Layout====")
+    print(layout)
+    print("==== requirements====")
+    print(requirements)
+    print("==== Cats ====")
+    print(cats)
+
 
 def random_agent_play():
     agent = Agents.RandomAgent()
@@ -44,14 +85,17 @@ def random_agent_play():
     layout = []  # (id, colour, pattern)
     requirements = []  # (id, requirement)
     cats = []  # (name, pattern1, pattern2)
+
+
     for pus in best_board.cats:
         cats.append((pus.name, pus.pattern_1, pus.pattern_2))
+
     for tile in best_board.board:
         # tile is the tile object
-        if isinstance(tile, Tiles.DesignGoalTile):
-            requirements.append((tile.id, tile.requirement))
-        else:
+        if tile.normal_tile:
             layout.append((tile.tile_id, tile.colour, tile.pattern))
+        else:
+            requirements.append((tile.id, tile.requirement))
     print("\n==== Layout====")
     print(layout)
     print("==== requirements====")

@@ -1,8 +1,8 @@
 """This file contain code related to setting up the board"""
 import random
 
-import src.Tiles as Tiles
-from src import Cats
+import Tiles
+import Cats
 
 
 # Initialises the board creating the 7 * 7 grid and stores them in array for quick access
@@ -173,8 +173,6 @@ class Board:
         tile = self.board[tile_id]
         tile.colour = colour
         tile.pattern = pattern
-        print(self.open_positions)
-        print("Tile id: " + str(tile_id))
         self.open_positions.remove(tile_id)
         self.check_and_add_buttons(tile_id)  # Calls the function to check whether we have gained a button
         self.check_and_add_cat(tile_id)  # Calls function to check whether cat is scored
@@ -226,6 +224,7 @@ class Board:
                 self.board[n].part_of_button = True
 
     def check_and_add_cat(self, tile_id):
+
         """
         Each time a new tile is added, we get its pattern and the properties from the
         respective cat. We then see if it fulfills the required number of tiles needed

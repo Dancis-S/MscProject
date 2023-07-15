@@ -1,7 +1,7 @@
 """This file contain code that will run the actual game"""
 import random
-from src import Board
-from src import PlayerApi
+import Board
+import PlayerApi
 
 
 class Calico:
@@ -65,13 +65,14 @@ class Calico:
                     board = self.players_board[player]
                     open_positions = board.open_positions
                     current_stack = self.players_stack[player]
-                    state = PlayerApi.GameState(board, open_positions, current_stack, self.shop)
-
-                    chosen_tile, chosen_location, shop_tile = bot.getAction(state)  # Returns indexes
+                    state = self
+                    answer = bot.get_action(state)
+                    location = answer[0]
+                    chosen_tile = answer[1]
+                    shop_tile = answer[2]
 
                     colour = current_stack[chosen_tile][0]
                     pattern = current_stack[chosen_tile][1]
-                    location = open_positions[chosen_location]
                     board.add_tile(location, colour, pattern)
                     current_stack.pop(chosen_tile)
                     # Now update the shop

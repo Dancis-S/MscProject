@@ -1,9 +1,12 @@
 """This is a random file that is used for testing"""
-import random
+import Tiles
 
-from src import Board
-test = [1, 2, 3]
+tile = Tiles.DesignGoalTile(23, "Nahala")
 
-for n in range(len(test)):
-    print(n)
+if isinstance(tile, Tiles.DesignGoalTile):
+    print("Design")
+else:
+    print("Normal")
+
+
 
