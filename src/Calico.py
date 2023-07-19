@@ -1,7 +1,12 @@
 """This file contain code that will run the actual game"""
 import random
+<<<<<<< HEAD
 from src import Board
 from src import Tiles
+=======
+import Board
+import PlayerApi
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 
 class Calico:
@@ -12,6 +17,7 @@ class Calico:
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
         self.setup_game(num_of_players)
+        self.final_score = None
 
     def setup_game(self, num_of_players):
         """
@@ -61,6 +67,7 @@ class Calico:
                 for player in range(num_of_players):
                     # Code here for the choice the agent makes
                     bot = agents[player]
+<<<<<<< HEAD
                     state = self
                     answer = bot.get_action(state)
 
@@ -74,6 +81,48 @@ class Calico:
                     if not self.players_board[player].open_positions:
                         open_moves = False
         return self.return_score()
+=======
+                    board = self.players_board[player]
+                    open_positions = board.open_positions
+                    current_stack = self.players_stack[player]
+                    state = self
+                    answer = bot.get_action(state)
+                    location = answer[0]
+                    chosen_tile = answer[1]
+                    shop_tile = answer[2]
+
+                    colour = current_stack[chosen_tile][0]
+                    pattern = current_stack[chosen_tile][1]
+                    board.add_tile(location, colour, pattern)
+                    current_stack.pop(chosen_tile)
+                    # Now update the shop
+                    current_stack.append(self.shop.pop(shop_tile))  # Pop from shop and add to stack
+                    self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
+                    if not self.players_board[player].open_positions:
+                        open_moves = False
+        #scores = self.calculate_scores()
+        #print(scores)
+        return self.return_score()
+
+    def human_players(self, player):
+        board = self.players_board[player]  # gets the board for the respective players
+        current_stack = self.players_stack[player]
+        print("It's player " + str(player) + "'s move, your stack of tiles is")
+        print("Open positions: ", board.open_positions)
+        print("Your tiles: " + self.return_player_stack_as_string(player))
+        chosen_tile, chosen_location = self.get_user_inputs(board)
+
+        colour = current_stack[chosen_tile][0]
+        pattern = current_stack[chosen_tile][1]
+        board.add_tile(chosen_location, colour, pattern)
+        current_stack.pop(chosen_tile)
+
+        # The user now needs to select a new tile from the shop
+        print("The shop has: " + self.return_shop_as_string())
+        select = int(input("Select a tile from the shop(1-3): "))
+        current_stack.append(self.shop.pop(select - 1))  # Pop from shop and add to stack
+        self.shop.append(self.tiles_bag.pop())  # Add random tile from bag to shop
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
     def make_a_move(self, player_id, location, chosen_tile, shop_tile):
         """
@@ -157,7 +206,11 @@ class Calico:
             # (name , score)
             scores.append((board.player_num, board.get_score()))  # Add it in
 
+<<<<<<< HEAD
         scores.sort(key=lambda a: a[1], reverse=True)  # Sort them in order of who wins
+=======
+        scores.sort(key=lambda a: a[1], reverse = True)  # Sort them in order of who wins
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
         # Craft the string that will be returned
         position_names = ["\nFourth Place: ", "\nThird Place: ", "\nSecond Place: ", "\nFirst Place: "]

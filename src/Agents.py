@@ -1,5 +1,6 @@
 """ File that contains the different AI agents"""
 import random
+<<<<<<< HEAD
 from tensorflow.keras.models import load_model
 import numpy as np
 
@@ -86,12 +87,28 @@ class RandomAgent:
         open_positions = board.open_positions
         stack = game.get_my_stack(self.id)
         shop = game.shop
+=======
+import ast
+import PlayerApi
+
+
+class RandomAgent:
+    @classmethod
+    def get_action(cls, state):
+        game_state = PlayerApi.GameState(state.players_board[0], state.players_board[0].open_positions,
+                                         state.players_stack, state.shop)
+        open_positions = game_state.getOpenPositions()
+        board = game_state.my_board
+        stack = game_state.my_stack
+        shop = game_state.shop
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
         chosen_tile = random.choice(range(len(stack)))
         chosen_location = random.choice(open_positions)
         chosen_shop = random.choice(range(len(shop)))
 
         # Chosen tile index, chosen position index, tile shop index
+<<<<<<< HEAD
         return (chosen_location, chosen_tile, chosen_shop)
 
 
@@ -118,3 +135,6 @@ class GreedyAgentRandom:
 
         return choices
 """
+=======
+        return ( chosen_location,chosen_tile, chosen_shop)
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264

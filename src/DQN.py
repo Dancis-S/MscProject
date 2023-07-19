@@ -1,16 +1,28 @@
 import random
+<<<<<<< HEAD
 from src import Calico
+=======
+import Calico
+import PlayerApi
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers, models
 
+<<<<<<< HEAD
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
+=======
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 # Example 3D state array shape
 state_shape = (58, 2, 6)  # Assuming a 5x5 grid with 2 channels for the Calico game state
 
 # Example action space size
+<<<<<<< HEAD
 action_space_size = 198  # Assuming there are 4 possible actions in the game
+=======
+action_space_size = 198 # Assuming there are 4 possible actions in the game
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 hold_actions = [(8, 0, 0), (8, 0, 1), (8, 0, 2), (8, 1, 0), (8, 1, 1), (8, 1, 2), (8, 2, 0),
                 (8, 2, 1), (8, 2, 2), (9, 0, 0), (9, 0, 1), (9, 0, 2), (9, 1, 0), (9, 1, 1),
@@ -48,6 +60,7 @@ for n in hold_actions:
     mapped_actions[num] = n
     num += 1
 
+<<<<<<< HEAD
 
 # Create the DQN model
 def create_dqn_model():
@@ -70,12 +83,25 @@ def create_dqn_model():
     model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dense(action_space_size))  # Output layer with size equal to action space
 
+=======
+# Create the DQN model
+def create_dqn_model():
+    model = models.Sequential()
+    model.add(layers.Conv2D(32, (2, 2), activation='relu', input_shape=state_shape))
+    model.add(layers.Flatten())
+    model.add(layers.Dense(64, activation='relu'))
+    model.add(layers.Dense(32, activation='relu'))
+    model.add(layers.Dense(action_space_size))  # Output layer with size equal to action space
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
     return model
 
 
 # Instantiate the DQN model
 dqn_model = create_dqn_model()
+<<<<<<< HEAD
 dqn_model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
+=======
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 # Define the loss function and optimizer
 loss_function = tf.keras.losses.MeanSquaredError()
@@ -104,7 +130,11 @@ def select_action(state, valid_positions):
     valid_moves = [True] * 198
     for i in range(1, 199):
         if i not in valid_positions:
+<<<<<<< HEAD
             valid_moves[i - 1] = False
+=======
+            valid_moves[i-1] = False
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
     # Convert valid_moves_here to a NumPy array
     valid_moves_array = np.array(valid_moves)
@@ -122,8 +152,11 @@ def store_experience(state, action, reward, next_state, done):
     preprocessed_state = preprocess_state(state)
     preprocessed_next_state = preprocess_state(next_state)
     preprocessed_action = preprocess_action(action)
+<<<<<<< HEAD
     if len(replay_buffer) > 1400:
         replay_buffer.pop(0)
+=======
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
     replay_buffer.append((preprocessed_state, preprocessed_action, reward, preprocessed_next_state, done))
 
 
@@ -162,7 +195,10 @@ def train_dqn():
     gradients = tape.gradient(loss, dqn_model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, dqn_model.trainable_variables))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 def take_action(game, action):
     """
     First we translate the action back to the mapping, then we carry out the play,
@@ -197,10 +233,17 @@ def take_action(game, action):
         comp_reward = -0.5
         comp_done = False
 
+<<<<<<< HEAD
     new_state = game.getState()
 
     return new_state, comp_reward, comp_done
 
+=======
+    newApi = PlayerApi.GameState(board, board.open_positions, stack, shop)
+    newState = newApi.getState()
+
+    return newState, comp_reward, comp_done
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 def initialize_state(game):
     """
@@ -208,23 +251,45 @@ def initialize_state(game):
     :param game:
     :return:
     """
+<<<<<<< HEAD
     return game.getState()  # Returns the array holding the state of the game
 
 
 # Training loop
 num_episodes = 10000  # Number of episodes for training
+=======
+    board = game.players_board[0]
+    open_pos = board.open_positions
+    stack = game.players_stack[0]
+    shop = game.shop
+    api = PlayerApi.GameState(board, open_pos, stack, shop)
+    return api.getState()  # Returns the array holding the state of the game
+
+
+# Training loop
+num_episodes = 10  # Number of episodes for training
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 replay_buffer = []  # Replay buffer to store experiences
 
 for episode in range(num_episodes):
     game = Calico.Calico(1, [])
     state = initialize_state(game)  # Your function to initialize the game state
+<<<<<<< HEAD
+=======
+    api = PlayerApi.GameState(game.players_board[0], game.players_board[0].open_positions, game.players_stack[0], game.shop)
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
     done = False
     print("Episode = " + str(episode))
 
     while not done:
+<<<<<<< HEAD
         action = select_action(state, game.get_action_state())
         next_state, reward, done = take_action(game,
                                                action)  # Your function to advance the game state based on the action
+=======
+        action = select_action(state, api.get_action_state())
+        next_state, reward, done = take_action(game, action)  # Your function to advance the game state based on the action
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
         store_experience(state, action, reward, next_state, done)
         train_dqn()
         state = next_state

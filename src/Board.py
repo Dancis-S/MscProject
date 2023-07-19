@@ -1,8 +1,13 @@
 """This file contain code related to setting up the board"""
 import random
 
+<<<<<<< HEAD
 from src import Tiles
 from src import Cats
+=======
+import Tiles
+import Cats
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 
 # Initialises the board creating the 7 * 7 grid and stores them in array for quick access
@@ -141,16 +146,32 @@ class Board:
 
         if player_num == 1:
             chosen_board = purple_board
+<<<<<<< HEAD
+=======
+            #print("Im in Purple")
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
             self.board_colour = "Purple"
         elif player_num == 2:
             chosen_board = blue_board
             self.board_colour = "Blue"
+<<<<<<< HEAD
         elif player_num == 3:
             chosen_board = green_board
             self.board_colour = "Green"
         elif player_num == 4:
             chosen_board = yellow_board
             self.board_colour = "Yellow"
+=======
+            #print("Im in Blue")
+        elif player_num == 3:
+            chosen_board = green_board
+            self.board_colour = "Green"
+            #print("Im in Green")
+        elif player_num == 4:
+            chosen_board = yellow_board
+            self.board_colour = "Yellow"
+            #print("Im in Yellow")
+>>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
         else:  # Default to purple board
             self.board_colour = "Random"
             print("Im in Random")
