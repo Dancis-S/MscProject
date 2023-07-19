@@ -79,14 +79,9 @@ class Node:
 
 
 class MCTS:
-<<<<<<< HEAD
     def __init__(self, agents_id, itermax):
         self.itermax = itermax
         self.id = agents_id
-=======
-    def __init__(self, itermax):
-        self.itermax = itermax
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
     def get_action(self, given_node):
         root_node = Node(state=API.clone_state(given_node))

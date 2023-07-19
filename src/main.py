@@ -5,17 +5,13 @@ from src import Calico
 from src import Agents
 from src import Tiles
 import mcts
-<<<<<<< HEAD
 import os
-=======
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 
 
 def main():
     mcts_agent_play()
 
 
-<<<<<<< HEAD
 def dqn_agent_play():
     path_to_model = None
     for file in os.listdir(os.getcwd()):
@@ -69,22 +65,14 @@ def dqn_agent_play():
     print(cats)
 
 
-=======
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
 def mcts_agent_play():
     average = 0
     highest = 0
     best_board = None
     lowest = 999999999
-<<<<<<< HEAD
     for i in range(1, 2):
         print("Starting Game: " + str(i))
         agent = mcts.MCTS(0, 2000)
-=======
-    for i in range(1, 101):
-        print("Starting Game: " + str(i))
-        agent = mcts.MCTS(100)
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
         game = Calico.Calico(1, [agent])
         score = game.start_game(1, [agent])[0][1]
         if score > highest:
@@ -124,21 +112,13 @@ def mcts_agent_play():
 
 
 def random_agent_play():
-<<<<<<< HEAD
     agent = Agents.RandomAgent(0)
-=======
-    agent = Agents.RandomAgent()
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
     agents = [agent]
     average = 0
     highest = 0
     best_board = None
     lowest = 999999999
-<<<<<<< HEAD
     for i in range(1, 50000):
-=======
-    for i in range(1, 2001):
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
         print("Starting Game: " + str(i))
         game = Calico.Calico(1, agents)
         score = game.start_game(1, agents)[0][1]
@@ -162,10 +142,6 @@ def random_agent_play():
     requirements = []  # (id, requirement)
     cats = []  # (name, pattern1, pattern2)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9547a0e8ec4ef8f4222379a007778205e058e264
     for pus in best_board.cats:
         cats.append((pus.name, pus.pattern_1, pus.pattern_2))
 
