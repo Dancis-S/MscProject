@@ -1,7 +1,7 @@
 """This is a random file that is used for testing"""
-from src import Board
+from tensorflow.python.client import device_lib
 
-for n in range(2):
-    print(n)
+
+print(device_lib.list_local_devices())
 
 

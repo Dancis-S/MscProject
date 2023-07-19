@@ -9,6 +9,7 @@ class NormalTile:
         self.colour = None
         self.part_of_pattern = False  # Used for cats
         self.part_of_button = False  # Used for buttons
+        self.normal_tile = True  # Used to check tile type
 
         # Neighbors
         self.west = None
@@ -33,6 +34,7 @@ class DesignGoalTile:
         self.colour_complete = False
         self.pattern_complete = False
         self.id = tile_id
+        self.normal_tile = False  # Used to check what type of tile it is
 
         # Neighbors
         self.west = None
@@ -207,8 +209,15 @@ class DesignGoalTile:
 
         if len(colour_values) == 2 and 4 in colour_values and 2 in colour_values:
             colour_complete = True
+            self.colour_complete = True
+        else:
+            colour_complete = False
+
         if len(pattern_values) == 2 and 4 in pattern_values and 2 in pattern_values:
             pattern_complete = True
+            self.pattern_complete = True
+        else:
+            pattern_complete = False
 
         # Returns scores based on the conditions met
         if pattern_complete and colour_complete:

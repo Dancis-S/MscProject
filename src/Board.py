@@ -1,7 +1,7 @@
 """This file contain code related to setting up the board"""
 import random
 
-import src.Tiles as Tiles
+from src import Tiles
 from src import Cats
 
 
@@ -17,7 +17,8 @@ class Board:
         self.populate_board()
         self.initialise_tiles()
         self.initialise_cats()
-        self.colour_borders(9)  # We need to put player number here after
+        self.colour_borders(player_num)  # We need to put player number here after
+        self.board_colour = "Test"
 
     def populate_board(self):
         """
@@ -26,10 +27,13 @@ class Board:
         """
         for i in range(49):
             self.board.append(Tiles.NormalTile(i))
+
         # Insert the Design Pattern tiles in 17,25,30 (we start from 0 not 1)
-        self.board[17] = Tiles.DesignGoalTile(17, None)
-        self.board[25] = Tiles.DesignGoalTile(25, None)
-        self.board[30] = Tiles.DesignGoalTile(30, None)
+        requirements = ["NotEqual", "aaa-bbb", "aa-bb-cc", "aaaa-bb", "aaa-bb-c", "aa-bb-c-d"]
+        random.shuffle(requirements)  # Randomize the requirements
+        self.board[17] = Tiles.DesignGoalTile(17, requirements.pop())
+        self.board[25] = Tiles.DesignGoalTile(25, requirements.pop())
+        self.board[30] = Tiles.DesignGoalTile(30, requirements.pop())
 
     def initialise_cats(self):
         """
@@ -49,7 +53,7 @@ class Board:
             self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
 
         # Now assign each cat 2 random pattern
-        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Plants"]
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
         random.shuffle(patterns)
         for n in self.cats:
             n.pattern_1 = patterns.pop()
@@ -122,19 +126,34 @@ class Board:
         purple_board = [(0, 3), (1, 2), (2, 3), (0, 1), (3, 0), (1, 4), (4, 2), (3, 4), (5, 0),
                         (4, 1), (1, 5), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 3), (0, 5),
                         (2, 2), (5, 4), (4, 0), (1, 1), (3, 3), (5, 5)]
-        blue_board = [()]
-        green_board = [()]
-        yellow_board = [()]
+
+        blue_board = [(1, 5), (0, 0), (3, 5), (1, 1), (2, 4), (0, 3), (4, 0), (4, 3), (5, 4), (3, 1),
+                      (2, 0), (0, 2), (2, 3), (3, 4), (1, 3), (5, 1), (4, 5), (1, 2), (3, 0), (5, 3),
+                      (4, 4), (0, 1), (2, 5), (5, 2)]
+
+        green_board = [(5, 1), (0, 5), (4, 1), (5, 0), (2, 4), (0, 2), (3, 5), (2, 2), (1, 4), (3, 0),
+                       (0, 3), (2, 5), (4, 0), (5, 2), (4, 4), (1, 0), (3, 1), (5, 3), (4, 5), (1, 2),
+                       (3, 4), (0, 0), (2, 1), (1, 3)]
+
+        yellow_board = [(4, 4), (5, 3), (0, 0), (2, 2), (5, 5), (4, 1), (1, 4), (1, 1), (2, 5), (0, 2),
+                        (4, 3), (5, 4), (3, 5), (2, 1), (0, 5), (3, 2), (1, 0), (2, 3), (0, 4), (3, 1),
+                        (1, 5), (4, 2), (5, 0), (3, 3)]
 
         if player_num == 1:
             chosen_board = purple_board
+            self.board_colour = "Purple"
         elif player_num == 2:
             chosen_board = blue_board
+            self.board_colour = "Blue"
         elif player_num == 3:
             chosen_board = green_board
+            self.board_colour = "Green"
         elif player_num == 4:
             chosen_board = yellow_board
+            self.board_colour = "Yellow"
         else:  # Default to purple board
+            self.board_colour = "Random"
+            print("Im in Random")
             chosen_board = purple_board
 
         for n in range(len(borders)):  # Applies the chosen colours and patterns
@@ -201,6 +220,7 @@ class Board:
                 self.board[n].part_of_button = True
 
     def check_and_add_cat(self, tile_id):
+
         """
         Each time a new tile is added, we get its pattern and the properties from the
         respective cat. We then see if it fulfills the required number of tiles needed
@@ -252,7 +272,7 @@ class Board:
         if count >= cat.num_of_tiles:  # if the num of tiles required is reached increment num_of_cats
             cat.num_of_cats += 1
             for n in visited_tiles:
-                self.board[n].part_of_button = True
+                self.board[n].part_of_pattern = True
 
     def _count_rainbows(self):
         """
