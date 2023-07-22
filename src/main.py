@@ -1,6 +1,6 @@
 """ Main file that is run when the game is executed"""
 import keras.models
-
+from src import MCTSGreedy
 from src import Calico
 from src import Agents
 from src import Tiles
@@ -9,7 +9,110 @@ import os
 
 
 def main():
-    mcts_agent_play()
+    greedy_vs_mcts()
+
+
+def greedy_vs_mcts():
+    mcts_wins = 0
+    greedy_wins = 0
+
+    for i in range(1,11):
+        greedy_agent = Agents.GreedyAgentRandom(0)
+        mcts_agent = mcts.MCTS(1, 10)
+        game = Calico.Calico(2, [greedy_agent, mcts_agent])
+        score = game.start_game(2, [greedy_agent, mcts_agent])
+        print(score)
+
+def MCTS_Greedy_agent_play():
+    average = 0
+    highest = 0
+    best_board = None
+    lowest = 999999999
+    for i in range(1, 2):
+        print("Starting Game: " + str(i))
+        agent = MCTSGreedy.MCTSGreedy(0, 10)
+        game = Calico.Calico(1, [agent])
+        score = game.start_game(1, [agent])[0][1]
+        if score > highest:
+            highest = score
+            best_board = game.players_board[0]
+        if score < lowest:
+            lowest = score
+        average = calculate_running_average(average, score, i)
+
+    print("\n==== Final Average ====")
+    print("     " + str(average))
+    print("\n==== Highest Score ====")
+    print("     " + str(highest))
+    print("\n==== Lowest score ====")
+    print("     " + str(lowest))
+    # Save the position of the current board
+    layout = []  # (id, colour, pattern)
+    requirements = []  # (id, requirement)
+    cats = []  # (name, pattern1, pattern2)
+
+    for pus in best_board.cats:
+        cats.append((pus.name, pus.pattern_1, pus.pattern_2))
+
+    for tile in best_board.board:
+        # tile is the tile object
+        if tile.normal_tile:
+            layout.append((tile.tile_id, tile.colour, tile.pattern))
+        else:
+            requirements.append((tile.id, tile.requirement))
+
+    print("\n==== Layout====")
+    print(layout)
+    print("==== requirements====")
+    print(requirements)
+    print("==== Cats ====")
+    print(cats)
+
+
+def greedy_agent_play():
+    average = 0
+    highest = 0
+    best_board = None
+    lowest = 999999999
+    for i in range(1, 101):
+        print("Starting Game: " + str(i))
+        agent = Agents.GreedyAgentRandom(0)
+        game = Calico.Calico(1, [agent])
+        score = game.start_game(1, [agent])[0][1]
+        if score > highest:
+            highest = score
+            best_board = game.players_board[0]
+        if score < lowest:
+            lowest = score
+        average = calculate_running_average(average, score, i)
+
+    print("\n==== Final Average ====")
+    print("     " + str(average))
+    print("\n==== Highest Score ====")
+    print("     " + str(highest))
+    print("\n==== Lowest score ====")
+    print("     " + str(lowest))
+    # Save the position of the current board
+    layout = []  # (id, colour, pattern)
+    requirements = []  # (id, requirement)
+    cats = []  # (name, pattern1, pattern2)
+
+    for pus in best_board.cats:
+        cats.append((pus.name, pus.pattern_1, pus.pattern_2))
+
+    for tile in best_board.board:
+        # tile is the tile object
+        if tile.normal_tile:
+            layout.append((tile.tile_id, tile.colour, tile.pattern))
+        else:
+            requirements.append((tile.id, tile.requirement))
+
+    print("\n==== Layout====")
+    print(layout)
+    print("==== requirements====")
+    print(requirements)
+    print("==== Cats ====")
+    print(cats)
 
 
 def dqn_agent_play():

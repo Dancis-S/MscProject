@@ -1,7 +1,6 @@
 """This is a random file that is used for testing"""
-from tensorflow.python.client import device_lib
+from src import Calico
 
-
-print(device_lib.list_local_devices())
-
+game = Calico.Calico(1,[])
+print(game.get_state())
 

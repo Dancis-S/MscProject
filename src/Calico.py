@@ -1,11 +1,16 @@
 """This file contain code that will run the actual game"""
 import random
+import numpy as np
+import torch
+
 from src import Board
 from src import Tiles
 
 
 class Calico:
     def __init__(self, num_of_players, agents):
+        self.device = None
+        self.agents = agents
         self.num_of_players = num_of_players
         self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
         self.shop = []  # Shop that holds available tiles
@@ -73,7 +78,8 @@ class Calico:
                     # Checks whether game is over
                     if not self.players_board[player].open_positions:
                         open_moves = False
-        return self.return_score()
+
+        return self.calculate_scores()
 
     def make_a_move(self, player_id, location, chosen_tile, shop_tile):
         """
@@ -186,7 +192,8 @@ class Calico:
     ##################################################################################################
     ##################   Code for DQN Ignore It ######################################################
 
-    def colour_info_to_one_hot(self, colour):
+    @classmethod
+    def colour_info_to_one_hot(cls, colour):
         """
        Converts the string of colour into a one-hot encoded version
        :param colour:
@@ -202,7 +209,8 @@ class Calico:
 
         return encoded_colour
 
-    def patter_info_to_one_hot(self, pattern):
+    @classmethod
+    def patter_info_to_one_hot(cls, pattern):
         """
         Converts the string of pattern into a one-hot encoded version
         :param pattern:
@@ -219,7 +227,8 @@ class Calico:
 
         return encoded_pattern
 
-    def requirement_to_one_one(self, requirement):
+    @classmethod
+    def requirement_to_one_one(cls, requirement):
         """
         Converts the string requirements into a one-hot encoded version
         :param requirement:
@@ -234,42 +243,55 @@ class Calico:
                 encoded_requirements.append(0)
         return encoded_requirements
 
-    def getState(self):
+    def get_state(self):
         state = []  # Array that will hold the 3D state of the game
+        board = self.get_my_board(0)
+        stack = self.get_my_stack(0)
 
         # Add the cats to the game state
-        cats = self.my_board.cats
+        cats = board.cats
         for cat in cats:
-            cat_info = [self.patter_info_to_one_hot(cat.pattern_1), self.patter_info_to_one_hot(cat.pattern_2)]
-            state.append(cat_info)
+            cat1_info = self.patter_info_to_one_hot(cat.pattern_1)
+            state.append(cat1_info)
+            cat2_info = self.patter_info_to_one_hot(cat.pattern_2)
+            state.append(cat2_info)
 
         # Add the board positions 0 means open position
-        for tile in self.my_board.board:
+        for tile in board.board:
             if isinstance(tile, Tiles.DesignGoalTile):
                 # In situation where it's a design tile we need to add its requirements
-                state.append([self.requirement_to_one_one(tile.requirement), [0, 0, 0, 0, 0, 0]])
+                state.append(self.requirement_to_one_one(tile.requirement))
             elif tile.colour is None or tile.pattern is None:
-                state.append([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]])  # Free tile
+                state.append([0, 0, 0, 0, 0, 0])  # Free colour
+                state.append([0, 0, 0, 0, 0, 0])  # Free pattern
             else:
-                info = [self.colour_info_to_one_hot(tile.colour), self.patter_info_to_one_hot(tile.pattern)]
-                state.append(info)
+                info1 = self.colour_info_to_one_hot(tile.colour)
+                info2 = self.patter_info_to_one_hot(tile.pattern)
+                state.append(info1)
+                state.append(info2)
 
         # Add the player stack
-        for tile in self.my_stack:
-            info = [self.colour_info_to_one_hot(tile[0]), self.patter_info_to_one_hot(tile[1])]
-            state.append(info)
+        for tile in stack:
+            info1 = self.colour_info_to_one_hot(tile[0])
+            info2 = self.patter_info_to_one_hot(tile[1])
+            state.append(info1)
+            state.append(info2)
 
         # Add the shop stack
         for tile in self.shop:
-            info = [self.colour_info_to_one_hot(tile[0]), self.patter_info_to_one_hot(tile[1])]
-            state.append(info)
+            info1 = self.colour_info_to_one_hot(tile[0])
+            info2 = self.patter_info_to_one_hot(tile[1])
+            state.append(info1)
+            state.append(info2)
 
-        return state
+        arr = np.array(state)
+        flat_state = arr.flatten()
+        return flat_state
 
     def get_action_state(self):
         og_open = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                    33, 36, 37, 38, 39, 40]
-        open_pos = self.open_positions
+        open_pos = self.get_my_board(0).open_positions
         moves = []
         counter = 1
         for tile in og_open:
@@ -280,4 +302,116 @@ class Calico:
                 for i in range(9):
                     moves.append(counter)
                     counter += 1
+
         return moves
+
+    def reset(self):
+        """
+        Method to reset the game, for when an ai wants to play a new game
+        """
+        num_of_players = self.num_of_players
+        agents = self.agents
+        self.__init__(num_of_players, agents)  # Reset the game to new
+        return self.get_state()
+
+    def step(self, action):
+        """
+        For the DQN given an action, complete the action. Then return the following:
+        the next state, the reward, and whether the game is done
+        """
+        # Convert the action to action we use
+        action_map = self.dqn_convert_move()
+        play = action_map[action]  # Get action that the game understands
+        location = play[0]
+        tile = play[1]
+        shop = play[2]
+
+        my_board = self.get_my_board(0)
+        initial_score = my_board.get_score()
+        done = False
+        self.make_a_move(0, location, tile, shop)
+
+        reward = my_board.get_score() - initial_score
+
+        if not my_board.open_positions:
+            done = True
+
+        next_state = self.get_state()
+        
+        return next_state, reward, done
+
+    def get_invalid_actions(self):
+        board = self.get_my_board(0)
+        current_open = board.open_positions
+        og_open = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
+                   33, 36, 37, 38, 39, 40]
+        counter = 0
+        invalid_pos = []
+        for pos in og_open:
+            if pos not in current_open:  # Not a valid move then add it array
+                for i in range(9):
+                    invalid_pos.append(counter)
+                    counter += 1
+            else:
+                for i in range(9):
+                    counter += 1
+
+        return invalid_pos
+
+    @classmethod
+    def dqn_convert_move(cls):
+        # Convert the output to a playable move
+        hold_actions = [(8, 0, 0), (8, 0, 1), (8, 0, 2), (8, 1, 0), (8, 1, 1), (8, 1, 2), (8, 2, 0),
+                        (8, 2, 1), (8, 2, 2), (9, 0, 0), (9, 0, 1), (9, 0, 2), (9, 1, 0), (9, 1, 1),
+                        (9, 1, 2), (9, 2, 0), (9, 2, 1), (9, 2, 2), (10, 0, 0), (10, 0, 1), (10, 0, 2),
+                        (10, 1, 0), (10, 1, 1), (10, 1, 2), (10, 2, 0), (10, 2, 1), (10, 2, 2), (11, 0, 0),
+                        (11, 0, 1), (11, 0, 2), (11, 1, 0), (11, 1, 1), (11, 1, 2), (11, 2, 0), (11, 2, 1),
+                        (11, 2, 2), (12, 0, 0), (12, 0, 1), (12, 0, 2), (12, 1, 0), (12, 1, 1), (12, 1, 2),
+                        (12, 2, 0), (12, 2, 1), (12, 2, 2), (15, 0, 0), (15, 0, 1), (15, 0, 2), (15, 1, 0),
+                        (15, 1, 1), (15, 1, 2), (15, 2, 0), (15, 2, 1), (15, 2, 2), (16, 0, 0), (16, 0, 1),
+                        (16, 0, 2), (16, 1, 0), (16, 1, 1), (16, 1, 2), (16, 2, 0), (16, 2, 1), (16, 2, 2),
+                        (18, 0, 0), (18, 0, 1), (18, 0, 2), (18, 1, 0), (18, 1, 1), (18, 1, 2), (18, 2, 0),
+                        (18, 2, 1), (18, 2, 2), (19, 0, 0), (19, 0, 1), (19, 0, 2), (19, 1, 0), (19, 1, 1),
+                        (19, 1, 2), (19, 2, 0), (19, 2, 1), (19, 2, 2), (22, 0, 0), (22, 0, 1), (22, 0, 2),
+                        (22, 1, 0), (22, 1, 1), (22, 1, 2), (22, 2, 0), (22, 2, 1), (22, 2, 2), (23, 0, 0),
+                        (23, 0, 1), (23, 0, 2), (23, 1, 0), (23, 1, 1), (23, 1, 2), (23, 2, 0), (23, 2, 1),
+                        (23, 2, 2), (24, 0, 0), (24, 0, 1), (24, 0, 2), (24, 1, 0), (24, 1, 1), (24, 1, 2),
+                        (24, 2, 0), (24, 2, 1), (24, 2, 2), (26, 0, 0), (26, 0, 1), (26, 0, 2), (26, 1, 0),
+                        (26, 1, 1), (26, 1, 2), (26, 2, 0), (26, 2, 1), (26, 2, 2), (29, 0, 0), (29, 0, 1),
+                        (29, 0, 2), (29, 1, 0), (29, 1, 1), (29, 1, 2), (29, 2, 0), (29, 2, 1), (29, 2, 2),
+                        (31, 0, 0), (31, 0, 1), (31, 0, 2), (31, 1, 0), (31, 1, 1), (31, 1, 2), (31, 2, 0),
+                        (31, 2, 1), (31, 2, 2), (32, 0, 0), (32, 0, 1), (32, 0, 2), (32, 1, 0), (32, 1, 1),
+                        (32, 1, 2), (32, 2, 0), (32, 2, 1), (32, 2, 2), (33, 0, 0), (33, 0, 1), (33, 0, 2),
+                        (33, 1, 0), (33, 1, 1), (33, 1, 2), (33, 2, 0), (33, 2, 1), (33, 2, 2), (36, 0, 0),
+                        (36, 0, 1), (36, 0, 2), (36, 1, 0), (36, 1, 1), (36, 1, 2), (36, 2, 0), (36, 2, 1),
+                        (36, 2, 2), (37, 0, 0), (37, 0, 1), (37, 0, 2), (37, 1, 0), (37, 1, 1), (37, 1, 2),
+                        (37, 2, 0), (37, 2, 1), (37, 2, 2), (38, 0, 0), (38, 0, 1), (38, 0, 2), (38, 1, 0),
+                        (38, 1, 1), (38, 1, 2), (38, 2, 0), (38, 2, 1), (38, 2, 2), (39, 0, 0), (39, 0, 1),
+                        (39, 0, 2), (39, 1, 0), (39, 1, 1), (39, 1, 2), (39, 2, 0), (39, 2, 1), (39, 2, 2),
+                        (40, 0, 0), (40, 0, 1), (40, 0, 2), (40, 1, 0), (40, 1, 1), (40, 1, 2), (40, 2, 0),
+                        (40, 2, 1), (40, 2, 2)]
+
+        mapped_actions = {}
+        num = 0
+        for n in hold_actions:
+            mapped_actions[num] = n
+            num += 1
+        return mapped_actions
+
+    def get_valid_moves(self):
+        board = self.get_my_board(0)
+        og_open = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
+                   33, 36, 37, 38, 39, 40]
+        valid_moves = []
+        open_pos = board.open_positions
+        counter = 0
+        for pos in og_open:
+            if pos in open_pos:
+                for i in range(9):
+                    valid_moves.append(counter)
+                    counter += 1
+            else:
+                for i in range(9):
+                    counter += 1
+
+        return valid_moves

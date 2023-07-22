@@ -62,12 +62,24 @@ class DesignGoalTile:
 
         return completed
 
+    def check_number_of_neighbors(self):
+        """
+        Checks the amount of neighbors around the design tile, and returns
+        it as an int
+        """
+        neighbors = self.get_neighbors()
+        neighbors = list(filter(lambda item: item is not None, neighbors))
+        return len(neighbors)
+
     def check_design_goal_reached(self):
         """
         At the end of the game this function is called. Depending on what requirement
         was set, return the score that has been earned for that given tile
         :return:
         """
+        if not self.check_tile_complete():  # First make sure its complete
+            return 0
+
         requirement = self.requirement
         match requirement:
             case "NotEqual":
