@@ -1,6 +1,5 @@
 """This file contain code related to setting up the board"""
 import random
-
 from src import Tiles
 from src import Cats
 
