@@ -1,8 +1,6 @@
 """This file contain code that will run the actual game"""
 import random
 import numpy as np
-import torch
-
 from src import Board
 from src import Tiles
 
@@ -190,7 +188,7 @@ class Calico:
         return self.players_board[player_id]
 
     ##################################################################################################
-    ##################   Code for DQN Ignore It ######################################################
+    # #################   Code for DQN Ignore It ######################################################
 
     @classmethod
     def colour_info_to_one_hot(cls, colour):
@@ -307,7 +305,7 @@ class Calico:
 
     def reset(self):
         """
-        Method to reset the game, for when an ai wants to play a new game
+        Method to reset the game, for when an AI wants to play a new game
         """
         num_of_players = self.num_of_players
         agents = self.agents

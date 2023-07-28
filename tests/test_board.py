@@ -192,8 +192,8 @@ class TestBoard(unittest.TestCase):
         board.add_tile(26, "Blue", "Plants")
         board.add_tile(33, "Blue", "Four")
         blue_button_count = board.buttons.get("Blue")
-        statement = board.board[40].part_of_button and board.board[33].part_of_button \
-                    and board.board[26].part_of_button and blue_button_count == 1
+        statement = board.board[40].part_of_button and board.board[33].part_of_button and\
+                    board.board[26].part_of_button and blue_button_count == 1
 
         self.assertTrue(statement)
 
@@ -273,7 +273,6 @@ class TestBoard(unittest.TestCase):
         :return:
         """
         board = Board.Board(1)
-        set_up_correct = True
         hold_cats = []
         for cat in board.cats:
             if cat.pattern_1 in hold_cats or cat.pattern_2 in hold_cats \
@@ -427,8 +426,6 @@ class TestBoard(unittest.TestCase):
         pos17_score = board.board[17].check_design_goal_reached()
         pos25_score = board.board[25].check_design_goal_reached()
         pos30_score = board.board[30].check_design_goal_reached()
-        pos30_colour = board.board[30].colour_complete
-        pos30_pattern = board.board[30].pattern_complete
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
@@ -442,7 +439,8 @@ class TestBoard(unittest.TestCase):
         board_info += "\nButtons = " + str(buttons) + "\nRainbows = " + str(rainbows) + \
                       "\nPos 17 = " + str(pos17_score)
         board_info += "\nPos 25 = " + str(pos25_score) + "\nPos 30 score = " + str(pos30_score)
-        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (gwen) =" + str(cats2) + "\nCat 3 (coconut) = " + str(cats3)
+        board_info += "\nCat 1 (tibbit) = " + str(cat1) + "\nCat 2 (gwen) =" + str(
+            cats2) + "\nCat 3 (coconut) = " + str(cats3)
         self.assertEqual(score, 27, board_info)
 
     def test_get_score_for_complete_board_2(self):
@@ -451,7 +449,7 @@ class TestBoard(unittest.TestCase):
         Score should be 53
         3 buttons (1 blue, 1 blue, 1 red)
         2 cats (gwen four , tibbit leaf)
-        17 aa-bb-cc only patttern complete
+        17 aa-bb-cc only pattern complete
         25 aaaa-bb colour and pattern complete
         30 aaa-bb-c only pattern complete
         :return:
@@ -477,9 +475,9 @@ class TestBoard(unittest.TestCase):
         # Add the 25 tiles
         tiles = [(8, 'Red', 'Reeds'), (9, 'Navy', 'Leaf'), (10, 'Red', 'Four'), (11, 'Red', 'Dots'),
                  (12, 'Green', 'Four'), (15, 'Purple', 'Leaf'), (16, 'Green', 'Leaf'), (18, 'Blue', 'Four'),
-                 (19, 'Navy', 'Four'),(22, 'Blue', 'Dots'), (23, 'Navy', 'Reeds'), (24, 'Blue', 'Reeds'),
-                 (26, 'Navy', 'Four'),(29, 'Yellow', 'Dots'), (31, 'Purple', 'Stripes'), (32, 'Blue', 'Reeds'),
-                 (33, 'Blue', 'Four'),(36, 'Navy', 'Reeds'), (37, 'Red', 'Reeds'), (38, 'Yellow', 'Reeds'),
+                 (19, 'Navy', 'Four'), (22, 'Blue', 'Dots'), (23, 'Navy', 'Reeds'), (24, 'Blue', 'Reeds'),
+                 (26, 'Navy', 'Four'), (29, 'Yellow', 'Dots'), (31, 'Purple', 'Stripes'), (32, 'Blue', 'Reeds'),
+                 (33, 'Blue', 'Four'), (36, 'Navy', 'Reeds'), (37, 'Red', 'Reeds'), (38, 'Yellow', 'Reeds'),
                  (39, 'Yellow', 'Dots'), (40, 'Purple', 'Plants')]
         for n in tiles:
             board.add_tile(n[0], n[1], n[2])
@@ -490,8 +488,6 @@ class TestBoard(unittest.TestCase):
         pos17_score = board.board[17].check_design_goal_reached()
         pos25_score = board.board[25].check_design_goal_reached()
         pos30_score = board.board[30].check_design_goal_reached()
-        pos30_colour = board.board[30].colour_complete
-        pos30_pattern = board.board[30].pattern_complete
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
@@ -538,10 +534,10 @@ class TestBoard(unittest.TestCase):
         board.cats.append(cira)
         # Add the 25 tiles
         tiles = [(8, 'Purple', 'Reeds'), (9, 'Green', 'Stripes'), (10, 'Yellow', 'Reeds'), (11, 'Blue', 'Stripes'),
-                 (12, 'Red', 'Four'),(15, 'Green', 'Leaf'), (16, 'Red', 'Reeds'), (18, 'Purple', 'Plants'),
-                 (19, 'Yellow', 'Reeds'),(22, 'Blue', 'Four'), (23, 'Green', 'Four'), (24, 'Purple', 'Stripes'),
+                 (12, 'Red', 'Four'), (15, 'Green', 'Leaf'), (16, 'Red', 'Reeds'), (18, 'Purple', 'Plants'),
+                 (19, 'Yellow', 'Reeds'), (22, 'Blue', 'Four'), (23, 'Green', 'Four'), (24, 'Purple', 'Stripes'),
                  (26, 'Green', 'Leaf'), (29, 'Red', 'Leaf'), (31, 'Yellow', 'Leaf'), (32, 'Blue', 'Dots'),
-                 (33, 'Purple', 'Stripes'),(36, 'Navy', 'Leaf'), (37, 'Blue', 'Four'), (38, 'Yellow', 'Stripes'),
+                 (33, 'Purple', 'Stripes'), (36, 'Navy', 'Leaf'), (37, 'Blue', 'Four'), (38, 'Yellow', 'Stripes'),
                  (39, 'Green', 'Four'), (40, 'Yellow', 'Reeds')]
         for n in tiles:
             board.add_tile(n[0], n[1], n[2])
@@ -552,8 +548,6 @@ class TestBoard(unittest.TestCase):
         pos17_score = board.board[17].check_design_goal_reached()
         pos25_score = board.board[25].check_design_goal_reached()
         pos30_score = board.board[30].check_design_goal_reached()
-        pos30_colour = board.board[30].colour_complete
-        pos30_pattern = board.board[30].pattern_complete
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
@@ -616,8 +610,6 @@ class TestBoard(unittest.TestCase):
         pos17_score = board.board[17].check_design_goal_reached()
         pos25_score = board.board[25].check_design_goal_reached()
         pos30_score = board.board[30].check_design_goal_reached()
-        pos30_colour = board.board[30].colour_complete
-        pos30_pattern = board.board[30].pattern_complete
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))

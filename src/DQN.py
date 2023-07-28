@@ -108,7 +108,6 @@ class DQNAgent:
         loss.backward()
         self.optimizer.step()
 
-
     def save(self, filepath):
         torch.save(self.q_network.state_dict(), filepath)
 

@@ -212,7 +212,6 @@ class DesignGoalTile:
         other with the size 2
         :return:
         """
-        colour_complete = pattern_complete = False
         colours_dict, patterns_dict = self.add_colours_and_patterns_to_dictionary()
 
         # Check that they meet the conditions

@@ -1,6 +1,5 @@
 import random
 import math
-import Calico
 import copy
 from src import Agents
 
@@ -116,7 +115,8 @@ class MCTSGreedy:
 
         return sorted(root_node.children, key=lambda c: c.visits)[-1].move
 
-    def select_child(self, node):
+    @classmethod
+    def select_child(cls, node):
         s = sorted(node.children, key=lambda c: c.wins / c.visits + math.sqrt(2 * math.log(node.visits) / c.visits))[-1]
         return s
 

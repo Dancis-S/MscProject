@@ -251,7 +251,8 @@ class Board:
                     tile.part_of_pattern = True  # merge the current tile to join the already done tile
 
                 # If it is a free matching tile, then add it to cache
-                if n.pattern == pattern and (n.tile_id not in visited_tiles) and not n.part_of_pattern and n.tile_id not in cache_neighbors:
+                if n.pattern == pattern and (n.tile_id not in visited_tiles) and not n.part_of_pattern\
+                        and n.tile_id not in cache_neighbors:
                     cache_neighbors.append(n.tile_id)  # Add id of tile with matching pattern
 
             if not cache_neighbors:  # If there is no more nodes to visit then break

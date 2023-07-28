@@ -1,4 +1,3 @@
-import torch
 import Calico  # assuming this is how you access your API
 from src.DQN import DQNAgent  # Adjust import as per your directory structure
 
@@ -48,8 +47,10 @@ for episode in range(num_episodes):
     counter += 1
     agent.current_episode += 1
 
+
 def calculate_running_average(previous_avg, new_num, n):
     return ((previous_avg * (n - 1)) + new_num) / n
+
 
 # save the final model
 agent.save('dqn_final.pth')
