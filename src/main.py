@@ -9,14 +9,13 @@ import os
 
 
 def main():
-    greedy_vs_mcts()
-
+    greedy_agent_play()
 
 def greedy_vs_mcts():
     mcts_wins = 0
     greedy_wins = 0
 
-    for i in range(1,11):
+    for i in range(1, 11):
         greedy_agent = Agents.GreedyAgentRandom(0)
         mcts_agent = mcts.MCTS(1, 10)
         game = Calico.Calico(2, [greedy_agent, mcts_agent])
@@ -74,7 +73,7 @@ def greedy_agent_play():
     highest = 0
     best_board = None
     lowest = 999999999
-    for i in range(1, 101):
+    for i in range(1, 1001):
         print("Starting Game: " + str(i))
         agent = Agents.GreedyAgentRandom(0)
         game = Calico.Calico(1, [agent])
@@ -277,6 +276,12 @@ def human_play():
 
 def calculate_running_average(previous_avg, new_num, n):
     return ((previous_avg * (n - 1)) + new_num) / n
+
+
+def display_solo_info():
+    """
+    Function for solo games, to display the information about the games that occured
+    """
 
 
 main()

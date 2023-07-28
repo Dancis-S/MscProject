@@ -79,7 +79,7 @@ class Calico:
                     if not self.players_board[player].open_positions:
                         open_moves = False
 
-        return self.calculate_scores()
+        return self.return_score()
 
     def make_a_move(self, player_id, location, chosen_tile, shop_tile):
         """
@@ -337,7 +337,7 @@ class Calico:
             done = True
 
         next_state = self.get_state()
-        
+
         return next_state, reward, done
 
     def get_invalid_actions(self):

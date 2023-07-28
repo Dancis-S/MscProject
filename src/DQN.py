@@ -40,14 +40,16 @@ class DQNAgent:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.state_size = state_size
         self.action_size = action_size
-        self.memory = ReplayMemory(100000)
+        self.memory = ReplayMemory(150000)
 
         self.env = env
 
-        self.gamma = 0.9
+        self.gamma = 0.95
         self.epsilon = 1.0
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.99988945  # should decay after 200k
+        self.epsilon_decay = 0.9999774540636716  # should decay after 100k
+
+        # 200k decay = 0.99988945
 
         self.q_network = QNetwork(state_size, action_size).to(self.device)
         self.target_network = QNetwork(state_size, action_size).to(self.device)
@@ -63,21 +65,23 @@ class DQNAgent:
         return next_state, reward, done
 
     def act(self, state):
-        if self.current_episode < 100000:  # Exploration only
-            valid_actions = self.env.get_valid_actions()
+        if self.current_episode < 50000:  # Exploration only
+            valid_actions = self.env.get_valid_moves()
             action = np.random.choice(valid_actions)
         else:  # Epsilon-greedy strategy
+
             self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
             state = torch.from_numpy(state).float().to(self.device)
             if np.random.random() > self.epsilon:  # Exploitation
                 q_values = self.q_network(state)
                 masked_q_values = q_values.clone()
                 invalid_actions = torch.tensor(self.env.get_invalid_actions()).float().to(self.device)
-                invalid_actions = torch.tensor(invalid_actions, dtype=torch.long).to(self.device)
+                with torch.no_grad():
+                    invalid_actions = torch.tensor(invalid_actions, dtype=torch.long).to(self.device)
                 masked_q_values[invalid_actions] = -float('inf')
                 action = torch.argmax(masked_q_values).item()
             else:  # Exploration
-                valid_actions = self.env.get_valid_actions()
+                valid_actions = self.env.get_valid_moves()
                 action = np.random.choice(valid_actions)
         return action
 
@@ -104,8 +108,6 @@ class DQNAgent:
         loss.backward()
         self.optimizer.step()
 
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
 
     def save(self, filepath):
         torch.save(self.q_network.state_dict(), filepath)

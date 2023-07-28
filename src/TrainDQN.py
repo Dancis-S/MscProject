@@ -13,7 +13,7 @@ action_size = 198  # I'm assuming there's a function to get the size of the acti
 agent = DQNAgent(state_size, action_size, env)
 
 # Define the number of episodes you want to run
-num_episodes = 600000
+num_episodes = 200000
 
 average = 0
 average_100 = 0
