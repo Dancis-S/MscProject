@@ -6,6 +6,10 @@ from src import Tiles
 
 
 class Calico:
+    """
+    Class for the overall game of Calico, this is also the class that the agents
+    will interact with when playing the game
+    """
     def __init__(self, num_of_players, agents):
         self.device = None
         self.agents = agents
@@ -18,8 +22,8 @@ class Calico:
 
     def setup_game(self, num_of_players):
         """
-        Function initialises the array with the players boards, the randomly assigned tiles they have
-        in their stack, and initialises the shop
+        Function initialises the array with the players boards, the randomly assigned
+        tiles they have in their stack, and initialises the shop
         of players
         :param num_of_players:
         :return:
@@ -41,7 +45,8 @@ class Calico:
         # Sets up the boards and the players stacks
         for i in range(num_of_players):
             # Initialises each players stack with random tiles from bag
-            self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(), self.tiles_bag.pop()])
+            self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(),
+                                       self.tiles_bag.pop()])
             self.players_board.append(Board.Board(i + 1))
 
     def start_game(self, num_of_players, agents):
@@ -164,10 +169,12 @@ class Calico:
         scores.sort(key=lambda a: a[1], reverse=True)  # Sort them in order of who wins
 
         # Craft the string that will be returned
-        position_names = ["\nFourth Place: ", "\nThird Place: ", "\nSecond Place: ", "\nFirst Place: "]
+        position_names = ["\nFourth Place: ", "\nThird Place: ", "\nSecond Place: ",
+                          "\nFirst Place: "]
         final_log = "=====!! End Of Game !!====="
         for player in scores:
-            final_log += position_names.pop() + "Player " + str(player[0]) + "!  Score: " + str(player[1])
+            final_log += position_names.pop() + "Player " + str(player[0]) +\
+                         "!  Score: " + str(player[1])
 
         return final_log
 
@@ -187,8 +194,8 @@ class Calico:
         """
         return self.players_board[player_id]
 
-    ##################################################################################################
-    # #################   Code for DQN Ignore It ######################################################
+    #########################################################################
+    # #################   Code for DQN Ignore It ############################
 
     @classmethod
     def colour_info_to_one_hot(cls, colour):
@@ -373,23 +380,25 @@ class Calico:
                         (18, 1, 0), (18, 1, 1), (18, 1, 2), (18, 2, 0), (18, 2, 1), (18, 2, 2),
                         (19, 0, 0), (19, 0, 1), (19, 0, 2), (19, 1, 0), (19, 1, 1), (19, 1, 2),
                         (19, 2, 0), (19, 2, 1), (19, 2, 2), (22, 0, 0), (22, 0, 1), (22, 0, 2),
-                        (22, 1, 0), (22, 1, 1), (22, 1, 2), (22, 2, 0), (22, 2, 1), (22, 2, 2), (23, 0, 0),
-                        (23, 0, 1), (23, 0, 2), (23, 1, 0), (23, 1, 1), (23, 1, 2), (23, 2, 0), (23, 2, 1),
-                        (23, 2, 2), (24, 0, 0), (24, 0, 1), (24, 0, 2), (24, 1, 0), (24, 1, 1), (24, 1, 2),
-                        (24, 2, 0), (24, 2, 1), (24, 2, 2), (26, 0, 0), (26, 0, 1), (26, 0, 2), (26, 1, 0),
-                        (26, 1, 1), (26, 1, 2), (26, 2, 0), (26, 2, 1), (26, 2, 2), (29, 0, 0), (29, 0, 1),
-                        (29, 0, 2), (29, 1, 0), (29, 1, 1), (29, 1, 2), (29, 2, 0), (29, 2, 1), (29, 2, 2),
-                        (31, 0, 0), (31, 0, 1), (31, 0, 2), (31, 1, 0), (31, 1, 1), (31, 1, 2), (31, 2, 0),
-                        (31, 2, 1), (31, 2, 2), (32, 0, 0), (32, 0, 1), (32, 0, 2), (32, 1, 0), (32, 1, 1),
-                        (32, 1, 2), (32, 2, 0), (32, 2, 1), (32, 2, 2), (33, 0, 0), (33, 0, 1), (33, 0, 2),
-                        (33, 1, 0), (33, 1, 1), (33, 1, 2), (33, 2, 0), (33, 2, 1), (33, 2, 2), (36, 0, 0),
-                        (36, 0, 1), (36, 0, 2), (36, 1, 0), (36, 1, 1), (36, 1, 2), (36, 2, 0), (36, 2, 1),
-                        (36, 2, 2), (37, 0, 0), (37, 0, 1), (37, 0, 2), (37, 1, 0), (37, 1, 1), (37, 1, 2),
-                        (37, 2, 0), (37, 2, 1), (37, 2, 2), (38, 0, 0), (38, 0, 1), (38, 0, 2), (38, 1, 0),
-                        (38, 1, 1), (38, 1, 2), (38, 2, 0), (38, 2, 1), (38, 2, 2), (39, 0, 0), (39, 0, 1),
-                        (39, 0, 2), (39, 1, 0), (39, 1, 1), (39, 1, 2), (39, 2, 0), (39, 2, 1), (39, 2, 2),
-                        (40, 0, 0), (40, 0, 1), (40, 0, 2), (40, 1, 0), (40, 1, 1), (40, 1, 2), (40, 2, 0),
-                        (40, 2, 1), (40, 2, 2)]
+                        (22, 1, 0), (22, 1, 1), (22, 1, 2), (22, 2, 0), (22, 2, 1), (22, 2, 2),
+                        (23, 0, 0), (23, 0, 1), (23, 0, 2), (23, 1, 0), (23, 1, 1), (23, 1, 2),
+                        (23, 2, 0), (23, 2, 1), (23, 2, 2), (24, 0, 0), (24, 0, 1), (24, 0, 2),
+                        (24, 1, 0), (24, 1, 1), (24, 1, 2), (24, 2, 0), (24, 2, 1), (24, 2, 2),
+                        (26, 0, 0), (26, 0, 1), (26, 0, 2), (26, 1, 0), (26, 1, 1), (26, 1, 2),
+                        (26, 2, 0), (26, 2, 1), (26, 2, 2), (29, 0, 0), (29, 0, 1), (29, 0, 2),
+                        (29, 1, 0), (29, 1, 1), (29, 1, 2), (29, 2, 0), (29, 2, 1), (29, 2, 2),
+                        (31, 0, 0), (31, 0, 1), (31, 0, 2), (31, 1, 0), (31, 1, 1), (31, 1, 2),
+                        (31, 2, 0), (31, 2, 1), (31, 2, 2), (32, 0, 0), (32, 0, 1), (32, 0, 2),
+                        (32, 1, 0), (32, 1, 1), (32, 1, 2), (32, 2, 0), (32, 2, 1), (32, 2, 2),
+                        (33, 0, 0), (33, 0, 1), (33, 0, 2), (33, 1, 0), (33, 1, 1), (33, 1, 2),
+                        (33, 2, 0), (33, 2, 1), (33, 2, 2), (36, 0, 0), (36, 0, 1), (36, 0, 2),
+                        (36, 1, 0), (36, 1, 1), (36, 1, 2), (36, 2, 0), (36, 2, 1), (36, 2, 2),
+                        (37, 0, 0), (37, 0, 1), (37, 0, 2), (37, 1, 0), (37, 1, 1), (37, 1, 2),
+                        (37, 2, 0), (37, 2, 1), (37, 2, 2), (38, 0, 0), (38, 0, 1), (38, 0, 2),
+                        (38, 1, 0), (38, 1, 1), (38, 1, 2), (38, 2, 0), (38, 2, 1), (38, 2, 2),
+                        (39, 0, 0), (39, 0, 1), (39, 0, 2), (39, 1, 0), (39, 1, 1), (39, 1, 2),
+                        (39, 2, 0), (39, 2, 1), (39, 2, 2), (40, 0, 0), (40, 0, 1), (40, 0, 2),
+                        (40, 1, 0), (40, 1, 1), (40, 1, 2), (40, 2, 0), (40, 2, 1), (40, 2, 2)]
 
         mapped_actions = {}
         num = 0
