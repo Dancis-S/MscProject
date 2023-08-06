@@ -17,10 +17,10 @@ class Node:
 class MCTS:
     def __init__(self, agents_id, itermax):
         self.itermax = itermax
-        self.id = agents_id
+        self.player_id = agents_id
 
     def get_action(self, given_node):
-        root_node = Node(self.id, state=self.clone_state(given_node))
+        root_node = Node(self.player_id, state=self.clone_state(given_node))
 
         for _ in range(self.itermax):
             node = root_node
@@ -35,11 +35,11 @@ class MCTS:
             if node.untried_moves:
                 move = random.choice(node.untried_moves)
                 state = self.make_move(state, move)
-                node = node.add_child(move, state, self.id)
+                node = node.add_child(move, state, self.player_id)
 
             # Simulation
             while not self.is_game_over(state):
-                state = self.make_move(state, random.choice(self.get_legal_moves(self.id, state)))
+                state = self.make_move(state, random.choice(self.get_legal_moves(self.player_id, state)))
 
             # Backpropagation
             while node is not None:
@@ -75,13 +75,13 @@ class MCTS:
         # Move is going to come in form (location, stack indx, shop indx)
         location = move[0]
         stack_indx = move[1]
-        my_stack = new_state.get_my_stack(self.id)
+        my_stack = new_state.get_my_stack(self.player_id)
         colour = my_stack[stack_indx][0]  # Gets the colour
         pattern = my_stack[stack_indx][1]  # Gets the pattern
         shop_indx = move[2]
 
         # Add the tile
-        my_board = new_state.get_my_board(self.id)
+        my_board = new_state.get_my_board(self.player_id)
         my_board.add_tile(location, colour, pattern)
 
         # Take selected tile from shop add to stack, and randomly add new tile to shop
@@ -96,7 +96,7 @@ class MCTS:
         :param state:
         :return:
         """
-        if not state.get_my_board(self.id).open_positions:
+        if not state.get_my_board(self.player_id).open_positions:
             return True
         else:
             return False
@@ -112,7 +112,7 @@ class MCTS:
         return clone
 
     def get_score(self, state):
-        return state.get_my_board(self.id).get_score()
+        return state.get_my_board(self.player_id).get_score()
 
 
 def add_child(self, move, state, player_id):

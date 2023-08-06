@@ -3,6 +3,11 @@
 
 # Class to define the tile object that will be used to represent the nodes in the board
 class NormalTile:
+    """
+    Class for the normal tiles, which hold information about its neighbors
+    the colour, pattern, and if it's part of a pattern or button.
+    Only has a get neighbors function which returns its neighbors
+    """
     def __init__(self, tile_id):
         self.tile_id = tile_id
         self.pattern = None
@@ -25,10 +30,17 @@ class NormalTile:
         order is W, NW, NE, E, SE, SW
         :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
         """
-        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
+        return [self.west, self.north_west, self.north_east, self.east, self.south_east,
+                self.south_west]
 
 
 class DesignGoalTile:
+    """
+    Class for the Design tile, different from normal, it holds information on,
+    the requirement, and whether its pattern or colour complete.
+    Has multiple different functions that check for the different kinds of
+    requirements that are in the game.
+    """
     def __init__(self, tile_id, requirement):
         self.requirement = requirement
         self.colour_complete = False
@@ -43,8 +55,6 @@ class DesignGoalTile:
         self.north_east = None
         self.south_east = None
         self.south_west = None
-
-    # We will need different check patterns depending on the requirements
 
     def check_tile_complete(self):
         """
@@ -101,7 +111,8 @@ class DesignGoalTile:
         order is W, NW, NE, E, SE, SW
         :return: Array containing tile neighbors in order W, NW, NE, E, SE, SW
         """
-        return [self.west, self.north_west, self.north_east, self.east, self.south_east, self.south_west]
+        return [self.west, self.north_west, self.north_east, self.east, self.south_east,
+                self.south_west]
 
     def add_colours_and_patterns_to_dictionary(self):
         """
@@ -251,9 +262,11 @@ class DesignGoalTile:
         colour_values = list(colours_dict.values())
         pattern_values = list(patterns_dict.values())
 
-        if len(colour_values) == 3 and 3 in colour_values and 2 in colour_values and 1 in colour_values:
+        if len(colour_values) == 3 and 3 in colour_values and 2 in colour_values and\
+                1 in colour_values:
             colour_complete = True
-        if len(pattern_values) == 3 and 3 in pattern_values and 2 in pattern_values and 1 in pattern_values:
+        if len(pattern_values) == 3 and 3 in pattern_values and 2 in pattern_values and\
+                1 in pattern_values:
             pattern_complete = True
 
         # Returns scores based on the conditions met
@@ -278,9 +291,11 @@ class DesignGoalTile:
         pattern_values = list(patterns_dict.values())
 
         # Check that the outlined conditions are met
-        if len(colour_values) == 4 and colour_values.count(2) == 2 and colour_values.count(1) == 2:
+        if len(colour_values) == 4 and colour_values.count(2) == 2 and \
+                colour_values.count(1) == 2:
             colour_complete = True
-        if len(pattern_values) == 4 and pattern_values.count(2) == 2 and pattern_values.count(1) == 2:
+        if len(pattern_values) == 4 and pattern_values.count(2) == 2 and\
+                pattern_values.count(1) == 2:
             pattern_complete = True
 
         # Returns scores based on the conditions met

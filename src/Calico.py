@@ -3,6 +3,7 @@ import random
 import numpy as np
 from src import Board
 from src import Tiles
+from src import Cats
 
 
 class Calico:
@@ -11,13 +12,13 @@ class Calico:
     will interact with when playing the game
     """
     def __init__(self, num_of_players, agents):
-        self.device = None
         self.agents = agents
         self.num_of_players = num_of_players
         self.tiles_bag = []  # Bag that holds the tiles, that players can draw from to play
         self.shop = []  # Shop that holds available tiles
         self.players_board = []  # Holds the boards for each player
         self.players_stack = []  # Holds the stack for each player
+        self.cats = []
         self.setup_game(num_of_players)
 
     def setup_game(self, num_of_players):
@@ -28,6 +29,9 @@ class Calico:
         :param num_of_players:
         :return:
         """
+
+        self.initialise_cats()  # Set up the cats that will be used for this game
+
         # There is 3 of each pattern for each colour set put this into the bag
         colours = ["Yellow", "Red", "Purple", "Blue", "Green", "Navy"]
         patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
@@ -48,6 +52,41 @@ class Calico:
             self.players_stack.append([self.tiles_bag.pop(), self.tiles_bag.pop(),
                                        self.tiles_bag.pop()])
             self.players_board.append(Board.Board(i + 1))
+
+        for board in self.players_board:  # Passes the cats for set up
+            board.set_cats(self.cats)
+
+    def initialise_cats(self):
+        """
+        Initialises the cats for the board game by randomly picking 3 cats out of the 5,
+        and the randomly assigning them 2 patterns.
+        :return:
+        """
+        millie = Cats.Cat("Millie", 3, 3)
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        coconut = Cats.Cat("Coconut", 7, 5)
+        cira = Cats.Cat("Cira", 9, 6)
+        gwen = Cats.Cat("Gwen", 11, 7)
+        bag_of_cats = [millie, tibbit, coconut, cira, gwen]
+        random.shuffle(bag_of_cats)  # Shuffle the cats to randomly assign them
+
+        for i in range(3):
+            self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
+
+        # Now assign each cat 2 random pattern
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
+        random.shuffle(patterns)
+        for n in self.cats:
+            n.pattern_1 = patterns.pop()
+            n.pattern_2 = patterns.pop()
+
+    def select_board_colour(self, player_id, colour):
+        """
+        Method that is used to select the board (or mostly used to change the board for a given
+        player to another board)
+        1-Purple, 2-Blue, 3-Green, 4- Yellow
+        """
+        self.players_board[player_id].colour_borders(colour)
 
     def start_game(self, num_of_players, agents):
         """
@@ -76,13 +115,16 @@ class Calico:
                     location = answer[0]
                     chosen_tile = answer[1]
                     shop_tile = answer[2]
-                    self.make_a_move(bot.id, location, chosen_tile, shop_tile)
+                    self.make_a_move(bot.player_id, location, chosen_tile, shop_tile)
 
                     # Checks whether game is over
                     if not self.players_board[player].open_positions:
                         open_moves = False
-
-        return self.return_score()
+        if len(agents) > 1:
+            # return self.calculate_scores()
+            return self.winner_id()
+        else:
+            return self.return_score()
 
     def make_a_move(self, player_id, location, chosen_tile, shop_tile):
         """
@@ -177,6 +219,70 @@ class Calico:
                          "!  Score: " + str(player[1])
 
         return final_log
+
+    def single_player_give_game_info(self):
+        """
+        Called only at the end of the game.
+        This method returns all the information about the game back to the user, for example
+        the final score, the cats and their tiles, the number of buttons and specific ones scored
+        the design tiles present, and finally the board layout.
+        """
+        board = self.get_my_board(0)
+        info = []
+
+        # Quick summary
+        info.append(board.get_score())
+        info.append(board.get_buttons_score())
+        info.append(board.get_cat_score())
+        info.append(board.get_design_score())
+        info.append(board.board_colour)
+
+        # Buttons info
+        buttons = board.buttons  # Gets the buttons dictionary
+        info.append(buttons["Red"])
+        info.append(buttons["Purple"])
+        info.append(buttons["Yellow"])
+        info.append(buttons["Blue"])
+        info.append(buttons["Green"])
+        info.append(buttons["Navy"])
+        info.append(board.count_rainbows())
+
+        # Design Tile Info
+        info.append(board.board[17].requirement)
+        info.append(board.board[17].check_design_goal_reached())
+        info.append(board.board[25].requirement)
+        info.append(board.board[25].check_design_goal_reached())
+        info.append(board.board[30].requirement)
+        info.append(board.board[30].check_design_goal_reached())
+
+        # Cat info
+        info.append(board.cats[0].name)
+        info.append(board.cats[0].num_of_cats)
+        info.append(board.cats[0].pattern_1)
+        info.append(board.cats[0].pattern_2)
+        info.append(board.cats[1].name)
+        info.append(board.cats[1].num_of_cats)
+        info.append(board.cats[1].pattern_1)
+        info.append(board.cats[1].pattern_2)
+        info.append(board.cats[2].name)
+        info.append(board.cats[2].num_of_cats)
+        info.append(board.cats[2].pattern_1)
+        info.append(board.cats[2].pattern_2)
+
+        return info
+
+    def winner_id(self):
+        """
+        Returns the ID of the winner
+        """
+        scores = []
+        for board in self.players_board:
+            # (name , score)
+            scores.append((board.player_num, board.get_score()))  # Add it in
+
+        scores.sort(key=lambda a: a[1], reverse=True)  # Sort them in order of who wins
+
+        return scores.pop()[0]
 
     def get_my_stack(self, player_id):
         """

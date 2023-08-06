@@ -274,6 +274,7 @@ class TestBoard(unittest.TestCase):
         """
         board = Board.Board(1)
         hold_cats = []
+        set_up_correct = True
         for cat in board.cats:
             if cat.pattern_1 in hold_cats or cat.pattern_2 in hold_cats \
                     or cat.pattern_1 == cat.pattern_2:
@@ -281,6 +282,7 @@ class TestBoard(unittest.TestCase):
             else:
                 hold_cats.append(cat.pattern_1)
                 hold_cats.append(cat.pattern_2)
+        self.assertTrue(set_up_correct)
 
     def test_adding_random_cat(self):
         """
@@ -429,7 +431,7 @@ class TestBoard(unittest.TestCase):
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
-        rainbows = board._count_rainbows()
+        rainbows = board.count_rainbows()
         cat1 = board.cats[0].num_of_cats
         cats2 = board.cats[1].num_of_cats
         cats3 = board.cats[2].num_of_cats
@@ -491,7 +493,7 @@ class TestBoard(unittest.TestCase):
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
-        rainbows = board._count_rainbows()
+        rainbows = board.count_rainbows()
         cat1 = board.cats[0].num_of_cats
         cats2 = board.cats[1].num_of_cats
         cats3 = board.cats[2].num_of_cats
@@ -551,7 +553,7 @@ class TestBoard(unittest.TestCase):
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
-        rainbows = board._count_rainbows()
+        rainbows = board.count_rainbows()
         cat1 = board.cats[0].num_of_cats
         cats2 = board.cats[1].num_of_cats
         cats3 = board.cats[2].num_of_cats
@@ -613,7 +615,7 @@ class TestBoard(unittest.TestCase):
         pos30_neighbors = []
         for n in board.board[30].get_neighbors():
             pos30_neighbors.append((n.tile_id, n.colour, n.pattern))
-        rainbows = board._count_rainbows()
+        rainbows = board.count_rainbows()
         cat1 = board.cats[0].num_of_cats
         cats2 = board.cats[1].num_of_cats
         cats3 = board.cats[2].num_of_cats

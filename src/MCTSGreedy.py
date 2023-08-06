@@ -1,17 +1,70 @@
 import random
 import math
 import copy
-from src import Agents
 
 
-class API:
+class Node:
+    def __init__(self, player_id, parent=None, move=None, state=None):
+        self.parent = parent
+        self.move = move
+        self.state = state
+        self.untried_moves = MCTSGreedy.get_legal_moves(player_id, state)
+        self.children = []
+        self.wins = 0
+        self.visits = 0
+
+
+class MCTSGreedy:
+    def __init__(self, agents_id, itermax):
+        self.itermax = itermax
+        self.player_id = agents_id
+
+    def get_action(self, given_node):
+        root_node = Node(self.player_id, state=self.clone_state(given_node))
+
+        for _ in range(self.itermax):
+            node = root_node
+            state = self.clone_state(given_node)
+
+            # Selection
+            while node.untried_moves == [] and node.children != []:
+                node = self.select_child(node)
+                state = self.make_move(state, node.move)
+
+            # Expansion
+            if node.untried_moves:
+                move = random.choice(node.untried_moves)
+                state = self.make_move(state, move)
+                node = node.add_child(move, state, self.player_id)
+
+            # Simulation
+            while not self.is_game_over(state):
+                state = self.make_move(state,
+                                       random.choice(self.get_legal_moves(self.player_id, state)))
+
+            # Backpropagation
+            while node is not None:
+                node.visits += 1
+                node.wins += self.get_score(state)
+                node = node.parent
+
+        # return the move of the child with highest average reward.
+        # Add a small constant to the denominator to avoid division by zero.
+        return sorted(root_node.children, key=lambda c: c.wins / (c.visits + 1e-10))[-1].move
+
     @classmethod
-    def get_legal_moves(cls, state):
+    def select_child(cls, node):
+        s = sorted(node.children, key=lambda c: c.wins / c.visits + math.sqrt(
+            2 * math.log(node.visits) / c.visits))[-1]
+        return s
+
+    @classmethod
+    def get_legal_moves(cls, player_id, state):
         """
         Returns the legal moves for the given state
         :return:
         """
-        board = state.players_board[0]
+        board = state.get_my_board(player_id)
         open_positions = board.open_positions
         legal_moves = []
         for location in open_positions:
@@ -21,33 +74,33 @@ class API:
 
         return legal_moves
 
-    @classmethod
-    def make_move(cls, state, move):
+    def make_move(self, state, move):
         new_state = state
         # Move is going to come in form (location, stack indx, shop indx)
         location = move[0]
         stack_indx = move[1]
-        colour = new_state.players_stack[0][stack_indx][0]  # Gets the colour
-        pattern = new_state.players_stack[0][stack_indx][1]  # Gets the pattern
+        my_stack = new_state.get_my_stack(self.player_id)
+        colour = my_stack[stack_indx][0]  # Gets the colour
+        pattern = my_stack[stack_indx][1]  # Gets the pattern
         shop_indx = move[2]
 
         # Add the tile
-        new_state.players_board[0].add_tile(location, colour, pattern)
+        my_board = new_state.get_my_board(self.player_id)
+        my_board.add_tile(location, colour, pattern)
 
         # Take selected tile from shop add to stack, and randomly add new tile to shop
-        new_state.players_stack[0].append(new_state.shop.pop(shop_indx))  # Pop the shop indx
+        my_stack.append(new_state.shop.pop(shop_indx))  # Pop the shop indx
         new_state.shop.append(state.tiles_bag.pop())
 
         return new_state
 
-    @classmethod
-    def is_game_over(cls, state):
+    def is_game_over(self, state):
         """
         Checks whether the game is over by looking at the open pos
         :param state:
         :return:
         """
-        if not state.players_board[0].open_positions:
+        if not state.get_my_board(self.player_id).open_positions:
             return True
         else:
             return False
@@ -62,67 +115,12 @@ class API:
         clone = copy.deepcopy(root_state)
         return clone
 
-    @classmethod
-    def get_score(cls, state):
-        return state.players_board[0].get_score()
+    def get_score(self, state):
+        return state.get_my_board(self.player_id).get_score()
 
 
-class Node:
-    def __init__(self, parent=None, move=None, state=None):
-        self.parent = parent
-        self.move = move
-        self.state = state
-        self.untried_moves = API.get_legal_moves(state)
-        self.children = []
-        self.wins = 0
-        self.visits = 0
-
-
-class MCTSGreedy:
-    def __init__(self, agents_id, itermax):
-        self.itermax = itermax
-        self.id = agents_id
-
-    def get_action(self, given_node):
-        root_node = Node(state=API.clone_state(given_node))
-
-        for _ in range(self.itermax):
-            node = root_node
-            state = API.clone_state(given_node)
-
-            # Selection
-            while node.untried_moves == [] and node.children != []:
-                node = self.select_child(node)
-                state = API.make_move(state, node.move)
-
-            # Expansion
-            if node.untried_moves:
-                move = random.choice(node.untried_moves)
-                state = API.make_move(state, move)
-                node = node.add_child(move, state)
-
-            # Simulation
-            while not API.is_game_over(state):
-                agent = Agents.GreedyAgentRandom(self.id)
-                move = agent.get_action(state)
-                state = API.make_move(state, move)
-
-            # Backpropagation
-            while node is not None:
-                node.visits += 1
-                node.wins += API.get_score(state)
-                node = node.parent
-
-        return sorted(root_node.children, key=lambda c: c.visits)[-1].move
-
-    @classmethod
-    def select_child(cls, node):
-        s = sorted(node.children, key=lambda c: c.wins / c.visits + math.sqrt(2 * math.log(node.visits) / c.visits))[-1]
-        return s
-
-
-def add_child(self, move, state):
-    node = Node(parent=self, move=move, state=state)
+def add_child(self, move, state, player_id):
+    node = Node(player_id, parent=self, move=move, state=state)
     self.untried_moves.remove(move)
     self.children.append(node)
     return node

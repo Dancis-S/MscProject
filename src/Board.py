@@ -34,29 +34,11 @@ class Board:
         self.board[25] = Tiles.DesignGoalTile(25, requirements.pop())
         self.board[30] = Tiles.DesignGoalTile(30, requirements.pop())
 
-    def initialise_cats(self):
+    def set_cats(self, cats):
         """
-        Initialises the cats for the board game by randomly picking 3 cats out of the 5,
-        and the randomly assigning them 2 patterns.
-        :return:
+        Method used to pass the cats from the higher class to the lower class
         """
-        millie = Cats.Cat("Millie", 3, 3)
-        tibbit = Cats.Cat("Tibbit", 5, 4)
-        coconut = Cats.Cat("Coconut", 7, 5)
-        cira = Cats.Cat("Cira", 9, 6)
-        gwen = Cats.Cat("Gwen", 11, 7)
-        bag_of_cats = [millie, tibbit, coconut, cira, gwen]
-        random.shuffle(bag_of_cats)  # Shuffle the cats to randomly assign them
-
-        for i in range(3):
-            self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
-
-        # Now assign each cat 2 random pattern
-        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
-        random.shuffle(patterns)
-        for n in self.cats:
-            n.pattern_1 = patterns.pop()
-            n.pattern_2 = patterns.pop()
+        self.cats = cats
 
     def initialise_tiles(self):
         """
@@ -126,16 +108,22 @@ class Board:
                         (4, 1), (1, 5), (3, 2), (2, 1), (0, 4), (2, 0), (5, 1), (4, 3), (0, 5),
                         (2, 2), (5, 4), (4, 0), (1, 1), (3, 3), (5, 5)]
 
-        blue_board = [(1, 5), (0, 0), (3, 5), (1, 1), (2, 4), (0, 3), (4, 0), (4, 3), (5, 4), (3, 1),
-                      (2, 0), (0, 2), (2, 3), (3, 4), (1, 3), (5, 1), (4, 5), (1, 2), (3, 0), (5, 3),
+        blue_board = [(1, 5), (0, 0), (3, 5), (1, 1), (2, 4), (0, 3), (4, 0), (4, 3), (5, 4),
+                      (3, 1),
+                      (2, 0), (0, 2), (2, 3), (3, 4), (1, 3), (5, 1), (4, 5), (1, 2), (3, 0),
+                      (5, 3),
                       (4, 4), (0, 1), (2, 5), (5, 2)]
 
-        green_board = [(5, 1), (0, 5), (4, 1), (5, 0), (2, 4), (0, 2), (3, 5), (2, 2), (1, 4), (3, 0),
-                       (0, 3), (2, 5), (4, 0), (5, 2), (4, 4), (1, 0), (3, 1), (5, 3), (4, 5), (1, 2),
+        green_board = [(5, 1), (0, 5), (4, 1), (5, 0), (2, 4), (0, 2), (3, 5), (2, 2), (1, 4),
+                       (3, 0),
+                       (0, 3), (2, 5), (4, 0), (5, 2), (4, 4), (1, 0), (3, 1), (5, 3), (4, 5),
+                       (1, 2),
                        (3, 4), (0, 0), (2, 1), (1, 3)]
 
-        yellow_board = [(4, 4), (5, 3), (0, 0), (2, 2), (5, 5), (4, 1), (1, 4), (1, 1), (2, 5), (0, 2),
-                        (4, 3), (5, 4), (3, 5), (2, 1), (0, 5), (3, 2), (1, 0), (2, 3), (0, 4), (3, 1),
+        yellow_board = [(4, 4), (5, 3), (0, 0), (2, 2), (5, 5), (4, 1), (1, 4), (1, 1), (2, 5),
+                        (0, 2),
+                        (4, 3), (5, 4), (3, 5), (2, 1), (0, 5), (3, 2), (1, 0), (2, 3), (0, 4),
+                        (3, 1),
                         (1, 5), (4, 2), (5, 0), (3, 3)]
 
         if player_num == 1:
@@ -169,7 +157,8 @@ class Board:
         tile.colour = colour
         tile.pattern = pattern
         self.open_positions.remove(tile_id)
-        self.check_and_add_buttons(tile_id)  # Calls the function to check whether we have gained a button
+        self.check_and_add_buttons(
+            tile_id)  # Calls the function to check whether we have gained a button
         self.check_and_add_cat(tile_id)  # Calls function to check whether cat is scored
 
     def check_and_add_buttons(self, tile_id):
@@ -247,11 +236,11 @@ class Board:
                 # In-order to be scored, it as to be a separate group!
                 if n.pattern == pattern and n.part_of_pattern:
                     count = 0
-                    tile.part_of_pattern = True  # merge the current tile to join the already done tile
+                    tile.part_of_pattern = True  # join the already done tile
 
                 # If it is a free matching tile, then add it to cache
-                if n.pattern == pattern and (n.tile_id not in visited_tiles) and not n.part_of_pattern\
-                        and n.tile_id not in cache_neighbors:
+                if n.pattern == pattern and (n.tile_id not in visited_tiles) and not \
+                        n.part_of_pattern and n.tile_id not in cache_neighbors:
                     cache_neighbors.append(n.tile_id)  # Add id of tile with matching pattern
 
             if not cache_neighbors:  # If there is no more nodes to visit then break
@@ -269,12 +258,12 @@ class Board:
             if pattern in kitten.get_patterns():
                 cat = kitten
 
-        if count >= cat.num_of_tiles:  # if the num of tiles required is reached increment num_of_cats
+        if count >= cat.num_of_tiles:  # if there is enough tiles increment num_of_cats
             cat.num_of_cats += 1
             for n in visited_tiles:
                 self.board[n].part_of_pattern = True
 
-    def _count_rainbows(self):
+    def count_rainbows(self):
         """
         Function that will calculate how many rainbows the player has scored in their
         board and then return it.
@@ -296,7 +285,7 @@ class Board:
         score += self.board[30].check_design_goal_reached()  # Tile 30
 
         # Adds the scores from the button (don't forget to check for rainbows)
-        score += self._count_rainbows() * 3  # Adds the score of the rainbow
+        score += self.count_rainbows() * 3  # Adds the score of the rainbow
         values = list(self.buttons.values())
         for n in values:
             score += 3 * n
@@ -308,43 +297,59 @@ class Board:
 
         return score
 
-    def get_tile_info(self, tile_id):
+    def get_cat_score(self):
         """
-        Given a tile id, return the neighbors of the given node.
-        Function used for debugging only
-        :param tile_id:
-        :return:
+        Return the score that has been obtained due to the cats
         """
-        info = "============================\n Tile ID: " + str(tile_id) + "\n"
-        tile = self.board[tile_id]
-        if tile.west is None:
-            info += "West: None\n"
-        else:
-            info += "West: " + str(tile.west.tile_id) + "\n"
+        score = 0
+        score += self.cats[0].num_of_cats * self.cats[0].score  # Cat 1
+        score += self.cats[1].num_of_cats * self.cats[1].score  # Cat 2
+        score += self.cats[2].num_of_cats * self.cats[2].score  # Cat 3
+        return score
 
-        if tile.east is None:
-            info += "East: None\n"
-        else:
-            info += "East: " + str(tile.east.tile_id) + "\n"
-        if tile.north_west is None:
-            info += "North West: None\n"
-        else:
-            info += "North West: " + str(tile.north_west.tile_id) + "\n"
+    def get_design_score(self):
+        """
+        Return the score that has been obtained from the design tiles
+        """
+        score = 0
+        score += self.board[17].check_design_goal_reached()  # Tile 17
+        score += self.board[25].check_design_goal_reached()  # Tile 25
+        score += self.board[30].check_design_goal_reached()  # Tile 30
+        return score
 
-        if tile.north_east is None:
-            info += "North East: None\n"
-        else:
-            info += "North East: " + str(tile.north_east.tile_id) + "\n"
+    def get_buttons_score(self):
+        """
+        Returns the amount of score obtained from buttons, including the rianbow
+        """
+        score = 0
+        # Adds the scores from the button (don't forget to check for rainbows)
+        score += self.count_rainbows() * 3  # Adds the score of the rainbow
+        values = list(self.buttons.values())
+        for n in values:
+            score += 3 * n
 
-        if tile.south_west is None:
-            info += "South West: None\n"
-        else:
-            info += "South West: " + str(tile.south_west.tile_id) + "\n"
+        return score
 
-        if tile.south_east is None:
-            info += "South East: None\n"
-        else:
-            info += "South East: " + str(tile.south_east.tile_id) + "\n"
+    def initialise_cats(self):
+        """
+               Initialises the cats for the board game by randomly picking 3 cats out of the 5,
+               and the randomly assigning them 2 patterns.
+               :return:
+               """
+        millie = Cats.Cat("Millie", 3, 3)
+        tibbit = Cats.Cat("Tibbit", 5, 4)
+        coconut = Cats.Cat("Coconut", 7, 5)
+        cira = Cats.Cat("Cira", 9, 6)
+        gwen = Cats.Cat("Gwen", 11, 7)
+        bag_of_cats = [millie, tibbit, coconut, cira, gwen]
+        random.shuffle(bag_of_cats)  # Shuffle the cats to randomly assign them
 
-        info += "============================\n"
-        return info
+        for i in range(3):
+            self.cats.append(bag_of_cats.pop())  # Randomly add cats to the array
+
+        # Now assign each cat 2 random pattern
+        patterns = ["Stripes", "Leaf", "Dots", "Plants", "Four", "Reeds"]
+        random.shuffle(patterns)
+        for n in self.cats:
+            n.pattern_1 = patterns.pop()
+            n.pattern_2 = patterns.pop()

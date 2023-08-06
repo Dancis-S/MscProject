@@ -6,8 +6,44 @@ import mcts
 
 
 def main():
-    random_agent_play()
+    test_out_mcts()
 
+
+def test_out_mcts():
+    agent = mcts.MCTS(0,100)
+    game = Calico.Calico(1, [agent])
+    game.start_game(1, [agent])
+    print(game.single_player_give_game_info())
+
+def MCTS_10_to_1000():
+    """
+    This function will run 100 games of mcts at different intervals, and then give the average
+    of each, to see how the number of iterations affects the gameplay of the agent
+    """
+    intervals = [10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
+    for number in intervals:
+        mcts_agent = mcts.MCTS(0, number)
+
+        for i in range(100):  # Play the 100 games with those intervals
+
+            game = Calico.Calico(1, [mcts_agent])
+
+
+def normal_MCTS_vs_Greedy_MCTS():
+    player1 = 0
+    player2 = 0
+    for i in range(1, 101):
+        greedy_agent = MCTSGreedy.MCTSGreedy(0, 20)
+        mcts_agent = mcts.MCTS(1, 20)
+        game = Calico.Calico(2, [greedy_agent, mcts_agent])
+        score = game.start_game(2, [greedy_agent, mcts_agent])
+        if score == 1:
+            player1 += 1
+        else:
+            player2 += 1
+    print("Player 1: " + str(player1))
+    print("Player 2: " + str(player2))
 
 def greedy_vs_mcts():
 
@@ -19,6 +55,24 @@ def greedy_vs_mcts():
         print(score)
 
 
+def greedy_vs_greedy():
+    player1 = 0
+    player2 = 0
+    for i in range(10001):
+        greedy_agent_1 = Agents.GreedyAgentRandom(0)
+        greedy_agent_2 = Agents.GreedyAgentRandom(1)
+        game = Calico.Calico(2, [greedy_agent_1, greedy_agent_2])
+        game.select_board_colour(0, 1)
+        game.select_board_colour(1, 1)
+        score = game.start_game(2, [greedy_agent_1, greedy_agent_2])
+        if score == 1:
+            player1 += 1
+        else:
+            player2 += 1
+    print("Player 1: " + str(player1))
+    print("Player 2: " + str(player2))
+
+
 def MCTS_Greedy_agent_play():
     average = 0
     highest = 0
@@ -26,7 +80,7 @@ def MCTS_Greedy_agent_play():
     lowest = 999999999
     for i in range(1, 2):
         print("Starting Game: " + str(i))
-        agent = MCTSGreedy.MCTSGreedy(0, 10)
+        agent = MCTSGreedy.MCTSGreedy(0, 1000)
         game = Calico.Calico(1, [agent])
         score = game.start_game(1, [agent])[0][1]
         if score > highest:
@@ -116,9 +170,9 @@ def mcts_agent_play():
     highest = 0
     best_board = None
     lowest = 999999999
-    for i in range(1, 2):
+    for i in range(1, 10):
         print("Starting Game: " + str(i))
-        agent = mcts.MCTS(0, 2000)
+        agent = mcts.MCTS(0, 1000)
         game = Calico.Calico(1, [agent])
         score = game.start_game(1, [agent])[0][1]
         if score > highest:
@@ -167,6 +221,7 @@ def random_agent_play():
     for i in range(1, 50000):
         print("Starting Game: " + str(i))
         game = Calico.Calico(1, agents)
+        game.select_board_colour(0, 3)
         score = game.start_game(1, agents)[0][1]
         if score > highest:
             highest = score
