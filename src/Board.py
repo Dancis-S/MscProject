@@ -1,4 +1,5 @@
 """This file contain code related to setting up the board"""
+import copy
 import random
 from src import Tiles
 from src import Cats
@@ -7,6 +8,7 @@ from src import Cats
 # Initialises the board creating the 7 * 7 grid and stores them in array for quick access
 class Board:
     def __init__(self, player_num):
+        self.board_colour = "Test"
         self.open_positions = [8, 9, 10, 11, 12, 15, 16, 18, 19, 22, 23, 24, 26, 29, 31, 32,
                                33, 36, 37, 38, 39, 40]
         self.buttons = {"Red": 0, "Yellow": 0, "Purple": 0, "Blue": 0, "Green": 0, "Navy": 0}
@@ -17,7 +19,6 @@ class Board:
         self.initialise_tiles()
         self.initialise_cats()
         self.colour_borders(player_num)  # We need to put player number here after
-        self.board_colour = "Test"
 
     def populate_board(self):
         """
@@ -38,7 +39,7 @@ class Board:
         """
         Method used to pass the cats from the higher class to the lower class
         """
-        self.cats = cats
+        self.cats = copy.deepcopy(cats)
 
     def initialise_tiles(self):
         """

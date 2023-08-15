@@ -11,6 +11,7 @@ class Calico:
     Class for the overall game of Calico, this is also the class that the agents
     will interact with when playing the game
     """
+
     def __init__(self, num_of_players, agents):
         self.agents = agents
         self.num_of_players = num_of_players
@@ -110,7 +111,6 @@ class Calico:
                     bot = agents[player]
                     state = self
                     answer = bot.get_action(state)
-
                     # All agent actions returned as (location, tile_indx, shop_indx)
                     location = answer[0]
                     chosen_tile = answer[1]
@@ -215,7 +215,7 @@ class Calico:
                           "\nFirst Place: "]
         final_log = "=====!! End Of Game !!====="
         for player in scores:
-            final_log += position_names.pop() + "Player " + str(player[0]) +\
+            final_log += position_names.pop() + "Player " + str(player[0]) + \
                          "!  Score: " + str(player[1])
 
         return final_log
@@ -276,13 +276,15 @@ class Calico:
         Returns the ID of the winner
         """
         scores = []
+        csv_output = []
         for board in self.players_board:
             # (name , score)
-            scores.append((board.player_num, board.get_score()))  # Add it in
-
-        scores.sort(key=lambda a: a[1], reverse=True)  # Sort them in order of who wins
-
-        return scores.pop()[0]
+            scores.append((self.agents[board.player_num - 1].player_name, board.get_score()))  # Add it in
+            csv_output.append(self.agents[board.player_num - 1].player_name)
+            csv_output.append(board.get_score())
+        scores.sort(key=lambda a: a[1])
+        csv_output.append(scores.pop()[0])
+        return csv_output
 
     def get_my_stack(self, player_id):
         """
@@ -469,8 +471,7 @@ class Calico:
 
         return invalid_pos
 
-    @classmethod
-    def dqn_convert_move(cls):
+    def dqn_convert_move(self):
         # Convert the output to a playable move
         hold_actions = [(8, 0, 0), (8, 0, 1), (8, 0, 2), (8, 1, 0), (8, 1, 1), (8, 1, 2),
                         (8, 2, 0), (8, 2, 1), (8, 2, 2), (9, 0, 0), (9, 0, 1), (9, 0, 2),

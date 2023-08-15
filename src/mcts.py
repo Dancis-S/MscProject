@@ -13,11 +13,17 @@ class Node:
         self.wins = 0
         self.visits = 0
 
+    def add_child(self, move, state, player_id):
+        node = Node(player_id, parent=self, move=move, state=state)
+        self.untried_moves.remove(move)
+        self.children.append(node)
+        return node
 
 class MCTS:
     def __init__(self, agents_id, itermax):
         self.itermax = itermax
         self.player_id = agents_id
+        self.player_name = "MCTS Agent"
 
     def get_action(self, given_node):
         root_node = Node(self.player_id, state=self.clone_state(given_node))
@@ -115,11 +121,4 @@ class MCTS:
         return state.get_my_board(self.player_id).get_score()
 
 
-def add_child(self, move, state, player_id):
-    node = Node(player_id, parent=self, move=move, state=state)
-    self.untried_moves.remove(move)
-    self.children.append(node)
-    return node
 
-
-Node.add_child = add_child

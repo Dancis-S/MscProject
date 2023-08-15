@@ -1,6 +1,8 @@
 """ File that contains the different AI agents"""
 import copy
 import random
+import src.DQN as DQN
+import os
 
 
 class RandomAgent:
@@ -9,7 +11,7 @@ class RandomAgent:
     """
     def __init__(self, player_id):
         self.player_id = player_id
-
+        self.player_name = "Random Agent"
     def get_action(self, game):
         """
         Given a game state, returns a random move to play
@@ -33,12 +35,39 @@ class RandomAgent:
         print(self.player_id)
 
 
+class DQNAgent:
+    def __init__(self, device='cpu'):
+        self.dqn = DQN.DQNAgent(678, 198, device)
+        self.model_path = self.set_path()
+        self.dqn.load_weights(self.model_path)
+        self.player_id = 0
+        self.player_name = "DQN Agent"
+
+    def get_action(self, game):
+        """Receive the current game state and decide on the next action."""
+        game_state = game.get_state()
+        invalid_actions = game.get_invalid_actions()
+        action = self.dqn.get_action(game_state, invalid_actions)
+        mapped_moves = game.dqn_convert_move()
+        play = mapped_moves[action]
+        return play
+
+    def set_path(self):
+        # Get the directory of the current script
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Assuming your CSV files are in the same directory as your script
+        file_path = os.path.join(script_dir, 'dqn_final.pth')
+        return file_path
+
+
 class GreedyAgentRandom:
     """
     Class for the greedy agent
     """
     def __init__(self, player_id):
         self.player_id = player_id
+        self.player_name = "Greedy Agent_" + str(self.player_id)
 
     def get_action(self, game):
         """
