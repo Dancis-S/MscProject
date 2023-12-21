@@ -35,6 +35,13 @@ class QNetwork(nn.Module):
         return self.fc4(x)
 
 
+def soft_update(local_model, target_model, tau=0.001):
+    """Soft update model parameters."""
+    for target_param, local_param in zip(target_model.parameters(),
+                                         local_model.parameters()):
+        target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
+
+
 class DQNAgent:
     def __init__(self, state_size, action_size, env):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -49,10 +56,8 @@ class DQNAgent:
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.999738
 
-        # 0.999925  # Decay after 40000
-
-        # 0.9999774540636716  # should decay after 100k
-
+        # 0.999925  Decay after 40000
+        # 0.9999774540636716 should decay after 100k
         # 200k decay = 0.99988945
 
         self.q_network = QNetwork(state_size, action_size).to(self.device)
@@ -118,15 +123,9 @@ class DQNAgent:
         # Increment t_step and update target network if necessary
         self.t_step = (self.t_step + 1) % self.target_update_interval
         if self.t_step == 0:
-            self.soft_update(self.q_network, self.target_network)
+            soft_update(self.q_network, self.target_network)
 
         return loss.item()
-
-    def soft_update(self, local_model, target_model, tau=0.001):
-        """Soft update model parameters."""
-        for target_param, local_param in zip(target_model.parameters(),
-                                             local_model.parameters()):
-            target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
 
     def save(self, filepath):
         torch.save(self.q_network.state_dict(), filepath)

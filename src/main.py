@@ -1,7 +1,6 @@
 """ Main file that is run when the game is executed"""
 import random
 
-from src import MCTSGreedy
 from src import Calico
 from src import Agents
 import mcts
@@ -18,16 +17,18 @@ def main():
     try might require some code to be changed in Calico but most should work.
     """
     # For humans to play can be solo or multiplayer (no agents)
-    # human_play()
+    #human_play()
+
+    #random_agent_play(100)
 
     # MCTS agent. parameters as follows: MCTS(Number of games, MCTS iterations)
-    # mcts_agent_play(10, 300)
+    #mcts_agent_play(1, 300)
 
     # Greedy agent. parameters as follows: Greedy(Number of games)
-    # greedy_agent_play(100)
+    #greedy_agent_play(10)
 
     # DQN Agent. Make sure dqn_final.pth present. parameters as follows: DQN(Number of games)
-    # DQN_agent_play(100)
+    DQN_agent_play(100)
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!! Normal agent plays (and human play) scripts !!!!!!!!!!!!!!!!!!!!!!!
@@ -240,7 +241,7 @@ def human_play():
     game.start_game(num_of_players, [])  # Calls the method to start the game
 
 
-# !!!!!!!!! Scripts for project below, won't work unless you make some changes in code !!!!!!!!!!!!
+# !!!!!!!! Scripts for project below, might not work unless you make some changes in code !!!!!!!!!!
 
 # !!!!!!!!!!!!!!! CSV File games all agents + all the solos !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

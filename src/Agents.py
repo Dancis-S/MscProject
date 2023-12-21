@@ -71,11 +71,10 @@ class GreedyAgentRandom:
 
     def get_action(self, game):
         """
-        Given a game state returns the best move, using the greedy approach
+        Given a game state returns the greedy move, using the brute force approach where all
+        possible positions are checked.
         """
-        # Check the open positions
-        # Try all possible combinations and return the move that maxes possible increase
-        # Otherwise make a random move!
+
         highest_increase = -1
         best_move = None  # The best possible move, shop is randomised though
         board = game.get_my_board(self.player_id)
