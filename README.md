@@ -1,13 +1,26 @@
 # AI Investigation in Non-Deterministic Board Games: Calico
 
 ## Introduction
-Briefly introduce the project and its significance in AI research, particularly in the context of board games.
+Welcome to my project where we explore the application of AI in the board game Calico. This work involves creating AI agents that operate in a game environment characterized by non-determinism and complete information. The focus is on implementing and evaluating different AI strategies, including Random, Greedy, Monte Carlo Tree Search (MCTS), and Deep Q-Network (DQN). These agents are designed to tackle the strategic complexities of Calico, providing insights into how AI can adapt and make decisions in board games where randomness plays a key role alongside visible information.
 
 ## About the Game - Calico
-Explain the basics of the Calico game, emphasizing elements that are relevant to the AI strategies you explored.
+![Picture of Calico](images/calico_overview.png "Calico Overview")
+Calico is a tile-placement board game where players compete to craft the coziest quilt and attract adorable cats to lie on it. The game combines elements of pattern recognition, strategic planning, and spatial reasoning. Players select and place hexagonal tiles of different colors and patterns onto their quilt board. The objective is to create groups of tiles that meet specific pattern requirements to attract cats, who each have their preferences for certain patterns and colors.
+
+Each player's quilt board features a 7x7 grid where they strategically place their tiles. The game also includes unique 'design goal' tiles, which provide additional scoring opportunities when their specific conditions are met. Players score points by creating color and pattern combinations, completing design goals, and collecting buttons, a currency in the game used to craft more complex patterns.
+
+Calico offers a blend of simplicity in its rules and depth in its strategic possibilities, making it appealing to a wide range of players. The game is praised for its thoughtful design, challenging puzzles, and charming aesthetic, which includes beautifully illustrated cats and colorful fabric tiles. It's a game of careful decision-making and foresight, as players balance the various scoring methods to build the most appealing quilt and become the ultimate quilt master.
 
 ## Objective
-Detail the specific goals of your project, including what aspects of AI in non-deterministic, perfect information games you focused on.
+The project aims to implement a variety of AI algorithms that will play the nondeterministic
+board game, Calico. The project will have two main fronts: the initial
+digital implementation of the board game Calico, followed by the development,
+training, and evaluation of AI agents on the game. These agents will be assessed
+based on their performance in solo gameplay and their performance in competitive
+match-ups against one another.
+Additional analysis beyond the primary evaluation of the agents will be to evaluate
+the game balance of Calico through the use of the AI agents. This will provide
+insight that may not be immediately perceived by human gameplay.
 
 ## AI Agents Overview
 - **Random Agent**: Agent that will play moves at random
